@@ -22,6 +22,20 @@
 {{-- ✅ Tambah 1 class khusus page ini biar CSS inline TIDAK ngubah UI page lain --}}
 
 <body class="dash-body page-unit-tp">
+{{-- MOBILE TOPBAR --}}
+<div class="mob-topbar" id="mobTopbar">
+  <div class="mob-logo">
+    <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
+    <span class="mob-logo-txt">SIAPABAJA</span>
+  </div>
+
+  <button class="mob-ham" id="mobHamBtn" aria-label="Buka menu">
+    <i class="bi bi-list"></i>
+  </button>
+</div>
+
+{{-- BACKDROP DRAWER --}}
+<div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
   @php
   // Nama yang tampil di sidebar (fallback)
   $unitName = $unitName ?? (auth()->user()->name ?? 'Unit Kerja');
@@ -1503,17 +1517,17 @@
           </div>
         </section>
 
-        <div class="tp-actions">
-          <a href="{{ url('/unit/dashboard') }}" class="tp-btn tp-btn-ghost">
-            <i class="bi bi-arrow-left"></i>
-            Kembali
-          </a>
+        <div class="tp-actions tp-actions-split" style="justify-content:space-between;">
+  <a href="{{ url('/unit/dashboard') }}" class="tp-btn tp-btn-ghost tp-btn-same">
+    <i class="bi bi-arrow-left"></i>
+    Kembali
+  </a>
 
-          <button type="submit" class="tp-btn tp-btn-primary">
-            <i class="bi bi-check2-circle"></i>
-            Simpan Arsip
-          </button>
-        </div>
+  <button type="submit" class="tp-btn tp-btn-primary tp-btn-same">
+    <i class="bi bi-check2-circle"></i>
+    Simpan Arsip
+  </button>
+</div>
       </form>
     </main>
   </div>
@@ -2101,14 +2115,10 @@
     }
 
     @media(max-width:1100px) {
-      :where(.page-unit-tp) .tp-actions {
-        flex-direction: column;
-      }
-
-      :where(.page-unit-tp) .tp-btn {
-        justify-content: center;
-      }
-    }
+  :where(.page-unit-tp) .tp-btn {
+    justify-content: center;
+  }
+}
 
     /* PATCH spacing konsisten */
     :where(.page-unit-tp) .tp-cardbox {
@@ -2307,6 +2317,162 @@
       color: var(--navy2);
       font-size: 13px;
     }
+
+/* =========================================================
+   RESPONSIVE PATCH — Tambah Pengadaan Unit
+========================================================= */
+
+@media (min-width: 1025px) {
+  :where(.page-unit-tp) .mob-topbar { display: none !important; }
+  :where(.page-unit-tp) .sidebar-drawer-backdrop { display: none !important; }
+}
+
+@media (max-width: 1024px) {
+
+  :where(.page-unit-tp) .mob-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: #184f61;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+  }
+
+  :where(.page-unit-tp) .mob-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  :where(.page-unit-tp) .mob-logo img { width: 32px; height: 32px; }
+
+  :where(.page-unit-tp) .mob-logo-txt {
+    color: #f4c542;
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  :where(.page-unit-tp) .sidebar-drawer-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, .45);
+    backdrop-filter: blur(4px);
+    z-index: 300;
+  }
+
+  :where(.page-unit-tp) .sidebar-drawer-backdrop.is-open { display: block; }
+
+  :where(.page-unit-tp) .dash-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: -280px !important;
+    height: 100vh !important;
+    width: 260px !important;
+    z-index: 400 !important;
+    transition: left .25s ease !important;
+    overflow-y: auto !important;
+  }
+
+  :where(.page-unit-tp) .dash-sidebar.drawer-open {
+    left: 0 !important;
+    box-shadow: 4px 0 24px rgba(2, 8, 23, .18) !important;
+  }
+
+  :where(.page-unit-tp) .dash-wrap {
+    display: block !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+  }
+
+  html, body {
+    height: auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  :where(.page-unit-tp) .dash-main {
+    height: auto !important;
+    overflow-y: visible !important;
+    padding: 20px !important;
+  }
+}
+
+@media (max-width: 768px) {
+
+  :where(.page-unit-tp) .dash-main { padding: 12px !important; }
+
+  :where(.page-unit-tp) .dash-header h1 { font-size: 20px !important; }
+  :where(.page-unit-tp) .dash-header p  { font-size: 13px !important; }
+
+  :where(.page-unit-tp) .tp-grid { grid-template-columns: 1fr !important; }
+  :where(.page-unit-tp) .tp-full { grid-column: unset !important; }
+
+  :where(.page-unit-tp) .tp-actions {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+  }
+
+  :where(.page-unit-tp) .tp-btn {
+    flex: 1 !important;
+    justify-content: center !important;
+  }
+}
+
+:where(.page-unit-tp) .tp-actions {
+  display: flex !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  padding: 10px 6px 2px !important;
+  margin-top: 6px !important;
+  flex-direction: row !important;
+}
+
+:where(.page-unit-tp) .tp-btn {
+  height: 46px !important;
+  padding: 12px 16px !important;
+  min-width: 140px !important;
+}
+
+:where(.page-unit-tp) .mob-ham {
+  width: 40px !important;
+  height: 40px !important;
+  border: 1px solid #e6eef2 !important;
+  border-radius: 10px !important;
+  background: #fff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  font-size: 18px !important;
+  color: #184f61 !important;
+}
+
+:where(.page-unit-tp) .tp-btn-same {
+  min-width: 210px !important;
+  height: 46px !important;
+  padding: 12px 16px !important;
+}
+
+:where(.page-unit-tp) .tp-actions-split {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+:where(.page-unit-tp) .tp-actions .tp-btn{
+  flex: 0 0 auto !important;
+  width: auto !important;
+}
+
+:where(.page-unit-tp) .tp-btn-same{
+  min-width: 210px !important;
+  width: auto !important;
+}
   </style>
 
   <script>
@@ -2331,6 +2497,32 @@
         const checked = wrap.querySelector('input[type="radio"]:checked');
         if (checked) checked.closest('.tp-radio-card').classList.add('active');
       });
+
+      /* -------- Sidebar Drawer -------- */
+const sidebar  = document.querySelector('.dash-sidebar');
+const hamBtn   = document.getElementById('mobHamBtn');
+const backdrop = document.getElementById('sidebarBackdrop');
+
+function openDrawer() {
+  sidebar?.classList.add('drawer-open');
+  backdrop?.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDrawer() {
+  sidebar?.classList.remove('drawer-open');
+  backdrop?.classList.remove('is-open');
+  document.body.style.overflow = '';
+}
+
+hamBtn?.addEventListener('click', openDrawer);
+backdrop?.addEventListener('click', closeDrawer);
+sidebar?.querySelectorAll('.dash-link, .dash-side-btn').forEach(el => {
+  el.addEventListener('click', closeDrawer);
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeDrawer();
+});
 
       // ✅ Inject elemen "text tipis jumlah file" ke header sesi (tanpa ubah HTML statis)
       document.querySelectorAll('.tp-acc-item').forEach(item => {

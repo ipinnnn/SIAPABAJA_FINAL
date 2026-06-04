@@ -44,6 +44,20 @@
   };
   @endphp
 
+{{-- MOBILE TOPBAR --}}
+<div class="mob-topbar" id="mobTopbar">
+  <div class="mob-logo">
+    <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
+    <span class="mob-logo-txt">SIAPABAJA</span>
+  </div>
+  <button class="mob-ham" id="mobHamBtn" aria-label="Buka menu">
+    <i class="bi bi-list"></i>
+  </button>
+</div>
+
+{{-- BACKDROP DRAWER --}}
+<div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
+
   <div class="dash-wrap">
     {{-- SIDEBAR (SAMA PERSIS DENGAN DASHBOARD UNIT) Pure PPK --}}
     <aside class="dash-sidebar">
@@ -54,7 +68,7 @@
 
         <div class="dash-text">
           <div class="dash-app">SIAPABAJA</div>
-          <div class="dash-role">ADMIN (PPK)</div>
+          <div class="dash-role">Admin (PPK)</div>
         </div>
       </div>
 
@@ -1500,21 +1514,171 @@
         </section>
 
         <div class="tp-actions">
-          <a href="{{ url('/ppk/dashboard') }}" class="tp-btn tp-btn-ghost">
-            <i class="bi bi-arrow-left"></i>
-            Kembali
-          </a>
+  <a href="{{ url('/ppk/dashboard') }}" class="tp-btn tp-btn-ghost tp-btn-same">
+    <i class="bi bi-arrow-left"></i>
+    Kembali
+  </a>
 
-          <button type="submit" class="tp-btn tp-btn-primary">
-            <i class="bi bi-check2-circle"></i>
-            Simpan Arsip
-          </button>
-        </div>
+  <button type="submit" class="tp-btn tp-btn-primary tp-btn-same">
+    <i class="bi bi-check2-circle"></i>
+    Simpan Arsip
+  </button>
+</div>
       </form>
     </main>
   </div>
 
   <style>
+  /* =========================================================
+   RESPONSIVE PATCH — Tambah Pengadaan
+   Mobile Topbar & Sidebar Drawer
+========================================================= */
+
+/* Hamburger topbar — tersembunyi di desktop */
+:where(.page-ppk-tp) .mob-topbar {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: #184f61;
+  border-bottom: 1px solid #eef3f6;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+:where(.page-ppk-tp) .mob-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+:where(.page-ppk-tp) .mob-logo img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+:where(.page-ppk-tp) .mob-logo-txt {
+  font-size: 17px;
+  font-weight: 700;
+  color: #f4c542;
+}
+
+.mob-ham {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e6eef2;
+  border-radius: 10px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  color: #184f61;
+}
+
+/* Backdrop drawer */
+:where(.page-ppk-tp) .sidebar-drawer-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, .45);
+  backdrop-filter: blur(4px);
+  z-index: 300;
+}
+
+:where(.page-ppk-tp) .sidebar-drawer-backdrop.is-open {
+  display: block;
+}
+
+/* Desktop: sembunyikan topbar & backdrop */
+@media (min-width: 1025px) {
+  :where(.page-ppk-tp) .mob-topbar {
+    display: none !important;
+  }
+  :where(.page-ppk-tp) .sidebar-drawer-backdrop {
+    display: none !important;
+  }
+}
+
+/* Split screen <= 1024px */
+@media (max-width: 1024px) {
+
+  :where(.page-ppk-tp) .mob-topbar {
+    display: flex;
+  }
+
+  :where(.page-ppk-tp) .dash-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: -280px !important;
+    height: 100vh !important;
+    width: 260px !important;
+    z-index: 400 !important;
+    transition: left .25s ease !important;
+    overflow-y: auto !important;
+  }
+
+  :where(.page-ppk-tp) .dash-sidebar.drawer-open {
+    left: 0 !important;
+    box-shadow: 4px 0 24px rgba(2, 8, 23, .18) !important;
+  }
+
+  :where(.page-ppk-tp) .dash-wrap {
+    display: block !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+  }
+
+  html, body {
+    height: auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  :where(.page-ppk-tp) .dash-main {
+    height: auto !important;
+    overflow-y: visible !important;
+    padding: 20px !important;
+  }
+}
+
+/* Mobile <= 768px */
+@media (max-width: 768px) {
+
+  :where(.page-ppk-tp) .dash-main {
+    padding: 12px !important;
+  }
+
+  :where(.page-ppk-tp) .dash-header h1 {
+    font-size: 20px !important;
+  }
+
+  :where(.page-ppk-tp) .dash-header p {
+    font-size: 13px !important;
+  }
+
+  :where(.page-ppk-tp) .tp-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  :where(.page-ppk-tp) .tp-full {
+    grid-column: unset !important;
+  }
+
+  :where(.page-ppk-tp) .tp-actions {
+    flex-direction: column !important;
+  }
+
+  :where(.page-ppk-tp) .tp-btn {
+    justify-content: center !important;
+    width: 100% !important;
+  }
+}
     /* =========================================================
      ✅ PENTING: SEMUA CSS DI-SCOPE KE .page-ppk-tp
      ========================================================= */
@@ -2106,15 +2270,29 @@
       border-color: rgba(24, 79, 97, .35);
     }
 
-    @media(max-width:1100px) {
-      :where(.page-ppk-tp) .tp-actions {
-        flex-direction: column;
-      }
+    :where(.page-ppk-tp) .tp-actions {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
 
-      :where(.page-ppk-tp) .tp-btn {
-        justify-content: center;
-      }
-    }
+:where(.page-ppk-tp) .tp-actions .tp-btn {
+  width: auto !important;
+  flex: 0 0 auto !important;
+}
+
+@media(max-width:600px) {
+  :where(.page-ppk-tp) .tp-actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  :where(.page-ppk-tp) .tp-actions .tp-btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
 
     /* PATCH spacing konsisten */
     :where(.page-ppk-tp) .tp-cardbox {
@@ -2311,6 +2489,13 @@
       color: var(--navy2);
       font-size: 13px;
     }
+
+    :where(.page-ppk-tp) .tp-btn-same {
+  min-width: 210px !important;
+  height: 46px !important;
+  padding: 12px 16px !important;
+  justify-content: center !important;
+}
   </style>
 
   <script>
@@ -2428,6 +2613,35 @@
     };
 
     document.addEventListener('DOMContentLoaded', function() {
+
+      /* -------- Sidebar Drawer (Mobile) -------- */
+  const sidebar  = document.querySelector('.dash-sidebar');
+  const hamBtn   = document.getElementById('mobHamBtn');
+  const backdrop = document.getElementById('sidebarBackdrop');
+
+  function openDrawer() {
+    sidebar?.classList.add('drawer-open');
+    backdrop?.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    sidebar?.classList.remove('drawer-open');
+    backdrop?.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  hamBtn?.addEventListener('click', openDrawer);
+  backdrop?.addEventListener('click', closeDrawer);
+
+  sidebar?.querySelectorAll('.dash-link, .dash-side-btn').forEach(el => {
+    el.addEventListener('click', closeDrawer);
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeDrawer();
+  });
+
       // init dropdown custom dulu
       initCustomDropdowns();
 

@@ -1035,6 +1035,206 @@
       grid-template-columns: 1fr;
     }
   }
+
+  /* =========================================================
+   RESPONSIVE PATCH — Landing PBJ
+========================================================= */
+
+/* Filter bar wrap di mobile */
+@media (max-width: 768px) {
+
+  .pbj-filters {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    padding: 10px !important;
+  }
+
+  .pbj-search {
+    flex: 1 1 100% !important;
+    min-width: 100% !important;
+  }
+
+  .pbj-select {
+    flex: 1 1 calc(50% - 4px) !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .pbj-actions {
+    flex: 1 1 100% !important;
+    margin-left: 0 !important;
+    justify-content: flex-start !important;
+  }
+}
+
+/* Tabel responsif di mobile */
+@media (max-width: 900px) {
+
+  .ap-tbl-head { display: none !important; }
+
+  .ap-table-section {
+    overflow-x: hidden !important;
+    max-height: none !important;
+    padding: 12px !important;
+  }
+
+  .ap-tbl-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    grid-template-areas:
+      "tahun  status"
+      "job    job"
+      "metode nilai"
+      "aksi   aksi" !important;
+    background: #fff !important;
+    border: 0.5px solid #e2e8f0 !important;
+    border-radius: 14px !important;
+    padding: 14px !important;
+    margin: 0 0 10px !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    column-gap: 8px !important;
+    row-gap: 0 !important;
+  }
+
+  .ap-col-tahun {
+    grid-area: tahun !important;
+    display: block !important;
+    font-size: 12px !important;
+    color: #64748b !important;
+    font-weight: 500 !important;
+    align-self: center !important;
+    padding: 0 0 6px 0 !important;
+  }
+
+  .ap-col-unit { display: none !important; }
+
+  .ap-col-status {
+    grid-area: status !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: flex-start !important;
+    padding: 0 0 6px 0 !important;
+    width: auto !important;
+  }
+
+  .sp-badge {
+    font-size: 11px !important;
+    padding: 3px 10px !important;
+    min-width: unset !important;
+  }
+
+  .ap-col-job {
+    grid-area: job !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #0f172a !important;
+    line-height: 1.4 !important;
+    padding: 0 0 12px 0 !important;
+    border-bottom: 0.5px solid #e2e8f0 !important;
+  }
+
+  .ap-col-metode {
+    grid-area: metode !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 10px 0 !important;
+    width: auto !important;
+    border-bottom: 0.5px solid #e2e8f0 !important;
+  }
+
+  .ap-col-metode::before {
+    content: 'Metode';
+    font-size: 11px;
+    color: #94a3b8;
+    margin-bottom: 3px;
+    display: block;
+  }
+
+  .metode-badge {
+    background: transparent !important;
+    color: #0f172a !important;
+    padding: 0 !important;
+    font-size: 13px !important;
+    border-radius: 0 !important;
+    width: auto !important;
+    display: block !important;
+  }
+
+  .ap-col-nilai {
+    grid-area: nilai !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 10px 0 !important;
+    width: auto !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #184f61 !important;
+    border-bottom: 0.5px solid #e2e8f0 !important;
+  }
+
+  .ap-col-nilai::before {
+    content: 'Nilai Kontrak';
+    font-size: 11px;
+    color: #94a3b8;
+    font-weight: 400;
+    margin-bottom: 3px;
+    display: block;
+  }
+
+  .ap-col-aksi {
+    grid-area: aksi !important;
+    display: flex !important;
+    gap: 8px !important;
+    padding-top: 10px !important;
+    justify-content: flex-start !important;
+    width: auto !important;
+  }
+
+  .aksi-btn {
+    flex: 0 0 auto !important;
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 10px !important;
+  }
+
+  .ap-pagination-wrap {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    min-width: unset !important;
+    position: static !important;
+  }
+
+  .ap-pagination { justify-content: flex-start !important; }
+}
+
+/* Detail modal fullscreen di mobile */
+@media (max-width: 768px) {
+
+  .dt-modal.is-open {
+    align-items: flex-start !important;
+    padding: 0 !important;
+  }
+
+  .dt-panel {
+    width: 100vw !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+  }
+
+  .dt-card {
+    border-radius: 0 !important;
+    height: 100% !important;
+  }
+
+  .dt-info-grid,
+  .dt-budget-grid { grid-template-columns: 1fr !important; }
+
+  .dt-doc-grid { grid-template-columns: 1fr !important; }
+}
 </style>
 @endsection
 

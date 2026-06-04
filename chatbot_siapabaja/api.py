@@ -334,6 +334,39 @@ def exact_pattern_matches(query: str, records: List[Dict[str, Any]], candidate_i
     return matches
 
 
+def is_procedural_workflow_query(query: str) -> bool:
+    q = normalize_text(query)
+    procedural_signals = [
+        "bagaimana cara", "cara ", "langkah-langkah", "langkah ",
+        "prosedur", "apa langkah", "bagaimana upload",
+    ]
+    return any(signal in q for signal in procedural_signals)
+
+
+def sort_retrieval_results(results: List[Dict[str, Any]], query: str, query_category: str, selected_role: Optional[str]) -> List[Dict[str, Any]]:
+    sorted_results = sorted(results, key=lambda x: x["score"], reverse=True)
+
+    if query_category != "workflow" or selected_role == "user" or not is_procedural_workflow_query(query):
+        return sorted_results
+    if not sorted_results or sorted_results[0].get("category") == "workflow":
+        return sorted_results
+
+    workflow_candidates = [
+        r for r in sorted_results
+        if r.get("category") == "workflow"
+        and (r.get("pattern_bonus", 0) > 0 or r.get("pattern_ratio", 0) >= 0.78)
+    ]
+    if not workflow_candidates:
+        return sorted_results
+
+    best_workflow = workflow_candidates[0]
+    top_score = sorted_results[0].get("score", 0)
+    if best_workflow.get("score", 0) < top_score - 0.75:
+        return sorted_results
+
+    return [best_workflow] + [r for r in sorted_results if r is not best_workflow]
+
+
 def keyword_intent_bonus(query: str, record: Dict[str, Any]) -> float:
     q = normalize_text(query)
     intent = record.get("intent", "")
@@ -497,7 +530,7 @@ def retrieve_context(query: str, selected_role: Optional[str] = None, top_k: int
         results = [r for r in results if not (r.get("dataset") == exact_entry["dataset"] and r.get("intent") == exact_entry["intent"])]
         results.append(exact_entry)
 
-    results = sorted(results, key=lambda x: x["score"], reverse=True)[:top_k]
+    results = sort_retrieval_results(results, query, query_category, norm_role)[:top_k]
     return {
         "query": query,
         "selected_role": norm_role,
@@ -550,6 +583,16 @@ def should_direct_answer(retrieved: Dict[str, Any]) -> bool:
     return False
 
 
+def sanitize_answer_text(answer: str) -> str:
+    text = str(answer or "").strip()
+    text = re.sub(r"(?is)(?:^|(?<=[.!?])\s+)informasi[^.!?]*\bkonteks\s*\[\d+\][^.!?]*[.!?]\s*", "", text)
+    text = re.sub(r"(?i)\s*(?:berdasarkan|pada|di|dari)\s+konteks\s*\[\d+\]\s*,?\s*", " ", text)
+    text = re.sub(r"\s*\[\d+\]", "", text)
+    text = re.sub(r"[ \t]{2,}", " ", text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
+
+
 def answer_question(query: str, selected_role: Optional[str] = None, top_k: int = TOP_K, force_generate: bool = False) -> Dict[str, Any]:
     total_start = time.perf_counter()
     retrieval_start = time.perf_counter()
@@ -576,6 +619,7 @@ def answer_question(query: str, selected_role: Optional[str] = None, top_k: int 
     else:
         answer = ollama_generate(build_prompt(query, retrieved))
         source = "ollama_generate"
+    answer = sanitize_answer_text(answer)
     generation_time = time.perf_counter() - generation_start
 
     return {

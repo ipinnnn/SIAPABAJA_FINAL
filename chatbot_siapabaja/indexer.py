@@ -79,12 +79,6 @@ def detect_category_and_role(file_path: Path, text: str = "") -> Tuple[str, Opti
     name = file_path.name.lower()
     full_text = (name + "\n" + text[:500]).lower()
 
-    if "arsitektur" in full_text or "fitur" in full_text:
-        return "feature", None
-    if "workflow" in full_text:
-        return "workflow", None
-    if "faq" in full_text:
-        return "faq", None
     if "role_user" in full_text or "role: user" in full_text or "guest/publik" in full_text:
         return "role", "user"
     if "role_unit" in full_text or "role: unit" in full_text:
@@ -93,6 +87,13 @@ def detect_category_and_role(file_path: Path, text: str = "") -> Tuple[str, Opti
         return "role", "ppk"
     if "role_superadmin" in full_text or "role_super_admin" in full_text or "role_superadmin" in name or "role_super" in name or "super admin" in full_text:
         return "role", "super_admin"
+
+    if "arsitektur" in full_text or "fitur" in full_text:
+        return "feature", None
+    if "workflow" in full_text:
+        return "workflow", None
+    if "faq" in full_text:
+        return "faq", None
 
     return "unknown", None
 

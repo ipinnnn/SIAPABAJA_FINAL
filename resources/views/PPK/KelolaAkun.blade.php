@@ -19,6 +19,22 @@
 </head>
 
 <body class="dash-body page-akun">
+
+{{-- MOBILE TOPBAR --}}
+<div class="mob-topbar" id="mobTopbar">
+  <div class="mob-logo">
+    <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
+    <span class="mob-logo-txt">SIAPABAJA</span>
+  </div>
+
+  <button class="mob-ham" id="mobHamBtn" aria-label="Buka menu">
+    <i class="bi bi-list"></i>
+  </button>
+</div>
+
+{{-- BACKDROP --}}
+<div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
+
 @php
   $user = auth()->user();
 
@@ -577,28 +593,182 @@
   .a-btn--primary:hover{
     background: var(--unsoed-yellow-dark);
   }
+
+  /* =========================================================
+   RESPONSIVE PATCH — Kelola Akun
+========================================================= */
+
+.mob-topbar{
+  display:none;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 16px;
+  background:#184f61;
+  position:sticky;
+  top:0;
+  z-index:200;
+}
+
+.mob-logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.mob-logo img{
+  width:32px;
+  height:32px;
+}
+
+.mob-logo-txt{
+  color: #f4c542;
+  font-size:17px;
+  font-weight:700;
+}
+
+.mob-ham{
+  width:40px;
+  height:40px;
+  border:none;
+  border-radius:10px;
+  background:#fff;
+  color:#184f61;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+
+.sidebar-drawer-backdrop{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.4);
+  z-index:300;
+}
+
+.sidebar-drawer-backdrop.is-open{
+  display:block;
+}
+
+@media (max-width:1024px){
+
+  .mob-topbar{
+    display:flex;
+  }
+
+  .dash-sidebar{
+    position:fixed !important;
+    top:0 !important;
+    left:-280px !important;
+    width:260px !important;
+    height:100vh !important;
+    z-index:400 !important;
+    transition:left .25s ease !important;
+    overflow-y:auto !important;
+  }
+
+  .dash-sidebar.drawer-open{
+    left:0 !important;
+  }
+
+  html,
+  body{
+    height:auto !important;
+    min-height:100% !important;
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+  }
+
+  .dash-wrap{
+    display:block !important;
+    height:auto !important;
+    min-height:100vh !important;
+    overflow:visible !important;
+  }
+
+  .dash-main{
+    height:auto !important;
+    min-height:calc(100vh - 70px) !important;
+    overflow:visible !important;
+    padding:20px !important;
+  }
+
+  .a-card,
+  .a-card-body,
+  .a-form{
+    height:auto !important;
+    max-height:none !important;
+    overflow:visible !important;
+  }
+}
+
+@media (max-width:768px){
+
+  .dash-main{
+    padding:12px !important;
+  }
+
+  .a-grid{
+    grid-template-columns:1fr !important;
+  }
+
+  .a-row{
+    grid-template-columns:1fr !important;
+  }
+
+  .a-actions{
+    justify-content:stretch !important;
+  }
+
+  .a-btn{
+    width:100%;
+    justify-content:center;
+  }
+}
+
 </style>
 
 <script>
-  // Toggle show/hide password (konsisten, ringan)
-  document.addEventListener('DOMContentLoaded', function(){
-    document.querySelectorAll('[data-eye]').forEach(btn => {
-      btn.addEventListener('click', function(){
-        const id = btn.getAttribute('data-eye');
-        const input = document.getElementById(id);
-        if(!input) return;
+document.addEventListener('DOMContentLoaded', function(){
 
-        const isPw = input.type === 'password';
-        input.type = isPw ? 'text' : 'password';
+  // Toggle password
+  document.querySelectorAll('[data-eye]').forEach(btn => {
+    btn.addEventListener('click', function(){
+      const id = btn.getAttribute('data-eye');
+      const input = document.getElementById(id);
+      if(!input) return;
 
-        const ico = btn.querySelector('i');
-        if(ico){
-          ico.classList.toggle('bi-eye', !isPw);
-          ico.classList.toggle('bi-eye-slash', isPw);
-        }
-      });
+      const isPw = input.type === 'password';
+      input.type = isPw ? 'text' : 'password';
+
+      const ico = btn.querySelector('i');
+      if(ico){
+        ico.classList.toggle('bi-eye', !isPw);
+        ico.classList.toggle('bi-eye-slash', isPw);
+      }
     });
   });
+
+  // Drawer sidebar mobile
+  const sidebar  = document.querySelector('.dash-sidebar');
+  const hamBtn   = document.getElementById('mobHamBtn');
+  const backdrop = document.getElementById('sidebarBackdrop');
+
+  function openDrawer(){
+    sidebar?.classList.add('drawer-open');
+    backdrop?.classList.add('is-open');
+  }
+
+  function closeDrawer(){
+    sidebar?.classList.remove('drawer-open');
+    backdrop?.classList.remove('is-open');
+  }
+
+  hamBtn?.addEventListener('click', openDrawer);
+  backdrop?.addEventListener('click', closeDrawer);
+
+});
 </script>
 @include('Partials.chatbot')
 </body>

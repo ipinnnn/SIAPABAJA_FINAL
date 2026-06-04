@@ -11,7 +11,19 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 
-<body class="dash-body page-akun">
+<body class="dash-body page-sa-akun">
+<div class="mob-topbar" id="mobTopbar">
+  <div class="mob-logo">
+    <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
+    <span class="mob-logo-txt">SIAPABAJA</span>
+  </div>
+
+  <button class="mob-ham" id="mobHamBtn" aria-label="Buka menu">
+    <i class="bi bi-list"></i>
+  </button>
+</div>
+
+<div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
 @php
   $user = auth()->user();
   $name     = $superAdminName ?? ($user->name ?? 'Super Admin');
@@ -258,8 +270,17 @@ html, body{
   overflow-x: hidden;
 }
 
-.dash-wrap{
+.dash-wrap {
   min-height: 100vh;
+  height: auto !important;
+  overflow: visible !important;
+}
+
+html, body {
+  height: auto !important;
+  min-height: 100vh;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
 }
 
 .dash-sidebar {
@@ -388,10 +409,15 @@ html, body{
 
 .dash-main {
   min-width: 0;
-  height: 100vh;
-  overflow-y: auto;
+  height: auto;
+  overflow-y: visible;
   overflow-x: hidden;
   padding-right: 6px;
+}
+
+html, body {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
 }
 
 .dash-header {
@@ -777,10 +803,152 @@ input::-webkit-credentials-auto-fill-button {
     grid-template-columns: 1fr;
   }
 }
+
+/* =========================================================
+   RESPONSIVE SUPERADMIN KELOLA AKUN
+========================================================= */
+
+:where(.page-sa-akun) .mob-topbar {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: #184f61;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+:where(.page-sa-akun) .mob-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+:where(.page-sa-akun) .mob-logo img {
+  width: 32px;
+  height: 32px;
+}
+
+:where(.page-sa-akun) .mob-logo-txt {
+  color: #f4c542;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+:where(.page-sa-akun) .mob-ham {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e6eef2;
+  border-radius: 10px;
+  background: #fff;
+  color: #184f61;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+:where(.page-sa-akun) .sidebar-drawer-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.4);
+  z-index: 300;
+}
+
+:where(.page-sa-akun) .sidebar-drawer-backdrop.is-open {
+  display: block;
+}
+
+@media (max-width:1024px){
+
+  :where(.page-sa-akun) .mob-topbar{
+    display:flex;
+  }
+
+  :where(.page-sa-akun) .dash-sidebar{
+    position:fixed !important;
+    top:0 !important;
+    left:-280px !important;
+    width:260px !important;
+    height:100vh !important;
+    z-index:400 !important;
+    transition:left .25s ease !important;
+    overflow-y:auto !important;
+  }
+
+  :where(.page-sa-akun) .dash-sidebar.drawer-open{
+    left:0 !important;
+  }
+
+  :where(.page-sa-akun) .dash-wrap{
+    display:block !important;
+    min-height:100vh !important;
+  }
+
+  :where(.page-sa-akun) .dash-main{
+    height:auto !important;
+    min-height:calc(100vh - 70px) !important;
+    overflow:visible !important;
+    padding:20px !important;
+  }
+
+  :where(.page-sa-akun) .a-grid{
+    grid-template-columns:1fr !important;
+  }
+}
+
+@media (max-width:768px){
+
+  :where(.page-sa-akun) .dash-main{
+    padding:12px !important;
+  }
+
+  :where(.page-sa-akun) .a-row{
+    grid-template-columns:1fr !important;
+  }
+
+  :where(.page-sa-akun) .a-actions{
+    justify-content:stretch !important;
+  }
+
+  :where(.page-sa-akun) .a-btn{
+    width:100%;
+    justify-content:center;
+  }
+}
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function(){
+  const sidebar  = document.querySelector('.dash-sidebar');
+const hamBtn   = document.getElementById('mobHamBtn');
+const backdrop = document.getElementById('sidebarBackdrop');
+
+function openDrawer(){
+  sidebar?.classList.add('drawer-open');
+  backdrop?.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDrawer(){
+  sidebar?.classList.remove('drawer-open');
+  backdrop?.classList.remove('is-open');
+  document.body.style.overflow = '';
+}
+
+hamBtn?.addEventListener('click', openDrawer);
+backdrop?.addEventListener('click', closeDrawer);
+
+sidebar?.querySelectorAll('.dash-link, .dash-side-btn').forEach(el => {
+  el.addEventListener('click', closeDrawer);
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeDrawer();
+});
   document.querySelectorAll('[data-eye]').forEach(btn => {
     btn.addEventListener('click', function(){
       const input = document.getElementById(btn.dataset.eye);

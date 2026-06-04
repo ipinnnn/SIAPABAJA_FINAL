@@ -20,6 +20,18 @@
 
 {{-- ✅ SAMA KONSEP DENGAN TAMBAH PENGADAAN: pakai 1 class khusus page --}}
 <body class="dash-body page-unit-akun">
+
+<div class="mob-topbar" id="mobTopbar">
+  <div class="mob-logo">
+    <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
+    <span class="mob-logo-txt">SIAPABAJA</span>
+  </div>
+  <button class="mob-ham" id="mobHamBtn" aria-label="Buka menu">
+    <i class="bi bi-list"></i>
+  </button>
+</div>
+<div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
+
 @php
   $user = auth()->user();
 
@@ -259,7 +271,7 @@
 
 .dash-header h1{
   margin:0;
-  font-size:34px;
+  font-size:26px;
   font-weight:700;
   color:#184f61;
 }
@@ -581,28 +593,164 @@
   :where(.page-unit-akun) .a-btn--primary:hover{
     background: var(--unsoed-yellow-dark);
   }
+
+  :where(.page-unit-akun) .mob-topbar {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: #184f61;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+:where(.page-unit-akun) .mob-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+:where(.page-unit-akun) .mob-logo img { width: 32px; height: 32px; }
+
+:where(.page-unit-akun) .mob-logo-txt {
+  color: #f4c542;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+:where(.page-unit-akun) .mob-ham {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e6eef2;
+  border-radius: 10px;
+  background: #fff;
+  color: #184f61;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+:where(.page-unit-akun) .sidebar-drawer-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.4);
+  z-index: 300;
+}
+
+:where(.page-unit-akun) .sidebar-drawer-backdrop.is-open { display: block; }
+
+@media (max-width: 1024px) {
+
+  :where(.page-unit-akun) .mob-topbar { display: flex; }
+
+  :where(.page-unit-akun) .dash-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: -280px !important;
+    width: 260px !important;
+    height: 100vh !important;
+    z-index: 400 !important;
+    transition: left .25s ease !important;
+    overflow-y: auto !important;
+  }
+
+  :where(.page-unit-akun) .dash-sidebar.drawer-open { left: 0 !important; }
+
+  html, body {
+    height: auto !important;
+    min-height: 100% !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  :where(.page-unit-akun) .dash-wrap {
+    display: block !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+  }
+
+  :where(.page-unit-akun) .dash-main {
+    height: auto !important;
+    min-height: calc(100vh - 70px) !important;
+    overflow: visible !important;
+    padding: 20px !important;
+  }
+
+  :where(.page-unit-akun) .a-card,
+  :where(.page-unit-akun) .a-card-body,
+  :where(.page-unit-akun) .a-form {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+
+@media (max-width: 768px) {
+
+  :where(.page-unit-akun) .dash-main { padding: 12px !important; }
+
+  :where(.page-unit-akun) .a-grid { grid-template-columns: 1fr !important; }
+
+  :where(.page-unit-akun) .a-row { grid-template-columns: 1fr !important; }
+
+  :where(.page-unit-akun) .a-actions { justify-content: stretch !important; }
+
+  :where(.page-unit-akun) .a-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
 </style>
 
 <script>
   // Toggle show/hide password (konsisten, ringan)
   document.addEventListener('DOMContentLoaded', function(){
-    document.querySelectorAll('[data-eye]').forEach(btn => {
-      btn.addEventListener('click', function(){
-        const id = btn.getAttribute('data-eye');
-        const input = document.getElementById(id);
-        if(!input) return;
 
-        const isPw = input.type === 'password';
-        input.type = isPw ? 'text' : 'password';
-
-        const ico = btn.querySelector('i');
-        if(ico){
-          ico.classList.toggle('bi-eye', !isPw);
-          ico.classList.toggle('bi-eye-slash', isPw);
-        }
-      });
+  document.querySelectorAll('[data-eye]').forEach(btn => {
+    btn.addEventListener('click', function(){
+      const id = btn.getAttribute('data-eye');
+      const input = document.getElementById(id);
+      if(!input) return;
+      const isPw = input.type === 'password';
+      input.type = isPw ? 'text' : 'password';
+      const ico = btn.querySelector('i');
+      if(ico){
+        ico.classList.toggle('bi-eye', !isPw);
+        ico.classList.toggle('bi-eye-slash', isPw);
+      }
     });
   });
+
+  const sidebar  = document.querySelector('.dash-sidebar');
+  const hamBtn   = document.getElementById('mobHamBtn');
+  const backdrop = document.getElementById('sidebarBackdrop');
+
+  function openDrawer(){
+    sidebar?.classList.add('drawer-open');
+    backdrop?.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer(){
+    sidebar?.classList.remove('drawer-open');
+    backdrop?.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  hamBtn?.addEventListener('click', openDrawer);
+  backdrop?.addEventListener('click', closeDrawer);
+  sidebar?.querySelectorAll('.dash-link, .dash-side-btn').forEach(el => {
+    el.addEventListener('click', closeDrawer);
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeDrawer();
+  });
+});
 </script>
 @include('Partials.chatbot')
 </body>

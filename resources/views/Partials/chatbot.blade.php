@@ -21,10 +21,39 @@
             </div>
 
             <div class="chatbot-quick-buttons">
-                <button type="button" data-question="Jelaskan menu aplikasi">Menu Aplikasi</button>
-                <button type="button" data-question="Jelaskan hak akses user">Hak Akses User</button>
-                <button type="button" data-question="Bagaimana cara upload dokumen">Upload Dokumen</button>
-                <button type="button" data-question="Saya lupa password">Lupa Password</button>
+                @if(Auth::check())
+                    @if(Auth::user()->role === 'super_admin')
+                        <!-- Tombol khusus Super Admin -->
+                        <button type="button" data-question="Jelaskan menu aplikasi">Menu Aplikasi</button>
+                        <button type="button" data-question="Jelaskan hak akses super admin">Hak Akses Super Admin</button>
+                        <button type="button" data-question="Bagaimana cara tambah akun Unit/PPK?">Tambah Akun</button>
+                        <button type="button" data-question="Bagaimana cara kelola menu?">Kelola Menu</button>
+                    @elseif(Auth::user()->role === 'ppk')
+                        <!-- Tombol khusus PPK -->
+                        <button type="button" data-question="Jelaskan menu aplikasi">Menu Aplikasi</button>
+                        <button type="button" data-question="Jelaskan hak akses PPK">Hak Akses PPK</button>
+                        <button type="button" data-question="Bagaimana cara upload dokumen pengadaan?">Upload Dokumen</button>
+                        <button type="button" data-question="Saya lupa password">Lupa Password</button>
+                    @elseif(Auth::user()->role === 'unit')
+                        <!-- Tombol khusus Unit -->
+                        <button type="button" data-question="Jelaskan menu aplikasi">Menu Aplikasi</button>
+                        <button type="button" data-question="Jelaskan hak akses unit">Hak Akses Unit</button>
+                        <button type="button" data-question="Bagaimana cara upload dokumen pengadaan?">Upload Dokumen</button>
+                        <button type="button" data-question="Saya lupa password">Lupa Password</button>
+                    @else
+                        <!-- Fallback jika role lain yang tidak dikenal -->
+                        <button type="button" data-question="Apa itu SIAPABAJA?">Apa itu SIAPABAJA?</button>
+                        <button type="button" data-question="Jelaskan menu aplikasi">Menu Aplikasi</button>
+                        <button type="button" data-question="Jelaskan hak akses user">Hak Akses User</button>
+                        <button type="button" data-question="Bagaimana cara mencari arsip publik?">Pencarian Arsip Publik</button>
+                    @endif
+                @else
+                    <!-- Tombol khusus untuk Pengunjung Publik / Belum Login -->
+                    <button type="button" data-question="Apa itu SIAPABAJA?">Apa itu SIAPABAJA?</button>
+                    <button type="button" data-question="Jelaskan menu aplikasi">Menu Aplikasi</button>
+                    <button type="button" data-question="Jelaskan hak akses user">Hak Akses User</button>
+                    <button type="button" data-question="Bagaimana cara mencari arsip publik?">Pencarian Arsip Publik</button>
+                @endif
             </div>
         </div>
 

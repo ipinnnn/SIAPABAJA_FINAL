@@ -20,6 +20,20 @@
 </head>
 
 <body class="dash-body">
+
+<div class="mob-topbar">
+  <div class="mob-logo">
+    <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
+    <span class="mob-logo-txt">SIAPABAJA</span>
+  </div>
+
+  <button class="mob-ham" id="mobHamBtn">
+    <i class="bi bi-list"></i>
+  </button>
+</div>
+
+<div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
+
   @php
   // =========================================================
   // ✅ FIX UTAMA: samakan dengan controller (PPK)
@@ -214,7 +228,7 @@
 
         <div class="dash-text">
           <div class="dash-app">SIAPABAJA</div>
-          <div class="dash-role">ADMIN (PPK)</div>
+          <div class="dash-role">Admin (PPK)</div>
         </div>
       </div>
 
@@ -1149,18 +1163,18 @@
       transform: translateY(0.5px);
     }
 
-    @media(max-width:1100px) {
-      .tp-actions-split {
-        flex-direction: column;
-        align-items: stretch;
-        justify-content: flex-start;
-      }
+  .tp-actions.tp-actions-split {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
 
-      .tp-btn-same {
-        width: 100%;
-        min-width: 0;
-      }
-    }
+.tp-actions.tp-actions-split .tp-btn-same {
+  width: auto !important;
+  flex: 0 0 auto !important;
+  min-width: 140px !important;
+}
 
     .tp-cardbox {
       background: #fff !important;
@@ -1356,6 +1370,158 @@
       color: var(--navy2);
       font-size: 13px;
     }
+
+    /* =========================================================
+   RESPONSIVE PATCH — Edit Arsip
+========================================================= */
+
+/* desktop */
+.mob-topbar,
+.sidebar-drawer-backdrop{
+  display:none;
+}
+
+@media (max-width:1024px){
+
+  .mob-topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 16px;
+    background:#184f61;
+    position:sticky;
+    top:0;
+    z-index:200;
+  }
+
+  .mob-logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .mob-logo img{
+    width:32px;
+    height:32px;
+  }
+
+  .mob-logo-txt{
+    color:#f4c542;
+    font-size:17px;
+    font-weight:700;
+  }
+
+  .mob-ham{
+    width:40px;
+    height:40px;
+    border:none;
+    border-radius:10px;
+    background:#fff;
+    color:#184f61;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+  }
+
+  .sidebar-drawer-backdrop{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.4);
+    z-index:300;
+  }
+
+  .sidebar-drawer-backdrop.is-open{
+    display:block;
+  }
+
+  .dash-sidebar{
+    position:fixed !important;
+    top:0 !important;
+    left:-280px !important;
+    width:260px !important;
+    height:100vh !important;
+    z-index:400 !important;
+    transition:left .25s ease !important;
+    overflow-y:auto !important;
+  }
+
+  .dash-sidebar.drawer-open{
+    left:0 !important;
+  }
+
+  html,
+  body{
+    height:auto !important;
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+  }
+
+  .dash-wrap{
+    display:block !important;
+    height:auto !important;
+    min-height:100vh !important;
+    overflow:visible !important;
+  }
+
+  .dash-main{
+    height:auto !important;
+    overflow:visible !important;
+    padding:20px !important;
+  }
+}
+
+@media (max-width:768px){
+
+  .dash-main{
+    padding:12px !important;
+  }
+
+  .tp-grid{
+    grid-template-columns:1fr !important;
+  }
+
+  .tp-full{
+    grid-column:unset !important;
+  }
+
+  .tp-actions{
+    flex-direction:column !important;
+  }
+
+  .tp-btn{
+    width:100% !important;
+    justify-content:center !important;
+  }
+
+  .tp-nondoc-head{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .tp-nondoc-actions{
+    width:100%;
+  }
+
+  .tp-nondoc-btn{
+    width:100%;
+    justify-content:center;
+  }
+
+  .tp-acc-head{
+    font-size:14px;
+  }
+
+  .tp-preview-item{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .tp-preview-remove{
+    align-self:flex-end;
+  }
+}
   </style>
 
   <script>
@@ -1373,6 +1539,27 @@
       const input = card.querySelector('input[type="radio"]');
       if (input) input.checked = true;
     });
+
+    document.addEventListener('DOMContentLoaded', function(){
+
+  const sidebar  = document.querySelector('.dash-sidebar');
+  const hamBtn   = document.getElementById('mobHamBtn');
+  const backdrop = document.getElementById('sidebarBackdrop');
+
+  function openDrawer(){
+    sidebar?.classList.add('drawer-open');
+    backdrop?.classList.add('is-open');
+  }
+
+  function closeDrawer(){
+    sidebar?.classList.remove('drawer-open');
+    backdrop?.classList.remove('is-open');
+  }
+
+  hamBtn?.addEventListener('click', openDrawer);
+  backdrop?.addEventListener('click', closeDrawer);
+
+});
 
     document.addEventListener('DOMContentLoaded', function() {
       const formEl = document.getElementById('editForm');

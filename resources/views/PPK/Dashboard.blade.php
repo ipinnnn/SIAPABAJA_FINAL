@@ -19,8 +19,23 @@
   {{-- Chart.js --}}
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
+{{-- MOBILE TOPBAR --}}
+<div class="mob-topbar" id="mobTopbar">
+  <div class="mob-logo">
+    <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
+    <span class="mob-logo-txt">SIAPABAJA</span>
+  </div>
+  <button class="mob-ham" id="mobHamBtn" aria-label="Buka menu">
+    <i class="bi bi-list"></i>
+  </button>
+</div>
 
+{{-- BACKDROP DRAWER --}}
+<div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
+
+<div class="dash-wrap">
 <body class="dash-body">
+
 <div class="dash-wrap">
   {{-- SIDEBAR --}}
   <aside class="dash-sidebar">
@@ -31,7 +46,7 @@
 
       <div class="dash-text">
         <div class="dash-app">SIAPABAJA</div>
-        <div class="dash-role">ADMIN (PPK)</div>
+        <div class="dash-role">Admin (PPK)</div>
       </div>
     </div>
 
@@ -997,6 +1012,343 @@
       max-height:220px !important;
     }
   }
+
+  /* =========================================================
+   FORCE OVERRIDE — Hamburger & Drawer (harus paling bawah)
+========================================================= */
+@media (max-width: 1024px) {
+
+  /* Paksa html/body bisa scroll normal di mobile/split */
+  html, body {
+    height: auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  .dash-wrap {
+    display: block !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+  }
+
+  .dash-main {
+    height: auto !important;
+    overflow-y: visible !important;
+    -webkit-overflow-scrolling: unset !important;
+  }
+
+  /* Sidebar: sembunyikan dari layout normal, jadi drawer */
+  .dash-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: -280px !important;
+    height: 100vh !important;
+    width: 260px !important;
+    z-index: 400 !important;
+    transition: left .25s ease !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    align-self: unset !important;
+    flex: unset !important;
+  }
+
+  .dash-sidebar.drawer-open {
+    left: 0 !important;
+    box-shadow: 6px 0 28px rgba(2, 8, 23, .22) !important;
+  }
+
+  /* Topbar hamburger tampil */
+  .mob-topbar {
+    display: flex !important;
+  }
+}
+
+/* Pastikan topbar tersembunyi di desktop */
+@media (min-width: 1025px) {
+  .mob-topbar {
+    display: none !important;
+  }
+
+  .sidebar-drawer-backdrop {
+    display: none !important;
+  }
+}
+
+  /* =========================================================
+   RESPONSIVE PATCH — Dashboard PPK
+   Split screen & Mobile
+========================================================= */
+
+/* --- HAMBURGER TOPBAR --- */
+.mob-topbar {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: #184f61;
+  border-bottom: 1px solid #e6eef2;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+.mob-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mob-logo img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.mob-logo-txt {
+  font-size: 17px;
+  font-weight: 700;
+  color: #f4c542;
+}
+
+
+
+.mob-ham {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e6eef2;
+  border-radius: 10px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  color: #184f61;
+}
+
+.sidebar-drawer-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, .45);
+  backdrop-filter: blur(4px);
+  z-index: 300;
+}
+
+.sidebar-drawer-backdrop.is-open {
+  display: block;
+}
+
+/* =========================================================
+   SPLIT SCREEN: <= 1024px
+========================================================= */
+@media (max-width: 1024px) {
+
+  /* Sidebar jadi drawer */
+  .dash-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: -280px !important;
+    height: 100vh !important;
+    width: 260px !important;
+    z-index: 400 !important;
+    transition: left .25s ease !important;
+    overflow-y: auto !important;
+  }
+
+  .dash-sidebar.drawer-open {
+    left: 0 !important;
+    box-shadow: 4px 0 24px rgba(2, 8, 23, .18) !important;
+  }
+
+  .mob-topbar {
+    display: flex;
+  }
+
+  /* Reset layout wrapper */
+  .dash-wrap {
+    display: block !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+  }
+
+  html, body {
+    height: auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  .dash-main {
+    height: auto !important;
+    overflow-y: visible !important;
+    padding: 20px !important;
+  }
+
+  /* Summary cards: 2 kolom di split screen */
+  .u-sum-row--4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .u-sum-row--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  /* Chart: 1 kolom */
+  .u-charts {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Filter row di card */
+  .u-sub-filter-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+
+  .u-card-filter {
+    width: 100% !important;
+    justify-content: flex-start !important;
+  }
+
+  .u-mini-select select {
+    width: 110px !important;
+    max-width: 110px !important;
+  }
+}
+
+/* =========================================================
+   MOBILE: <= 768px
+========================================================= */
+@media (max-width: 768px) {
+
+  .dash-main {
+    padding: 12px !important;
+    gap: 12px !important;
+  }
+
+  /* Header */
+  .dash-header h1 {
+    font-size: 20px !important;
+  }
+
+  .dash-header p {
+    font-size: 13px !important;
+  }
+
+  /* Summary: 1 kolom di mobile kecil */
+  .u-sum-row--4 {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .u-sum-row--2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Angka card lebih kecil */
+  .u-value {
+    font-size: 26px !important;
+  }
+
+  .u-money {
+    font-size: 22px !important;
+  }
+
+  .u-label {
+    font-size: 13px !important;
+  }
+
+  /* Chart filter: 1 kolom */
+  .u-chart-filters {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  .u-select select {
+    font-size: 13px !important;
+    padding: 8px 28px 8px 10px !important;
+  }
+
+  /* Canvas lebih pendek di mobile */
+  .u-canvas-wrap {
+    height: 200px !important;
+  }
+
+  .u-canvas-wrap canvas {
+    max-height: 200px !important;
+  }
+
+  /* Chart legend lebih kecil */
+  .u-chart-title {
+    font-size: 16px !important;
+  }
+
+  /* Popover: lebar penuh di mobile */
+  .u-popover {
+    width: calc(100vw - 48px) !important;
+    right: -8px !important;
+  }
+
+  /* Modal unit: full screen */
+  .u-modal-dialog {
+    width: calc(100vw - 20px) !important;
+    height: 90vh !important;
+    border-radius: 14px !important;
+  }
+
+  .u-unit-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .u-unit-name {
+    white-space: normal !important;
+    text-overflow: unset !important;
+    overflow: visible !important;
+  }
+
+  /* sub-filter row tetap wrap */
+  .u-sub-filter-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+  }
+
+  .u-card-filter {
+    width: 100% !important;
+    justify-content: flex-start !important;
+  }
+
+  .u-mini-select select {
+    width: calc(50vw - 48px) !important;
+    max-width: 140px !important;
+  }
+}
+
+/* =========================================================
+   VERY SMALL: <= 400px (HP kecil)
+========================================================= */
+@media (max-width: 400px) {
+
+  .u-sum-row--4 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .u-value {
+    font-size: 24px !important;
+  }
+
+  .u-money {
+    font-size: 20px !important;
+  }
+
+  .u-chart-filters {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
 </style>
 
 <script>
@@ -1033,6 +1385,34 @@
       const setText = (el, val) => {
         el.textContent = isMoney(el) ? formatRupiah(val) : formatID(val);
       };
+
+       /* -------- Sidebar Drawer -------- */
+  const sidebar  = document.querySelector('.dash-sidebar');
+  const hamBtn   = document.getElementById('mobHamBtn');
+  const backdrop = document.getElementById('sidebarBackdrop');
+
+  function openDrawer() {
+    sidebar?.classList.add('drawer-open');
+    backdrop?.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    sidebar?.classList.remove('drawer-open');
+    backdrop?.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  hamBtn?.addEventListener('click', openDrawer);
+  backdrop?.addEventListener('click', closeDrawer);
+
+  sidebar?.querySelectorAll('.dash-link, .dash-side-btn').forEach(el => {
+    el.addEventListener('click', closeDrawer);
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeDrawer();
+  });
 
       const getTarget = (el) => {
         const dc = el.getAttribute('data-count');

@@ -566,6 +566,26 @@
 ================================ */
 const dtModal = document.getElementById('dtModal');
 
+// Hamburger navbar landing
+document.getElementById('mobNavToggle')?.addEventListener('click', function () {
+  const links = document.getElementById('navLinks');
+  const icon  = this.querySelector('i');
+  links?.classList.toggle('is-open');
+  if (icon) {
+    icon.className = links?.classList.contains('is-open') ? 'bi bi-x-lg' : 'bi bi-list';
+  }
+});
+
+
+// Tutup menu saat klik link
+document.querySelectorAll('#navLinks a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('navLinks')?.classList.remove('is-open');
+    const icon = document.querySelector('.mob-nav-toggle i');
+    if (icon) icon.className = 'bi bi-list';
+  });
+});
+
 function openDetailModal(payload) {
   document.getElementById('dtTitle').textContent   = payload?.title   || '-';
   document.getElementById('dtUnit').textContent    = payload?.unit    || '-';

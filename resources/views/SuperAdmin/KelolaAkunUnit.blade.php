@@ -12,7 +12,17 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 
-<body class="dash-body">
+<body class="dash-body page-sa-akun-unit">
+<div class="mob-topbar" id="mobTopbar">
+  <div class="mob-logo">
+    <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
+    <span class="mob-logo-txt">SIAPABAJA</span>
+  </div>
+  <button class="mob-ham" id="mobHamBtn" aria-label="Buka menu">
+    <i class="bi bi-list"></i>
+  </button>
+</div>
+<div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
   @php
   $kelolaAkunActive = request()->routeIs('superadmin.kelola.akun')
   || request()->routeIs('superadmin.kelola.akun.ppk')
@@ -94,15 +104,18 @@
 
     <main class="dash-main">
       <div class="dash-header-row">
-        <div class="dash-header">
-          <h1>Manajemen Akun Unit</h1>
-          <p>Kelola akun admin untuk setiap unit kerja</p>
-        </div>
-        <button type="button" class="btn-add" id="btnOpenAddModal">
-          <i class="bi bi-plus-lg"></i>
-          Tambah PIC (Unit)
-        </button>
-      </div>
+
+  <div class="dash-header">
+    <h1>Manajemen Akun Unit</h1>
+    <p>Kelola akun admin untuk setiap unit kerja</p>
+  </div>
+
+  <button type="button" class="btn-add" id="btnOpenAddModal">
+    <i class="bi bi-plus-lg"></i>
+    Tambah PIC (Unit)
+  </button>
+
+</div>
 
       <div class="table-card">
         <table>
@@ -137,29 +150,31 @@
                 </span>
               </td>
               <td class="aksi">
-                <button
-                  type="button"
-                  class="icon-btn btn-edit"
-                  data-id="{{ $item['id'] ?? '' }}"
-                  data-username="{{ $item['username'] ?? '' }}"
-                  data-unit-nama="{{ $item['unit_nama'] ?? '' }}"
-                  data-email="{{ $item['email'] ?? '' }}"
-                  data-status="{{ $item['status'] ?? 'active' }}"
-                  title="Edit">
-                  <i class="bi bi-pencil-fill"></i>
-                </button>
+  <button
+    type="button"
+    class="aksi-btn aksi-edit btn-edit"
+    data-id="{{ $item['id'] ?? '' }}"
+    data-username="{{ $item['username'] ?? '' }}"
+    data-unit-nama="{{ $item['unit_nama'] ?? '' }}"
+    data-email="{{ $item['email'] ?? '' }}"
+    data-status="{{ $item['status'] ?? 'active' }}"
+    title="Edit">
+    <i class="bi bi-pencil-fill"></i>
+  </button>
 
-                <form
-                  action="{{ route('superadmin.kelola.akun.unit.destroy', $item['id']) }}"
-                  method="POST"
-                  class="form-delete js-delete-form">
-                  @csrf
-                  @method('DELETE')
-                  <button type="button" class="icon-btn js-open-confirm" title="Hapus">
-                    <i class="bi bi-trash-fill"></i>
-                  </button>
-                </form>
-              </td>
+  <form
+    action="{{ route('superadmin.kelola.akun.unit.destroy', $item['id']) }}"
+    method="POST"
+    class="form-delete js-delete-form">
+    @csrf
+    @method('DELETE')
+    <button type="button" class="aksi-btn aksi-delete js-open-confirm" title="Hapus">
+      <i class="bi bi-trash3-fill"></i>
+    </button>
+  </form>
+</td>
+
+                
             </tr>
             @empty
             <tr>
@@ -599,6 +614,34 @@
       flex-shrink: 0;
       min-width: max-content;
     }
+
+    .aksi-btn {
+  width: 34px;
+  height: 34px;
+  border: 1px solid #e8eef3;
+  border-radius: 10px;
+  background: #f8fafc;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 15px;
+  text-decoration: none;
+  color: #374151;
+  transition: .15s;
+  padding: 0;
+}
+.aksi-btn:hover { transform: translateY(-1px); }
+.aksi-edit:hover {
+  background: #fefce8;
+  border-color: #fde68a;
+  color: #a16207;
+}
+.aksi-delete:hover {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626;
+}
 
     /* ===== TABLE ===== */
     .table-card {
@@ -1151,36 +1194,176 @@
       background: #dc2626;
     }
 
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 900px) {
-      .dash-header-row {
-        flex-direction: column;
-        align-items: stretch;
+  html,
+    body {
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+    }
+
+    .dash-main {
+      height: auto !important;
+      overflow: visible !important;
+    }
+
+    .dash-sidebar {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* =========================================================
+       RESPONSIVE SUPERADMIN KELOLA AKUN UNIT
+    ========================================================= */
+
+    :where(.page-sa-akun-unit) .mob-topbar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: #184f61;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
+
+    :where(.page-sa-akun-unit) .mob-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    :where(.page-sa-akun-unit) .mob-logo img {
+      width: 32px;
+      height: 32px;
+    }
+
+    :where(.page-sa-akun-unit) .mob-logo-txt {
+      color: #f4c542;
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    :where(.page-sa-akun-unit) .mob-ham {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #e6eef2;
+      border-radius: 10px;
+      background: #fff;
+      color: #184f61;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    :where(.page-sa-akun-unit) .sidebar-drawer-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.4);
+      z-index: 300;
+    }
+
+    :where(.page-sa-akun-unit) .sidebar-drawer-backdrop.is-open {
+      display: block;
+    }
+
+    @media (max-width: 1024px) {
+
+      :where(.page-sa-akun-unit) .mob-topbar {
+        display: flex;
       }
 
-      .btn-add {
-        justify-content: center;
-        width: 100%;
+      :where(.page-sa-akun-unit) .dash-sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: -280px !important;
+        width: 260px !important;
+        height: 100vh !important;
+        z-index: 400 !important;
+        transition: left .25s ease !important;
+        overflow-y: auto !important;
       }
 
-      .modal-card {
-        padding: 24px 20px;
-        border-radius: 18px;
+      :where(.page-sa-akun-unit) .dash-sidebar.drawer-open {
+        left: 0 !important;
       }
 
-      .table-card {
-        overflow-x: auto;
+      :where(.page-sa-akun-unit) .dash-wrap {
+        display: block !important;
+        min-height: 100vh !important;
       }
 
-      table {
-        table-layout: auto;
+      :where(.page-sa-akun-unit) .dash-main {
+        height: auto !important;
+        overflow: visible !important;
+        padding: 20px !important;
+      }
+
+      :where(.page-sa-akun-unit) .dash-header-row {
+        flex-direction: column !important;
+        align-items: stretch !important;
+      }
+
+      :where(.page-sa-akun-unit) .btn-add {
+        width: 100% !important;
+        justify-content: center !important;
+      }
+
+      :where(.page-sa-akun-unit) .table-card {
+        overflow-x: auto !important;
+      }
+
+      :where(.page-sa-akun-unit) table {
+        table-layout: auto !important;
         min-width: 700px;
+      }
+    }
+
+    @media (max-width: 768px) {
+
+      :where(.page-sa-akun-unit) .dash-main {
+        padding: 12px !important;
+      }
+
+      :where(.page-sa-akun-unit) .modal-card {
+        padding: 20px 16px !important;
+      }
+
+      :where(.page-sa-akun-unit) .modal-actions {
+        flex-direction: column;
+      }
+
+      :where(.page-sa-akun-unit) .btn-save,
+      :where(.page-sa-akun-unit) .btn-cancel {
+        width: 100%;
       }
     }
   </style>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      const sidebar  = document.querySelector('.dash-sidebar');
+const hamBtn   = document.getElementById('mobHamBtn');
+const backdrop = document.getElementById('sidebarBackdrop');
+
+function openDrawer() {
+  sidebar?.classList.add('drawer-open');
+  backdrop?.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer() {
+  sidebar?.classList.remove('drawer-open');
+  backdrop?.classList.remove('is-open');
+  document.body.style.overflow = '';
+}
+hamBtn?.addEventListener('click', openDrawer);
+backdrop?.addEventListener('click', closeDrawer);
+sidebar?.querySelectorAll('.dash-link, .dash-side-btn').forEach(el => {
+  el.addEventListener('click', closeDrawer);
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
       const addModal = document.getElementById('addModal');
       const editModal = document.getElementById('editModal');
       const editForm = document.getElementById('editForm');

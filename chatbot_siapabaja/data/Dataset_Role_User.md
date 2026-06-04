@@ -24,7 +24,7 @@ catatan: Dataset ini hanya membahas cakupan akses dan batasan User publik. Langk
     * "Apa saja halaman yang bisa dibuka tanpa login?"
     * "Apakah pengunjung bisa membuka landing page?"
     * "Apakah pengunjung bisa melihat regulasi dan kontak?"
-* **Responses:** User publik dapat mengakses halaman publik seperti Landing Page, Regulasi, Arsip PBJ publik, Kontak, serta dokumen publik yang tersedia. Halaman internal seperti Dashboard, Tambah Pengadaan, Kelola Menu, dan Kelola Akun tidak tersedia untuk User publik.
+* **Responses:** User publik dapat mengakses halaman publik seperti Landing Page, Regulasi, Arsip PBJ publik, Kontak, serta dokumen publik yang tersedia. Halaman internal tidak tersedia untuk User publik.
 
 ## 3. Intent: user_navigation_scope
 * **Tags:** `navbar_public`, `menu_user`, `sidebar_denied`, `role_user`
@@ -66,10 +66,10 @@ catatan: Dataset ini hanya membahas cakupan akses dan batasan User publik. Langk
 * **Tags:** `dokumen_publik`, `preview_dokumen`, `unduh_dokumen`, `role_user`
 * **Patterns:**
     * "Apakah User bisa membuka dokumen publik?"
-    * "Apakah dokumen bisa diunduh tanpa login?"
+    * "Apakah User bisa unduh dokumen publik?"
     * "Bisakah pengunjung melihat PDF arsip?"
     * "Kenapa dokumen tidak bisa dibuka oleh pengunjung?"
-* **Responses:** User publik dapat membuka pratinjau atau mengunduh dokumen arsip publik yang tersedia. User tidak dapat mengakses dokumen privat, dokumen yang belum tersedia, atau file yang aksesnya dibatasi sistem.
+* **Responses:** User publik dapat membuka pratinjau. User tidak dapat mengunduh dokumen arsip publik, mengakses dokumen privat, atau file yang aksesnya dibatasi sistem.
 
 ## 8. Intent: internal_login_denied_user
 * **Tags:** `login_denied`, `akses_internal`, `akun_internal`, `role_user`

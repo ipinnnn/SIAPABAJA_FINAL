@@ -648,6 +648,36 @@ function closeDetailModal() {
   document.body.style.overflow = '';
 }
 
+// Hamburger homepage
+document.getElementById('homeNavToggle')?.addEventListener('click', function () {
+  const links = document.getElementById('homeNavLinks');
+  const icon  = this.querySelector('i');
+  links?.classList.toggle('is-open');
+  if (icon) {
+    icon.className = links?.classList.contains('is-open')
+      ? 'bi bi-x-lg'
+      : 'bi bi-list';
+  }
+});
+
+// Tutup saat klik link
+document.querySelectorAll('#homeNavLinks a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('homeNavLinks')?.classList.remove('is-open');
+    const icon = document.querySelector('#homeNavToggle i');
+    if (icon) icon.className = 'bi bi-list';
+  });
+});
+
+// Dropdown user
+document.getElementById('homeUserBtn')?.addEventListener('click', function (e) {
+  e.stopPropagation();
+  document.getElementById('homeUserDropdown')?.classList.toggle('show');
+});
+document.addEventListener('click', () => {
+  document.getElementById('homeUserDropdown')?.classList.remove('show');
+});
+
 window.openDetailModal  = openDetailModal;
 window.closeDetailModal = closeDetailModal;
 

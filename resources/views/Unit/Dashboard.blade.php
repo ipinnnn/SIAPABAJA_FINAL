@@ -21,6 +21,17 @@
 </head>
 
 <body class="dash-body">
+{{-- MOBILE TOPBAR --}}
+<div class="mob-topbar" id="mobTopbar">
+  <div class="mob-logo">
+    <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
+    <span class="mob-logo-txt">SIAPABAJA</span>
+  </div>
+  <button class="mob-ham" id="mobHamBtn" aria-label="Buka menu">
+    <i class="bi bi-list"></i>
+  </button>
+</div>
+<div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
 
 <div class="dash-wrap">
   {{-- SIDEBAR (konsisten dengan tambah pengadaan) --}}
@@ -451,6 +462,214 @@
     .u-canvas-wrap{ height: 220px; }
     .u-canvas-wrap canvas{ max-height: 220px !important; }
   }
+
+  /* =========================================================
+   MOBILE TOPBAR & DRAWER
+========================================================= */
+.mob-topbar {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: #184f61;
+  border-bottom: 1px solid #e6eef2;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+.mob-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mob-logo img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.mob-logo-txt {
+  font-size: 17px;
+  font-weight: 700;
+  color: #f4c542;
+}
+
+.mob-ham {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e6eef2;
+  border-radius: 10px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  color: #184f61;
+}
+
+.sidebar-drawer-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, .45);
+  backdrop-filter: blur(4px);
+  z-index: 300;
+}
+
+.sidebar-drawer-backdrop.is-open {
+  display: block;
+}
+
+/* =========================================================
+   SPLIT SCREEN <= 1024px
+========================================================= */
+@media (max-width: 1024px) {
+
+  html, body {
+    height: auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  .dash-wrap {
+    display: block !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+  }
+
+  .dash-main {
+    height: auto !important;
+    overflow-y: visible !important;
+    padding: 20px !important;
+  }
+
+  .dash-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    left: -280px !important;
+    height: 100vh !important;
+    width: 260px !important;
+    z-index: 400 !important;
+    transition: left .25s ease !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  .dash-sidebar.drawer-open {
+    left: 0 !important;
+    box-shadow: 4px 0 24px rgba(2, 8, 23, .18) !important;
+  }
+
+  .mob-topbar {
+    display: flex;
+  }
+
+  .u-sum-row--3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .u-sum-row--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .u-charts {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (min-width: 1025px) {
+  .mob-topbar { display: none !important; }
+  .sidebar-drawer-backdrop { display: none !important; }
+}
+
+/* =========================================================
+   MOBILE <= 768px
+========================================================= */
+@media (max-width: 768px) {
+
+  .dash-main {
+    padding: 12px !important;
+    gap: 12px !important;
+  }
+
+  .dash-header h1 { font-size: 20px !important; }
+  .dash-header p  { font-size: 13px !important; }
+
+  .u-sum-row--3 {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .u-sum-row--2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .u-value  { font-size: 26px !important; }
+  .u-money  { font-size: 22px !important; }
+  .u-label  { font-size: 13px !important; }
+
+  .u-chart-filters {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .u-select select {
+    font-size: 13px !important;
+    padding: 8px 28px 8px 10px !important;
+  }
+
+  .u-canvas-wrap { height: 200px !important; }
+  .u-canvas-wrap canvas { max-height: 200px !important; }
+
+  .u-chart-title { font-size: 16px !important; }
+
+  .u-popover {
+    width: calc(100vw - 48px) !important;
+    right: -8px !important;
+  }
+
+  .u-card-filter {
+    position: static !important;
+    margin-top: 8px !important;
+    display: flex !important;
+    gap: 8px !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+
+  .u-mini-select {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+
+  .u-mini-select select {
+    width: 120px !important;
+    max-width: 120px !important;
+    padding-right: 28px !important;
+  }
+
+  .u-mini-select i {
+    position: absolute !important;
+    right: 10px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    pointer-events: none !important;
+  }
+}
+
+/* =========================================================
+   VERY SMALL <= 400px
+========================================================= */
+@media (max-width: 400px) {
+  .u-sum-row--3 { grid-template-columns: 1fr !important; }
+  .u-value { font-size: 24px !important; }
+  .u-money { font-size: 20px !important; }
+}
 </style>
 
 
@@ -579,6 +798,31 @@
     })();
 
     CountFX.playOnceWhenVisible(document.querySelectorAll('.js-count'));
+    /* -------- Sidebar Drawer -------- */
+const sidebar  = document.querySelector('.dash-sidebar');
+const hamBtn   = document.getElementById('mobHamBtn');
+const backdrop = document.getElementById('sidebarBackdrop');
+
+function openDrawer() {
+  sidebar?.classList.add('drawer-open');
+  backdrop?.classList.add('is-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDrawer() {
+  sidebar?.classList.remove('drawer-open');
+  backdrop?.classList.remove('is-open');
+  document.body.style.overflow = '';
+}
+
+hamBtn?.addEventListener('click', openDrawer);
+backdrop?.addEventListener('click', closeDrawer);
+sidebar?.querySelectorAll('.dash-link, .dash-side-btn').forEach(el => {
+  el.addEventListener('click', closeDrawer);
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeDrawer();
+});
 
     // ✅ warna donut sesuai gambar
     const donutColors = ['#0B4A5E', '#111827', '#F6C100', '#D6A357'];

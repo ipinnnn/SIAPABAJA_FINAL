@@ -91,8 +91,8 @@ body.has-nav{
 
 /* container navbar kadang beda padding kiri */
 .nav .container{
-  padding-left: 0px;
-  padding-right: 24px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 
 .nav-inner{
@@ -100,6 +100,7 @@ body.has-nav{
   display:flex;
   align-items:center;
   justify-content: space-between;
+  gap: 40px;
 }
 
 .brand{
@@ -130,12 +131,12 @@ body.has-nav{
   font-size: 16px;
 }
 
-/* link default putih */
 .nav-links a{
   color:#fff;
   font-weight: 500;
   position: relative;
   transition: color .2s ease;
+  white-space: nowrap;
 }
 
 .nav-links a:hover{ text-decoration: underline; }
@@ -1662,4 +1663,430 @@ html{
   display: inline-block;     /* ✅ biar rapih */
   transform: none;           /* ✅ matikan scale dulu */
   transform-origin: 0 0;
+}
+
+/* =========================================================
+   RESPONSIVE PATCH — Landing Page
+   Split screen & Mobile
+========================================================= */
+.mob-nav-toggle {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+
+  .nav-inner {
+    height: 70px !important;
+    padding: 0 4px;
+  }
+
+  body.has-nav {
+    padding-top: 74px !important;
+  }
+
+  section[id],
+  #kontak,
+  #regulasi {
+    scroll-margin-top: 80px !important;
+  }
+
+  .brand-logo { width: 48px !important; height: 48px !important; }
+  .brand-name  { font-size: 22px !important; }
+
+  .mob-nav-toggle { display: block; }
+
+  .nav-links {
+    position: fixed !important;
+    top: 70px !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: var(--navy) !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    transition: max-height .3s ease, padding .3s ease !important;
+    z-index: 9998 !important;
+    border-top: 1px solid rgba(255,255,255,.1) !important;
+  }
+
+  .nav-links.is-open {
+    max-height: 400px !important;
+    padding: 8px 0 16px !important;
+  }
+
+  .nav-links a,
+  .nav-links .btn {
+    width: 100% !important;
+    padding: 12px 24px !important;
+    border-radius: 0 !important;
+    font-size: 15px !important;
+    border-bottom: 1px solid rgba(255,255,255,.07) !important;
+    box-sizing: border-box !important;
+  }
+
+  .nav-links a.active::after { display: none !important; }
+}
+
+/* ===== HAMBURGER BUTTON ===== */
+.mob-nav-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  font-size: 22px;
+}
+
+/* ===== MOBILE (<= 768px) ===== */
+@media (max-width: 768px) {
+  .mob-nav-toggle {
+    display: flex !important;
+  }
+
+  .nav-links {
+    position: fixed !important;
+    top: 70px !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: var(--navy) !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    max-height: 0 !important;
+    overflow: hidden !important;
+    transition: max-height .3s ease, padding .3s ease !important;
+    z-index: 9998 !important;
+    border-top: 1px solid rgba(255,255,255,.1) !important;
+  }
+
+  .nav-links.is-open {
+    max-height: 400px !important;
+    padding: 8px 0 16px !important;
+  }
+
+  .nav-links a {
+  width: 100% !important;
+  padding: 12px 24px !important;
+  border-radius: 0 !important;
+  font-size: 15px !important;
+  border-bottom: 1px solid rgba(255,255,255,.07) !important;
+  box-sizing: border-box !important;
+}
+}
+.nav-links .btn {
+  width: auto !important;
+  margin: 12px 24px !important;
+  padding: 10px 24px !important;
+  border-radius: 10px !important;
+  font-size: 15px !important;
+  border-bottom: none !important;
+  display: inline-flex !important;
+}
+
+/* ===== DESKTOP (>= 769px) ===== */
+@media (min-width: 769px) {
+  .mob-nav-toggle {
+    display: none !important;
+  }
+
+  .nav-links {
+    display: flex !important;
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 32px !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border-top: none !important;
+    transition: none !important;
+  }
+
+  .nav-links a,
+  .nav-links .btn {
+    width: auto !important;
+    padding: 10px 18px !important;
+    border-radius: 12px !important;
+    border-bottom: none !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* ===== HERO ===== */
+@media (max-width: 768px) {
+  .hero-grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+    text-align: left;
+  }
+
+  .hero-illustration { display: none !important; }
+
+  .hero h1 { font-size: 28px !important; }
+  .hero .u { font-size: 20px !important; }
+  .hero p  { font-size: 15px !important; }
+}
+
+@media (max-width: 768px) {
+  .hero { padding: 28px 0 20px !important; }
+  .hero h1 { font-size: 22px !important; }
+  .hero .u { font-size: 17px !important; }
+  .hero p  { font-size: 14px !important; margin: 14px 0 20px !important; }
+}
+
+/* ===== ARSIP CARDS ===== */
+@media (max-width: 768px) {
+
+  .card-top {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .btn-detail {
+    width: 100% !important;
+    justify-content: center !important;
+    height: 36px !important;
+  }
+
+  .card-title { font-size: 16px !important; }
+
+  .section-title h2 { font-size: 22px !important; }
+  .section-title p  { font-size: 14px !important; }
+}
+
+/* ===== STATISTIKA ===== */
+@media (max-width: 768px) {
+  .stats-2col {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .stat-filters {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  .stat-sel {
+    font-size: 13px !important;
+    padding: 8px 28px 8px 10px !important;
+  }
+
+  .stat-canvas--donut,
+  .stat-canvas--bar {
+    height: 200px !important;
+  }
+
+  .stat-canvas--donut canvas,
+  .stat-canvas--bar canvas {
+    max-height: 200px !important;
+  }
+}
+
+/* ===== REGULASI ===== */
+@media (max-width: 768px) {
+  .reg-card {
+    padding: 20px 16px !important;
+    border-radius: 12px !important;
+  }
+
+  .reg-item {
+    flex-direction: row !important;
+    gap: 12px !important;
+  }
+
+  .reg-text { font-size: 13px !important; }
+
+  .reg-wrap { padding-bottom: 60px !important; }
+}
+
+/* ===== DETAIL MODAL (dt-modal) ===== */
+@media (max-width: 768px) {
+
+  .dt-modal.is-open {
+    align-items: flex-start !important;
+    padding: 0 !important;
+  }
+
+  .dt-panel {
+    width: 100vw !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+  }
+
+  .dt-card {
+    border-radius: 0 !important;
+    height: 100% !important;
+    min-height: unset !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .dt-body {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .dt-info-grid   { grid-template-columns: 1fr !important; }
+  .dt-budget-grid { grid-template-columns: 1fr 1fr !important; }
+  .dt-doc-grid    { grid-template-columns: 1fr !important; }
+}
+
+/* ===== PBJ TABLE ===== */
+@media (max-width: 768px) {
+
+  .pbj-filters {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .pbj-search {
+    flex: 1 1 100% !important;
+    min-width: 100% !important;
+  }
+
+  .pbj-select {
+    flex: 1 1 calc(50% - 4px) !important;
+  }
+
+  .pbj-actions { margin-left: 0 !important; }
+
+  .pbj-foot {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+}
+
+/* ===== PBJ MODAL ===== */
+@media (max-width: 768px) {
+
+  .pbj-modal-overlay {
+    padding: 0 !important;
+    align-items: flex-end !important;
+  }
+
+  .pbj-modal {
+    width: 100vw !important;
+    max-height: 92vh !important;
+    border-radius: 18px 18px 0 0 !important;
+  }
+
+  .pbj-info-grid    { grid-template-columns: 1fr !important; }
+  .pbj-budget-grid  { grid-template-columns: 1fr 1fr !important; }
+  .pbj-docs-grid    { grid-template-columns: 1fr !important; }
+}
+
+/* ===== FOOTER ===== */
+@media (max-width: 768px) {
+  .footer { padding: 36px 0 0 !important; }
+
+  .footer-inner {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  .footer .brand-logo { width: 48px !important; height: 48px !important; }
+  .footer .brand-name { font-size: 22px !important; }
+  .footer-desc { font-size: 13px !important; }
+  .copyright   { font-size: 12px !important; }
+}
+
+@media (max-width: 1280px) and (min-width: 1025px) {
+  .nav-links {
+    gap: 24px !important;
+  }
+
+  .brand-name {
+    font-size: 22px !important;
+  }
+
+  .brand-logo {
+    width: 52px !important;
+    height: 52px !important;
+  }
+
+  .nav-inner {
+    height: 80px !important;
+  }
+
+  body.has-nav {
+    padding-top: 84px !important;
+  }
+
+  .nav-links a {
+    font-size: 14px !important;
+  }
+
+  .nav-links .btn {
+    padding: 8px 14px !important;
+    font-size: 14px !important;
+  }
+}
+
+/* Hamburger button */
+.mob-nav-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  font-size: 22px;
+}
+
+@media (max-width: 768px) {
+  .mob-nav-toggle {
+    display: flex !important;
+  }
+}
+
+.nav .mob-ham {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e6eef2;
+  border-radius: 10px;
+  background: #fff;
+  color: #184f61;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .nav .mob-ham {
+    display: flex !important;
+  }
+}
+
+/* Samakan ukuran brand di navbar dengan footer */
+.nav .brand-logo {
+  width: 80px !important;
+  height: 80px !important;
+}
+
+.nav .brand-name {
+  font-size: 30px !important;
+  font-weight: 800 !important;
 }
