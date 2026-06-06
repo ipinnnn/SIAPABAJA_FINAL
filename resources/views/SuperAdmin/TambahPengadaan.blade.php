@@ -21,19 +21,19 @@
 {{-- ✅ Tambah class page-sa-tp supaya CSS tidak bocor ke halaman lain --}}
 
 <body class="dash-body page-sa-tp page-unit-tp">
-{{-- MOBILE TOPBAR --}}
-<div class="mob-topbar" id="mobTopbar">
-  <div class="mob-logo">
-    <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
-    <span class="mob-logo-txt">SIAPABAJA</span>
+  {{-- MOBILE TOPBAR --}}
+  <div class="mob-topbar" id="mobTopbar">
+    <div class="mob-logo">
+      <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
+      <span class="mob-logo-txt">SIAPABAJA</span>
+    </div>
+
+    <button class="mob-ham" id="mobHamBtn">
+      <i class="bi bi-list"></i>
+    </button>
   </div>
 
-  <button class="mob-ham" id="mobHamBtn">
-    <i class="bi bi-list"></i>
-  </button>
-</div>
-
-<div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
+  <div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
   @php
   $superAdminName = $superAdminName ?? (auth()->user()->name ?? "Super Admin");
 
@@ -176,7 +176,7 @@
               </div>
               <div class="tp-divider"></div>
 
-              <div class="tp-grid">
+              <div class="tp-grid tp-grid-2col">
                 <div class="tp-field">
                   <label class="tp-label">Tahun</label>
                   <div class="tp-control tp-dd">
@@ -314,7 +314,7 @@
               </div>
               <div class="tp-divider"></div>
 
-              <div class="tp-grid">
+              <div class="tp-grid tp-grid-2col">
                 <div class="tp-field">
                   <label class="tp-label">Pagu Anggaran (Rp)</label>
                   <input type="text" name="pagu_anggaran" class="tp-input"
@@ -1073,12 +1073,20 @@
     }
 
     :where(.page-sa-tp) .tp-grid {
-  padding: 0 !important;
-  gap: 14px 18px !important;
+      padding: 0 !important;
+      gap: 14px 18px !important;
 
-  display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
+      display: grid !important;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+
+    :where(.page-sa-tp) .tp-grid-2col {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    :where(.page-sa-tp) .tp-full {
+      grid-column: 1 / -1 !important;
+    }
 
     :where(.page-sa-tp) .tp-divider {
       margin-left: 0 !important;
@@ -1294,175 +1302,197 @@
       }
     }
 
-   @media (min-width: 1025px) {
-  :where(.page-sa-tp) .mob-topbar { display: none !important; }
-  :where(.page-sa-tp) .sidebar-drawer-backdrop { display: none !important; }
-}
+    @media (min-width: 1025px) {
+      :where(.page-sa-tp) .mob-topbar {
+        display: none !important;
+      }
 
-@media (max-width: 1024px) {
+      :where(.page-sa-tp) .sidebar-drawer-backdrop {
+        display: none !important;
+      }
+    }
 
-  :where(.page-sa-tp) .mob-topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 16px;
-    background: #184f61;
-    position: sticky;
-    top: 0;
-    z-index: 200;
-  }
+    @media (max-width: 1024px) {
 
-  :where(.page-sa-tp) .mob-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+      :where(.page-sa-tp) .mob-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        background: #184f61;
+        position: sticky;
+        top: 0;
+        z-index: 200;
+      }
 
-  :where(.page-sa-tp) .mob-logo img { width: 32px; height: 32px; }
+      :where(.page-sa-tp) .mob-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
 
-  :where(.page-sa-tp) .mob-logo-txt {
-    color: #f4c542;
-    font-size: 17px;
-    font-weight: 700;
-  }
+      :where(.page-sa-tp) .mob-logo img {
+        width: 32px;
+        height: 32px;
+      }
 
-  :where(.page-sa-tp) .sidebar-drawer-backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 23, 42, .45);
-    backdrop-filter: blur(4px);
-    z-index: 300;
-  }
+      :where(.page-sa-tp) .mob-logo-txt {
+        color: #f4c542;
+        font-size: 17px;
+        font-weight: 700;
+      }
 
-  :where(.page-sa-tp) .sidebar-drawer-backdrop.is-open { display: block; }
+      :where(.page-sa-tp) .sidebar-drawer-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, .45);
+        backdrop-filter: blur(4px);
+        z-index: 300;
+      }
 
-  :where(.page-sa-tp) .dash-sidebar {
-    position: fixed !important;
-    top: 0 !important;
-    left: -280px !important;
-    height: 100vh !important;
-    width: 260px !important;
-    z-index: 400 !important;
-    transition: left .25s ease !important;
-    overflow-y: auto !important;
-  }
+      :where(.page-sa-tp) .sidebar-drawer-backdrop.is-open {
+        display: block;
+      }
 
-  :where(.page-sa-tp) .dash-sidebar.drawer-open {
-    left: 0 !important;
-    box-shadow: 4px 0 24px rgba(2, 8, 23, .18) !important;
-  }
+      :where(.page-sa-tp) .dash-sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: -280px !important;
+        height: 100vh !important;
+        width: 260px !important;
+        z-index: 400 !important;
+        transition: left .25s ease !important;
+        overflow-y: auto !important;
+      }
 
-  :where(.page-sa-tp) .dash-wrap {
-    display: block !important;
-    height: auto !important;
-    min-height: 100vh !important;
-    overflow: visible !important;
-  }
+      :where(.page-sa-tp) .dash-sidebar.drawer-open {
+        left: 0 !important;
+        box-shadow: 4px 0 24px rgba(2, 8, 23, .18) !important;
+      }
 
-  html, body {
-    height: auto !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-  }
+      :where(.page-sa-tp) .dash-wrap {
+        display: block !important;
+        height: auto !important;
+        min-height: 100vh !important;
+        overflow: visible !important;
+      }
 
-  :where(.page-sa-tp) .dash-main {
-    height: auto !important;
-    overflow-y: visible !important;
-    padding: 20px !important;
-  }
-}
+      html,
+      body {
+        height: auto !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+      }
 
-@media (max-width: 768px) {
+      :where(.page-sa-tp) .dash-main {
+        height: auto !important;
+        overflow-y: visible !important;
+        padding: 20px !important;
+      }
+    }
 
-  :where(.page-sa-tp) .dash-main { padding: 12px !important; }
+    @media (max-width: 768px) {
 
-  :where(.page-sa-tp) .dash-header h1 { font-size: 20px !important; }
-  :where(.page-sa-tp) .dash-header p  { font-size: 13px !important; }
+      :where(.page-sa-tp) .dash-main {
+        padding: 12px !important;
+      }
 
-  :where(.page-sa-tp) .tp-grid { grid-template-columns: 1fr !important; }
-  :where(.page-sa-tp) .tp-full { grid-column: unset !important; }
+      :where(.page-sa-tp) .dash-header h1 {
+        font-size: 20px !important;
+      }
 
-  :where(.page-sa-tp) .tp-actions {
-    flex-direction: row !important;
-    justify-content: space-between !important;
-  }
+      :where(.page-sa-tp) .dash-header p {
+        font-size: 13px !important;
+      }
 
-  :where(.page-sa-tp) .tp-btn {
-    flex: 1 !important;
-    justify-content: center !important;
-  }
-}
+      :where(.page-sa-tp) .tp-grid {
+        grid-template-columns: 1fr !important;
+      }
 
-:where(.page-sa-tp) .tp-actions {
-  display: flex !important;
-  justify-content: space-between !important;
-  flex-direction: row !important;
-}
+      :where(.page-sa-tp) .tp-full {
+        grid-column: unset !important;
+      }
 
-:where(.page-sa-tp) .mob-ham {
-  width: 40px !important;
-  height: 40px !important;
-  border: 1px solid #e6eef2 !important;
-  border-radius: 10px !important;
-  background: #fff !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  cursor: pointer !important;
-  font-size: 18px !important;
-  color: #184f61 !important;
-}
-/* ===================================================
+      :where(.page-sa-tp) .tp-actions {
+        flex-direction: row !important;
+        justify-content: space-between !important;
+      }
+
+      :where(.page-sa-tp) .tp-btn {
+        flex: 1 !important;
+        justify-content: center !important;
+      }
+    }
+
+    :where(.page-sa-tp) .tp-actions {
+      display: flex !important;
+      justify-content: space-between !important;
+      flex-direction: row !important;
+    }
+
+    :where(.page-sa-tp) .mob-ham {
+      width: 40px !important;
+      height: 40px !important;
+      border: 1px solid #e6eef2 !important;
+      border-radius: 10px !important;
+      background: #fff !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+      font-size: 18px !important;
+      color: #184f61 !important;
+    }
+
+    /* ===================================================
    RESPONSIVE SUPERADMIN TAMBAH PENGADAAN
 =================================================== */
 
-@media (max-width: 1200px){
+    @media (max-width: 1200px) {
 
-  :where(.page-sa-tp) .tp-grid{
-    grid-template-columns: repeat(auto-fit,minmax(250px,1fr)) !important;
-  }
+      :where(.page-sa-tp) .tp-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+      }
 
-}
+    }
 
-@media (max-width:768px){
+    @media (max-width:768px) {
 
-  :where(.page-sa-tp) .tp-actions{
-    display:flex !important;
-    flex-direction:row !important;
-    gap:16px !important;
-  }
+      :where(.page-sa-tp) .tp-actions {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 16px !important;
+      }
 
-  :where(.page-sa-tp) .tp-btn{
-    flex:1 !important;
-    width:auto !important;
-    min-width:0 !important;
-    justify-content:center !important;
-  }
+      :where(.page-sa-tp) .tp-btn {
+        flex: 1 !important;
+        width: auto !important;
+        min-width: 0 !important;
+        justify-content: center !important;
+      }
 
-}
+    }
 
-:where(.page-sa-tp) .tp-actions{
-  display:flex !important;
-  flex-direction:row !important;
-  justify-content:space-between !important;
-  align-items:center !important;
-  gap:12px !important;
-}
+    :where(.page-sa-tp) .tp-actions {
+      display: flex !important;
+      flex-direction: row !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      gap: 12px !important;
+    }
 
-:where(.page-sa-tp) .tp-actions .tp-btn{
-  flex:0 0 auto !important;
-  width:auto !important;
-}
+    :where(.page-sa-tp) .tp-actions .tp-btn {
+      flex: 0 0 auto !important;
+      width: auto !important;
+    }
 
-:where(.page-sa-tp) .tp-btn-same{
-  min-width:210px !important;
-  width:auto !important;
-  height:46px !important;
-  padding:12px 16px !important;
-}
-
-
+    :where(.page-sa-tp) .tp-btn-same {
+      min-width: 210px !important;
+      width: auto !important;
+      height: 46px !important;
+      padding: 12px 16px !important;
+    }
   </style>
 
   <script>
@@ -1477,32 +1507,32 @@
       const input = card.querySelector('input[type="radio"]');
       if (input) input.checked = true;
     });
-document.addEventListener('DOMContentLoaded', () => {
-  const sidebar  = document.querySelector('.dash-sidebar');
-  const hamBtn   = document.getElementById('mobHamBtn');
-  const backdrop = document.getElementById('sidebarBackdrop');
+    document.addEventListener('DOMContentLoaded', () => {
+      const sidebar = document.querySelector('.dash-sidebar');
+      const hamBtn = document.getElementById('mobHamBtn');
+      const backdrop = document.getElementById('sidebarBackdrop');
 
-  function openDrawer() {
-    sidebar?.classList.add('drawer-open');
-    backdrop?.classList.add('is-open');
-    document.body.style.overflow = 'hidden';
-  }
+      function openDrawer() {
+        sidebar?.classList.add('drawer-open');
+        backdrop?.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      }
 
-  function closeDrawer() {
-    sidebar?.classList.remove('drawer-open');
-    backdrop?.classList.remove('is-open');
-    document.body.style.overflow = '';
-  }
+      function closeDrawer() {
+        sidebar?.classList.remove('drawer-open');
+        backdrop?.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
 
-  hamBtn?.addEventListener('click', openDrawer);
-  backdrop?.addEventListener('click', closeDrawer);
-  sidebar?.querySelectorAll('.dash-link, .dash-side-btn').forEach(el => {
-    el.addEventListener('click', closeDrawer);
-  });
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeDrawer();
-  });
-});
+      hamBtn?.addEventListener('click', openDrawer);
+      backdrop?.addEventListener('click', closeDrawer);
+      sidebar?.querySelectorAll('.dash-link, .dash-side-btn').forEach(el => {
+        el.addEventListener('click', closeDrawer);
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeDrawer();
+      });
+    });
     // ✅ Custom dropdown (sama persis PPK: highlight selected pakai navy2)
     const initCustomDropdowns = () => {
       document.querySelectorAll('.tp-dd').forEach(dd => {

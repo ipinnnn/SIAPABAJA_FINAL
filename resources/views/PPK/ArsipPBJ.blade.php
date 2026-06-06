@@ -19,19 +19,19 @@
 </head>
 
 <body class="dash-body page-arsip">
-{{-- MOBILE TOPBAR --}}
-<div class="mob-topbar" id="mobTopbar">
-  <div class="mob-logo">
-    <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
-    <span class="mob-logo-txt">SIAPABAJA</span>
+  {{-- MOBILE TOPBAR --}}
+  <div class="mob-topbar" id="mobTopbar">
+    <div class="mob-logo">
+      <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
+      <span class="mob-logo-txt">SIAPABAJA</span>
+    </div>
+    <button class="mob-ham" id="mobHamBtn" aria-label="Buka menu">
+      <i class="bi bi-list"></i>
+    </button>
   </div>
-  <button class="mob-ham" id="mobHamBtn" aria-label="Buka menu">
-    <i class="bi bi-list"></i>
-  </button>
-</div>
 
-{{-- BACKDROP DRAWER --}}
-<div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
+  {{-- BACKDROP DRAWER --}}
+  <div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
   @php
   $unitName = auth()->user()->name ?? 'Unit Kerja';
 
@@ -42,6 +42,29 @@
   $selectedStatus = request()->query('status', 'Semua');
   $selectedYear = request()->query('tahun', 'Semua');
   $selectedQ = request()->query('q', '');
+  $statusMaster = \App\Models\MasterMenu::where('category', 'status_pekerjaan')
+  ->where('is_active', true)
+  ->orderBy('order_index')
+  ->pluck('nama')
+  ->toArray();
+
+  $badgeClasses = [
+  'sp-plan',
+  'sp-select',
+  'sp-do',
+  'sp-done',
+  'sp-blue',
+  'sp-orange',
+  'sp-cyan',
+  'sp-pink',
+  ];
+
+  $statusColorMap = [];
+
+  foreach ($statusMaster as $i => $status) {
+  $statusColorMap[strtolower(trim($status))]
+  = $badgeClasses[$i % count($badgeClasses)];
+  }
 
   $initialSortNilai = strtolower((string) request()->query('sort_nilai', ''));
   if (!in_array($initialSortNilai, ['asc', 'desc'], true)) {
@@ -125,7 +148,7 @@
           <div class="dash-role">Admin (PPK)</div>
         </div>
       </div>
-  
+
       <nav class="dash-nav">
         <a class="dash-link" href="{{ route('ppk.dashboard') }}">
           <span class="ic"><i class="bi bi-grid-fill"></i></span>
@@ -270,13 +293,7 @@
         @foreach ($rows as $r)
         @php
         $sp = strtolower(trim((string) ($r['status_pekerjaan'] ?? '')));
-        $spClass = match ($sp) {
-        'perencanaan' => 'sp-badge sp-plan',
-        'pemilihan' => 'sp-badge sp-select',
-        'pelaksanaan' => 'sp-badge sp-do',
-        'selesai' => 'sp-badge sp-done',
-        default => 'sp-badge',
-        };
+        $spClass = 'sp-badge ' . ($statusColorMap[$sp] ?? 'sp-blue');
 
         $pekerjaanRaw = (string) ($r['pekerjaan'] ?? '');
         $parts = array_map('trim', explode('|', $pekerjaanRaw, 2));
@@ -797,7 +814,7 @@
     .ap-tbl-head .ap-col {
       color: var(--tbl-head-txt);
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: .3px;
       white-space: nowrap;
     }
@@ -955,6 +972,26 @@
     .sp-done {
       background: #dcfce7;
       color: #15803d;
+    }
+
+    .sp-blue {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .sp-orange {
+      background: #ffedd5;
+      color: #c2410c;
+    }
+
+    .sp-cyan {
+      background: #cffafe;
+      color: #0e7490;
+    }
+
+    .sp-pink {
+      background: #fce7f3;
+      color: #be185d;
     }
 
     /* Empty state */
@@ -1774,34 +1811,38 @@
       transition: background .12s;
     }
 
-/* Fix: detail modal mobile bisa scroll penuh */
-@media (max-width: 768px) {
-  .dt-panel {
-    width: 100vw !important;
-    height: 100vh !important;
-    max-height: 100vh !important;
-    border-radius: 0 !important;
-    overflow: hidden !important;
-    display: flex !important;
-    flex-direction: column !important;
-  }
+    /* Fix: detail modal mobile bisa scroll penuh */
+    @media (max-width: 768px) {
+      .dt-panel {
+        width: 100vw !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        border-radius: 0 !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+      }
 
-  .dt-card {
-    border-radius: 0 !important;
-    height: 100% !important;        /* ← ganti min-height jadi height */
-    min-height: unset !important;   /* ← reset min-height */
-    display: flex !important;
-    flex-direction: column !important;
-    overflow: hidden !important;
-  }
+      .dt-card {
+        border-radius: 0 !important;
+        height: 100% !important;
+        /* ← ganti min-height jadi height */
+        min-height: unset !important;
+        /* ← reset min-height */
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+      }
 
-  .dt-body {
-    flex: 1 !important;
-    overflow-y: auto !important;    /* ← scroll ada di sini */
-    -webkit-overflow-scrolling: touch !important;
-    overscroll-behavior: contain !important;
-  }
-}
+      .dt-body {
+        flex: 1 !important;
+        overflow-y: auto !important;
+        /* ← scroll ada di sini */
+        -webkit-overflow-scrolling: touch !important;
+        overscroll-behavior: contain !important;
+      }
+    }
+
     .hist-tbl-row:hover {
       background: #f8fbfe;
     }
@@ -1885,329 +1926,336 @@
    Split screen & Mobile
 ========================================================= */
 
-/* --- HAMBURGER TOGGLE (muncul di layar kecil) --- */
-.mob-topbar {
-  display: none;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px 16px;
-  background: #184f61;
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 200;
-}
+    /* --- HAMBURGER TOGGLE (muncul di layar kecil) --- */
+    .mob-topbar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      background: #184f61;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
 
-.mob-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+    .mob-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-.mob-logo img {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
-}
+    .mob-logo img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
 
-.mob-logo-txt {
-  font-size: 17px;
-  font-weight: 700;
-  color: #f4c542;
-}
+    .mob-logo-txt {
+      font-size: 17px;
+      font-weight: 700;
+      color: #f4c542;
+    }
 
-.mob-ham {
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 18px;
-  color: var(--navy2);
-}
+    .mob-ham {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--navy2);
+    }
 
-/* --- SIDEBAR DRAWER di mobile --- */
-.sidebar-drawer-backdrop {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, .45);
-  backdrop-filter: blur(4px);
-  z-index: 300;
-}
+    /* --- SIDEBAR DRAWER di mobile --- */
+    .sidebar-drawer-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, .45);
+      backdrop-filter: blur(4px);
+      z-index: 300;
+    }
 
-.sidebar-drawer-backdrop.is-open {
-  display: block;
-}
+    .sidebar-drawer-backdrop.is-open {
+      display: block;
+    }
 
-/* --- SPLIT SCREEN: <= 1024px --- */
-@media (max-width: 1024px) {
+    /* --- SPLIT SCREEN: <= 1024px --- */
+    @media (max-width: 1024px) {
 
-  /* sembunyikan sidebar biasa, tampilkan sebagai drawer */
-  .dash-sidebar {
-    position: fixed !important;
-    top: 0 !important;
-    left: -280px !important;
-    height: 100vh !important;
-    width: 260px !important;
-    z-index: 400 !important;
-    transition: left .25s ease !important;
-    overflow-y: auto !important;
-  }
+      /* sembunyikan sidebar biasa, tampilkan sebagai drawer */
+      .dash-sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: -280px !important;
+        height: 100vh !important;
+        width: 260px !important;
+        z-index: 400 !important;
+        transition: left .25s ease !important;
+        overflow-y: auto !important;
+      }
 
-  .dash-sidebar.drawer-open {
-    left: 0 !important;
-    box-shadow: 4px 0 24px rgba(2, 8, 23, .18) !important;
-  }
+      .dash-sidebar.drawer-open {
+        left: 0 !important;
+        box-shadow: 4px 0 24px rgba(2, 8, 23, .18) !important;
+      }
 
-  .mob-topbar {
-    display: flex;
-  }
+      .mob-topbar {
+        display: flex;
+      }
 
-  .dash-main {
-    height: auto !important;
-    min-height: calc(100vh - 57px) !important;
-    overflow-y: visible !important;
-    padding: 16px !important;
-  }
+      .dash-main {
+        height: auto !important;
+        min-height: calc(100vh - 57px) !important;
+        overflow-y: visible !important;
+        padding: 16px !important;
+      }
 
-  /* wrapper tidak perlu kunci scroll di mobile */
-  .dash-wrap {
-    height: auto !important;
-    min-height: 100vh !important;
-    overflow: visible !important;
-    display: block !important;
-  }
+      /* wrapper tidak perlu kunci scroll di mobile */
+      .dash-wrap {
+        height: auto !important;
+        min-height: 100vh !important;
+        overflow: visible !important;
+        display: block !important;
+      }
 
-  html, body {
-    height: auto !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-  }
-}
+      html,
+      body {
+        height: auto !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+      }
+    }
 
-/* --- MOBILE: <= 768px --- */
-@media (max-width: 768px) {
+    /* --- MOBILE: <= 768px --- */
+    @media (max-width: 768px) {
 
-  .dash-main {
-    padding: 12px !important;
-    gap: 14px !important;
-  }
+      .dash-main {
+        padding: 12px !important;
+        gap: 14px !important;
+      }
 
-  /* Header */
-  .ap-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
+      /* Header */
+      .ap-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
 
-  .ap-header h1 {
-    font-size: 20px !important;
-  }
+      .ap-header h1 {
+        font-size: 20px !important;
+      }
 
-  .ap-header-right {
-    width: 100%;
-  }
+      .ap-header-right {
+        width: 100%;
+      }
 
-  .ap-export-btn {
-    width: 100%;
-    justify-content: center;
-  }
+      .ap-export-btn {
+        width: 100%;
+        justify-content: center;
+      }
 
-  /* Filter bar: wrap jadi 2 baris */
-  .ap-filter-bar {
-    flex-wrap: wrap !important;
-    gap: 8px !important;
-    padding: 12px !important;
-  }
+      /* Filter bar: wrap jadi 2 baris */
+      .ap-filter-bar {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        padding: 12px !important;
+      }
 
-  .ap-search-wrap {
-    flex: 1 1 100% !important;
-    min-width: 100% !important;
-  }
+      .ap-search-wrap {
+        flex: 1 1 100% !important;
+        min-width: 100% !important;
+      }
 
-  .ap-sel-wrap {
-    flex: 1 1 calc(50% - 4px) !important;
-  }
+      .ap-sel-wrap {
+        flex: 1 1 calc(50% - 4px) !important;
+      }
 
-  .ap-sel {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
+      .ap-sel {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
 
-  .ap-filter-tools {
-    flex: 1 1 100% !important;
-    justify-content: flex-start !important;
-    margin-left: 0 !important;
-  }
-}
+      .ap-filter-tools {
+        flex: 1 1 100% !important;
+        justify-content: flex-start !important;
+        margin-left: 0 !important;
+      }
+    }
 
-/* --- TABEL: responsif di split screen (<= 900px) --- */
-@media (max-width: 900px) {
+    /* --- TABEL: responsif di split screen (<= 900px) --- */
+    @media (max-width: 900px) {
 
-  .ap-tbl-head { display: none !important; }
+      .ap-tbl-head {
+        display: none !important;
+      }
 
-  .ap-table-section {
-    overflow-x: hidden !important;
-    max-height: none !important;
-    padding: 12px !important;
-  }
+      .ap-table-section {
+        overflow-x: hidden !important;
+        max-height: none !important;
+        padding: 12px !important;
+      }
 
-  .ap-tbl-row {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    grid-template-areas:
-      "tahun  status"
-      "job    job"
-      "metode nilai"
-      "aksi   aksi" !important;
-    background: #fff !important;
-    border: 0.5px solid #e2e8f0 !important;
-    border-radius: 14px !important;
-    padding: 14px !important;
-    margin: 0 0 10px !important;
-    min-width: 0 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    column-gap: 8px !important;
-    row-gap: 0 !important;
-  }
+      .ap-tbl-row {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        grid-template-areas:
+          "tahun  status"
+          "job    job"
+          "metode nilai"
+          "aksi   aksi" !important;
+        background: #fff !important;
+        border: 0.5px solid #e2e8f0 !important;
+        border-radius: 14px !important;
+        padding: 14px !important;
+        margin: 0 0 10px !important;
+        min-width: 0 !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        column-gap: 8px !important;
+        row-gap: 0 !important;
+      }
 
-  .ap-col-tahun {
-    grid-area: tahun !important;
-    display: block !important;
-    font-size: 12px !important;
-    color: #64748b !important;
-    font-weight: 500 !important;
-    align-self: center !important;
-    padding: 0 0 6px 0 !important;
-  }
+      .ap-col-tahun {
+        grid-area: tahun !important;
+        display: block !important;
+        font-size: 12px !important;
+        color: #64748b !important;
+        font-weight: 500 !important;
+        align-self: center !important;
+        padding: 0 0 6px 0 !important;
+      }
 
-  .ap-col-unit { display: none !important; }
+      .ap-col-unit {
+        display: none !important;
+      }
 
-  .ap-col-status {
-    grid-area: status !important;
-    display: flex !important;
-    justify-content: flex-end !important;
-    align-items: flex-start !important;
-    padding: 0 0 6px 0 !important;
-    border-top: none !important;
-    margin-top: 0 !important;
-    width: auto !important;
-    position: static !important;
-  }
+      .ap-col-status {
+        grid-area: status !important;
+        display: flex !important;
+        justify-content: flex-end !important;
+        align-items: flex-start !important;
+        padding: 0 0 6px 0 !important;
+        border-top: none !important;
+        margin-top: 0 !important;
+        width: auto !important;
+        position: static !important;
+      }
 
-  .sp-badge {
-    font-size: 11px !important;
-    padding: 3px 10px !important;
-    min-width: unset !important;
-  }
+      .sp-badge {
+        font-size: 11px !important;
+        padding: 3px 10px !important;
+        min-width: unset !important;
+      }
 
-  .ap-col-job {
-    grid-area: job !important;
-    font-size: 14px !important;
-    font-weight: 500 !important;
-    color: #0f172a !important;
-    line-height: 1.4 !important;
-    padding: 0 0 12px 0 !important;
-    margin: 0 !important;
-    border-bottom: 0.5px solid #e2e8f0 !important;
-  }
+      .ap-col-job {
+        grid-area: job !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        color: #0f172a !important;
+        line-height: 1.4 !important;
+        padding: 0 0 12px 0 !important;
+        margin: 0 !important;
+        border-bottom: 0.5px solid #e2e8f0 !important;
+      }
 
-  .ap-col-metode {
-    grid-area: metode !important;
-    display: flex !important;
-    flex-direction: column !important;
-    padding: 10px 0 10px 0 !important;
-    margin: 0 !important;
-    width: auto !important;
-    border-bottom: 0.5px solid #e2e8f0 !important;
-  }
+      .ap-col-metode {
+        grid-area: metode !important;
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 10px 0 10px 0 !important;
+        margin: 0 !important;
+        width: auto !important;
+        border-bottom: 0.5px solid #e2e8f0 !important;
+      }
 
-  .ap-col-metode::before {
-    content: 'Metode';
-    font-size: 11px;
-    color: #94a3b8;
-    margin-bottom: 3px;
-    display: block;
-  }
+      .ap-col-metode::before {
+        content: 'Metode';
+        font-size: 11px;
+        color: #94a3b8;
+        margin-bottom: 3px;
+        display: block;
+      }
 
-  .metode-badge {
-    background: transparent !important;
-    color: #0f172a !important;
-    padding: 0 !important;
-    font-size: 13px !important;
-    border-radius: 0 !important;
-    width: auto !important;
-    display: block !important;
-  }
+      .metode-badge {
+        background: transparent !important;
+        color: #0f172a !important;
+        padding: 0 !important;
+        font-size: 13px !important;
+        border-radius: 0 !important;
+        width: auto !important;
+        display: block !important;
+      }
 
-  .ap-col-nilai {
-    grid-area: nilai !important;
-    display: flex !important;
-    flex-direction: column !important;
-    padding: 10px 0 10px 0 !important;
-    margin: 0 !important;
-    width: auto !important;
-    font-size: 14px !important;
-    font-weight: 500 !important;
-    color: #184f61 !important;
-    border-bottom: 0.5px solid #e2e8f0 !important;
-  }
+      .ap-col-nilai {
+        grid-area: nilai !important;
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 10px 0 10px 0 !important;
+        margin: 0 !important;
+        width: auto !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        color: #184f61 !important;
+        border-bottom: 0.5px solid #e2e8f0 !important;
+      }
 
-  .ap-col-nilai::before {
-    content: 'Nilai Kontrak';
-    font-size: 11px;
-    color: #94a3b8;
-    font-weight: 400;
-    margin-bottom: 3px;
-    display: block;
-  }
+      .ap-col-nilai::before {
+        content: 'Nilai Kontrak';
+        font-size: 11px;
+        color: #94a3b8;
+        font-weight: 400;
+        margin-bottom: 3px;
+        display: block;
+      }
 
-  .ap-col-aksi {
-    grid-area: aksi !important;
-    display: flex !important;
-    gap: 8px !important;
-    padding-top: 10px !important;
-    justify-content: flex-start !important;
-    width: auto !important;
-  }
+      .ap-col-aksi {
+        grid-area: aksi !important;
+        display: flex !important;
+        gap: 8px !important;
+        padding-top: 10px !important;
+        justify-content: flex-start !important;
+        width: auto !important;
+      }
 
-  .aksi-btn {
-    flex: 0 0 auto !important;
-    width: 36px !important;
-    height: 36px !important;
-    border-radius: 10px !important;
-  }
+      .aksi-btn {
+        flex: 0 0 auto !important;
+        width: 36px !important;
+        height: 36px !important;
+        border-radius: 10px !important;
+      }
 
-  .ap-pagination-wrap {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 10px !important;
-    min-width: unset !important;
-    position: static !important;
-  }
+      .ap-pagination-wrap {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
+        min-width: unset !important;
+        position: static !important;
+      }
 
-    .ap-col-metode,
-  .ap-col-nilai {
-    padding-left: 0 !important;
-    margin-left: 0 !important;
-    align-items: flex-start !important;
-    text-align: left !important;
-  }
+      .ap-col-metode,
+      .ap-col-nilai {
+        padding-left: 0 !important;
+        margin-left: 0 !important;
+        align-items: flex-start !important;
+        text-align: left !important;
+      }
 
-  .ap-col-metode::before,
-  .ap-col-nilai::before {
-    text-align: left !important;
-  }
+      .ap-col-metode::before,
+      .ap-col-nilai::before {
+        text-align: left !important;
+      }
 
-  .ap-pagination { justify-content: flex-start !important; }
-}
+      .ap-pagination {
+        justify-content: flex-start !important;
+      }
+    }
   </style>
 
   <script>
@@ -2234,29 +2282,29 @@
       }
 
       /* -------- Sidebar Drawer (Mobile) -------- */
-const sidebar   = document.querySelector('.dash-sidebar');
-const hamBtn    = document.getElementById('mobHamBtn');
-const backdrop  = document.getElementById('sidebarBackdrop');
+      const sidebar = document.querySelector('.dash-sidebar');
+      const hamBtn = document.getElementById('mobHamBtn');
+      const backdrop = document.getElementById('sidebarBackdrop');
 
-function openDrawer() {
-  sidebar?.classList.add('drawer-open');
-  backdrop?.classList.add('is-open');
-  document.body.style.overflow = 'hidden';
-}
+      function openDrawer() {
+        sidebar?.classList.add('drawer-open');
+        backdrop?.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      }
 
-function closeDrawer() {
-  sidebar?.classList.remove('drawer-open');
-  backdrop?.classList.remove('is-open');
-  document.body.style.overflow = '';
-}
+      function closeDrawer() {
+        sidebar?.classList.remove('drawer-open');
+        backdrop?.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
 
-hamBtn?.addEventListener('click', openDrawer);
-backdrop?.addEventListener('click', closeDrawer);
+      hamBtn?.addEventListener('click', openDrawer);
+      backdrop?.addEventListener('click', closeDrawer);
 
-// Tutup drawer kalau klik link di sidebar
-sidebar?.querySelectorAll('.dash-link, .dash-side-btn').forEach(el => {
-  el.addEventListener('click', closeDrawer);
-});
+      // Tutup drawer kalau klik link di sidebar
+      sidebar?.querySelectorAll('.dash-link, .dash-side-btn').forEach(el => {
+        el.addEventListener('click', closeDrawer);
+      });
 
       /* -------- Server-side filter -------- */
       let navTimer = null;
