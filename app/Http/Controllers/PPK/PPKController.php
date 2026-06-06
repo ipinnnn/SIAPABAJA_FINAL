@@ -707,7 +707,7 @@ class PpkController extends Controller
 
         $pengadaan->dokumen_tidak_dipersyaratkan = $this->normalizeArray($pengadaan->dokumen_tidak_dipersyaratkan);
 
-        return view('ppk.EditArsip', compact(
+        return view('PPK.EditArsip', compact(
             'ppkName',
             'pengadaan',
             'arsip',
