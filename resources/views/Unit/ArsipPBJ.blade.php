@@ -2461,7 +2461,11 @@
                             const storageUrl = normalizeStorageUrl(doc);
 
                             viewUrl = storageUrl;
-                            dlUrl = storageUrl;
+                            const cleanPath = String(doc).replace(/^\/+/, '');
+
+                            dlUrl = `/unit/arsip/${data.id}/dokumen-download` +
+                                `?field=${encodeURIComponent(grp)}` +
+                                `&path=${encodeURIComponent(cleanPath)}`;
 
                             fileName = doc.split('/').filter(Boolean).pop() || 'Dokumen';
 
