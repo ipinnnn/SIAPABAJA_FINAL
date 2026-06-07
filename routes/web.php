@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 
 // Controllers
 use App\Http\Controllers\Unit\UnitController;
-use App\Http\Controllers\PPK\PpkController;
+use App\Http\Controllers\PPK\PPKController;
 use App\Http\Controllers\SuperAdmin\SuperAdminController;
 use App\Http\Controllers\Chatbot\ChatbotController;
 
@@ -214,29 +214,29 @@ Route::middleware('auth')->group(function () {
         ->middleware('role:ppk')
         ->group(function () {
 
-            Route::get('/dashboard', [PpkController::class, 'dashboard'])->name('dashboard');
-            Route::get('/dashboard/data', [PpkController::class, 'dashboardData'])->name('dashboard.data');
+            Route::get('/dashboard', [PPKController::class, 'dashboard'])->name('dashboard');
+            Route::get('/dashboard/data', [PPKController::class, 'dashboardData'])->name('dashboard.data');
 
-            Route::get('/arsip', [PpkController::class, 'arsipIndex'])->name('arsip');
+            Route::get('/arsip', [PPKController::class, 'arsipIndex'])->name('arsip');
 
-            Route::get('/arsip/{id}/edit', [PpkController::class, 'arsipEdit'])->name('arsip.edit');
-            Route::put('/arsip/{id}', [PpkController::class, 'arsipUpdate'])->name('arsip.update');
+            Route::get('/arsip/{id}/edit', [PPKController::class, 'arsipEdit'])->name('arsip.edit');
+            Route::put('/arsip/{id}', [PPKController::class, 'arsipUpdate'])->name('arsip.update');
 
-            Route::delete('/arsip/{id}/delete', [PpkController::class, 'arsipDelete'])->name('arsip.delete');
+            Route::delete('/arsip/{id}/delete', [PPKController::class, 'arsipDelete'])->name('arsip.delete');
 
-            Route::get('/pengadaan/tambah', [PpkController::class, 'pengadaanCreate'])->name('pengadaan.create');
-            Route::post('/pengadaan/store', [PpkController::class, 'pengadaanStore'])->name('pengadaan.store');
+            Route::get('/pengadaan/tambah', [PPKController::class, 'pengadaanCreate'])->name('pengadaan.create');
+            Route::post('/pengadaan/store', [PPKController::class, 'pengadaanStore'])->name('pengadaan.store');
 
-            Route::get('/arsip/{id}/dokumen/{field}/{file}', [PpkController::class, 'showDokumen'])
+            Route::get('/arsip/{id}/dokumen/{field}/{file}', [PPKController::class, 'showDokumen'])
                 ->where(['field' => '[A-Za-z0-9_\-]+', 'file' => '.+'])
                 ->name('arsip.dokumen.show');
-            Route::get('/arsip/{id}/dokumen-download', [PpkController::class, 'downloadDokumen'])
+            Route::get('/arsip/{id}/dokumen-download', [PPKController::class, 'downloadDokumen'])
                 ->name('arsip.dokumen.download');
 
-            Route::get('/kelola-akun', [PpkController::class, 'kelolaAkun'])->name('kelola.akun');
-            Route::put('/akun', [PpkController::class, 'updateAkun'])->name('akun.update');
+            Route::get('/kelola-akun', [PPKController::class, 'kelolaAkun'])->name('kelola.akun');
+            Route::put('/akun', [PPKController::class, 'updateAkun'])->name('akun.update');
 
-            Route::get('/histori', [PpkController::class, 'historiAktivitas'])->name('histori');
+            Route::get('/histori', [PPKController::class, 'historiAktivitas'])->name('histori');
         });
 
     /*
