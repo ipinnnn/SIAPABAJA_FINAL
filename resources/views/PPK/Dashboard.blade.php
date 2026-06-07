@@ -1617,12 +1617,10 @@
 
           const labels = chart.data.labels || [];
           const data = chart.data.datasets && chart.data.datasets[0] && chart.data.datasets[0].data ?
-            chart.data.datasets[0].data :
-            [];
+            chart.data.datasets[0].data : [];
 
           const colors = chart.data.datasets && chart.data.datasets[0] && chart.data.datasets[0].backgroundColor ?
-            chart.data.datasets[0].backgroundColor :
-            [];
+            chart.data.datasets[0].backgroundColor : [];
 
           const total = data.reduce((a, b) => a + (Number(b) || 0), 0) || 0;
 
@@ -2015,7 +2013,11 @@
     </script>
 
     @include('Partials.chatbot')
-
+    <style>
+      body.dash-body .dash-main {
+        margin-left: 0 !important;
+      }
+    </style>
   </body>
 
 </html>

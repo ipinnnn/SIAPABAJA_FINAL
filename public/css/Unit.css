@@ -271,6 +271,7 @@ table, th, td{ font-size: var(--fs-sm); }
 /* ================= MAIN ================= */
 .dash-main{
     flex:1;
+    margin-left:260px;
   padding: 26px 28px;
 }
 

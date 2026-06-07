@@ -1582,6 +1582,11 @@
 
     });
   </script>
+  <style>
+    body.dash-body .dash-main {
+      margin-left: 0 !important;
+    }
+  </style>
   @include('Partials.chatbot')
 </body>
 
