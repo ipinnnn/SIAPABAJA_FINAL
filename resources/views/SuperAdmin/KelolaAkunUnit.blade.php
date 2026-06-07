@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kelola Akun Unit - SIAPABAJA</title>
-  <link rel="stylesheet" href="{{ asset('css/Unit.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/Unit.css?v=2') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap" rel="stylesheet">
@@ -13,16 +13,16 @@
 </head>
 
 <body class="dash-body page-sa-akun-unit">
-<div class="mob-topbar" id="mobTopbar">
-  <div class="mob-logo">
-    <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
-    <span class="mob-logo-txt">SIAPABAJA</span>
+  <div class="mob-topbar" id="mobTopbar">
+    <div class="mob-logo">
+      <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
+      <span class="mob-logo-txt">SIAPABAJA</span>
+    </div>
+    <button class="mob-ham" id="mobHamBtn" aria-label="Buka menu">
+      <i class="bi bi-list"></i>
+    </button>
   </div>
-  <button class="mob-ham" id="mobHamBtn" aria-label="Buka menu">
-    <i class="bi bi-list"></i>
-  </button>
-</div>
-<div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
+  <div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
   @php
   $kelolaAkunActive = request()->routeIs('superadmin.kelola.akun')
   || request()->routeIs('superadmin.kelola.akun.ppk')
@@ -105,17 +105,17 @@
     <main class="dash-main">
       <div class="dash-header-row">
 
-  <div class="dash-header">
-    <h1>Manajemen Akun Unit</h1>
-    <p>Kelola akun admin untuk setiap unit kerja</p>
-  </div>
+        <div class="dash-header">
+          <h1>Manajemen Akun Unit</h1>
+          <p>Kelola akun admin untuk setiap unit kerja</p>
+        </div>
 
-  <button type="button" class="btn-add" id="btnOpenAddModal">
-    <i class="bi bi-plus-lg"></i>
-    Tambah PIC (Unit)
-  </button>
+        <button type="button" class="btn-add" id="btnOpenAddModal">
+          <i class="bi bi-plus-lg"></i>
+          Tambah PIC (Unit)
+        </button>
 
-</div>
+      </div>
 
       <div class="table-card">
         <table>
@@ -150,31 +150,31 @@
                 </span>
               </td>
               <td class="aksi">
-  <button
-    type="button"
-    class="aksi-btn aksi-edit btn-edit"
-    data-id="{{ $item['id'] ?? '' }}"
-    data-username="{{ $item['username'] ?? '' }}"
-    data-unit-nama="{{ $item['unit_nama'] ?? '' }}"
-    data-email="{{ $item['email'] ?? '' }}"
-    data-status="{{ $item['status'] ?? 'active' }}"
-    title="Edit">
-    <i class="bi bi-pencil-fill"></i>
-  </button>
+                <button
+                  type="button"
+                  class="aksi-btn aksi-edit btn-edit"
+                  data-id="{{ $item['id'] ?? '' }}"
+                  data-username="{{ $item['username'] ?? '' }}"
+                  data-unit-nama="{{ $item['unit_nama'] ?? '' }}"
+                  data-email="{{ $item['email'] ?? '' }}"
+                  data-status="{{ $item['status'] ?? 'active' }}"
+                  title="Edit">
+                  <i class="bi bi-pencil-fill"></i>
+                </button>
 
-  <form
-    action="{{ route('superadmin.kelola.akun.unit.destroy', $item['id']) }}"
-    method="POST"
-    class="form-delete js-delete-form">
-    @csrf
-    @method('DELETE')
-    <button type="button" class="aksi-btn aksi-delete js-open-confirm" title="Hapus">
-      <i class="bi bi-trash3-fill"></i>
-    </button>
-  </form>
-</td>
+                <form
+                  action="{{ route('superadmin.kelola.akun.unit.destroy', $item['id']) }}"
+                  method="POST"
+                  class="form-delete js-delete-form">
+                  @csrf
+                  @method('DELETE')
+                  <button type="button" class="aksi-btn aksi-delete js-open-confirm" title="Hapus">
+                    <i class="bi bi-trash3-fill"></i>
+                  </button>
+                </form>
+              </td>
 
-                
+
             </tr>
             @empty
             <tr>
@@ -616,32 +616,37 @@
     }
 
     .aksi-btn {
-  width: 34px;
-  height: 34px;
-  border: 1px solid #e8eef3;
-  border-radius: 10px;
-  background: #f8fafc;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 15px;
-  text-decoration: none;
-  color: #374151;
-  transition: .15s;
-  padding: 0;
-}
-.aksi-btn:hover { transform: translateY(-1px); }
-.aksi-edit:hover {
-  background: #fefce8;
-  border-color: #fde68a;
-  color: #a16207;
-}
-.aksi-delete:hover {
-  background: #fef2f2;
-  border-color: #fecaca;
-  color: #dc2626;
-}
+      width: 34px;
+      height: 34px;
+      border: 1px solid #e8eef3;
+      border-radius: 10px;
+      background: #f8fafc;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 15px;
+      text-decoration: none;
+      color: #374151;
+      transition: .15s;
+      padding: 0;
+    }
+
+    .aksi-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .aksi-edit:hover {
+      background: #fefce8;
+      border-color: #fde68a;
+      color: #a16207;
+    }
+
+    .aksi-delete:hover {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: #dc2626;
+    }
 
     /* ===== TABLE ===== */
     .table-card {
@@ -1194,7 +1199,7 @@
       background: #dc2626;
     }
 
-  html,
+    html,
     body {
       overflow-y: auto !important;
       overflow-x: hidden !important;
@@ -1261,7 +1266,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,.4);
+      background: rgba(0, 0, 0, .4);
       z-index: 300;
     }
 
@@ -1344,26 +1349,29 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const sidebar  = document.querySelector('.dash-sidebar');
-const hamBtn   = document.getElementById('mobHamBtn');
-const backdrop = document.getElementById('sidebarBackdrop');
+      const sidebar = document.querySelector('.dash-sidebar');
+      const hamBtn = document.getElementById('mobHamBtn');
+      const backdrop = document.getElementById('sidebarBackdrop');
 
-function openDrawer() {
-  sidebar?.classList.add('drawer-open');
-  backdrop?.classList.add('is-open');
-  document.body.style.overflow = 'hidden';
-}
-function closeDrawer() {
-  sidebar?.classList.remove('drawer-open');
-  backdrop?.classList.remove('is-open');
-  document.body.style.overflow = '';
-}
-hamBtn?.addEventListener('click', openDrawer);
-backdrop?.addEventListener('click', closeDrawer);
-sidebar?.querySelectorAll('.dash-link, .dash-side-btn').forEach(el => {
-  el.addEventListener('click', closeDrawer);
-});
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+      function openDrawer() {
+        sidebar?.classList.add('drawer-open');
+        backdrop?.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeDrawer() {
+        sidebar?.classList.remove('drawer-open');
+        backdrop?.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
+      hamBtn?.addEventListener('click', openDrawer);
+      backdrop?.addEventListener('click', closeDrawer);
+      sidebar?.querySelectorAll('.dash-link, .dash-side-btn').forEach(el => {
+        el.addEventListener('click', closeDrawer);
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeDrawer();
+      });
       const addModal = document.getElementById('addModal');
       const editModal = document.getElementById('editModal');
       const editForm = document.getElementById('editForm');

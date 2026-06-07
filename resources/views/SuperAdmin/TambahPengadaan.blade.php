@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
   {{-- Pakai base dashboard yang sama --}}
-  <link rel="stylesheet" href="{{ asset('css/Unit.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/Unit.css?v=2') }}">
 </head>
 
 {{-- ✅ Tambah class page-sa-tp supaya CSS tidak bocor ke halaman lain --}}

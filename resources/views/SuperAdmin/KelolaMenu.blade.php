@@ -10,23 +10,23 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="{{ asset('css/Unit.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/Unit.css?v=2') }}">
 </head>
 
 <body class="dash-body page-km">
-{{-- MOBILE TOPBAR --}}
-<div class="mob-topbar" id="mobTopbar">
-  <div class="mob-logo">
-    <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
-    <span class="mob-logo-txt">SIAPABAJA</span>
+  {{-- MOBILE TOPBAR --}}
+  <div class="mob-topbar" id="mobTopbar">
+    <div class="mob-logo">
+      <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
+      <span class="mob-logo-txt">SIAPABAJA</span>
+    </div>
+    <button class="mob-ham" id="mobHamBtn" aria-label="Buka menu">
+      <i class="bi bi-list"></i>
+    </button>
   </div>
-  <button class="mob-ham" id="mobHamBtn" aria-label="Buka menu">
-    <i class="bi bi-list"></i>
-  </button>
-</div>
 
-{{-- BACKDROP DRAWER --}}
-<div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
+  {{-- BACKDROP DRAWER --}}
+  <div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
   @php
   $menus = $menus ?? collect();
 
@@ -210,14 +210,14 @@
             </div>
 
             @if($secKey !== 'unit')
-<button
-  type="button"
-  class="km-add-btn"
-  onclick="openAdd('{{ $secKey }}','{{ $secLabel }}','{{ $secField }}')">
-  <i class="bi bi-plus-lg"></i>
-  Tambah
-</button>
-@endif
+            <button
+              type="button"
+              class="km-add-btn"
+              onclick="openAdd('{{ $secKey }}','{{ $secLabel }}','{{ $secField }}')">
+              <i class="bi bi-plus-lg"></i>
+              Tambah
+            </button>
+            @endif
 
           </div>
 
@@ -228,8 +228,8 @@
               <div class="km-col km-col-nama">Nama</div>
               <div class="km-col km-col-status">Status</div>
               @if($secKey !== 'unit')
-  <div class="km-col km-col-aksi">Aksi</div>
-  @endif
+              <div class="km-col km-col-aksi">Aksi</div>
+              @endif
             </div>
 
             <div class="km-tbl-body" id="body-{{ $secKey }}">
@@ -361,35 +361,35 @@
     </div>
   </div>
 
-{{-- ═══════════ MODAL HAPUS ═══════════ --}}
-<div class="cf-modal" id="delModal" aria-hidden="true">
-  <div class="cf-backdrop" onclick="closeDelModal()"></div>
-  <div class="cf-panel" role="dialog" aria-modal="true">
-    <div class="cf-card">
-      <div class="cf-top">
-        <div class="cf-badge"><i class="bi bi-shield-exclamation"></i></div>
-        <button type="button" class="cf-close" onclick="closeDelModal()">
-          <i class="bi bi-x-lg"></i>
-        </button>
-      </div>
-      <div class="cf-body">
-        <div class="cf-title">Konfirmasi Hapus</div>
-        <div class="cf-desc">
-          Yakin ingin menghapus <strong id="delItemName">item</strong> ini?
-          Tindakan ini tidak dapat dibatalkan.
-        </div>
-        <div class="cf-actions">
-          <button type="button" class="cf-btn cf-btn-ghost" onclick="closeDelModal()">Batal</button>
-          <button type="button" class="cf-btn cf-btn-danger" id="delConfirmBtn" onclick="confirmDelete()">
-            <i class="bi bi-trash3"></i>
-            <span id="delTxt">Ya, Hapus</span>
-            <span id="delLoader" hidden class="km-btn-loader"></span>
+  {{-- ═══════════ MODAL HAPUS ═══════════ --}}
+  <div class="cf-modal" id="delModal" aria-hidden="true">
+    <div class="cf-backdrop" onclick="closeDelModal()"></div>
+    <div class="cf-panel" role="dialog" aria-modal="true">
+      <div class="cf-card">
+        <div class="cf-top">
+          <div class="cf-badge"><i class="bi bi-shield-exclamation"></i></div>
+          <button type="button" class="cf-close" onclick="closeDelModal()">
+            <i class="bi bi-x-lg"></i>
           </button>
+        </div>
+        <div class="cf-body">
+          <div class="cf-title">Konfirmasi Hapus</div>
+          <div class="cf-desc">
+            Yakin ingin menghapus <strong id="delItemName">item</strong> ini?
+            Tindakan ini tidak dapat dibatalkan.
+          </div>
+          <div class="cf-actions">
+            <button type="button" class="cf-btn cf-btn-ghost" onclick="closeDelModal()">Batal</button>
+            <button type="button" class="cf-btn cf-btn-danger" id="delConfirmBtn" onclick="confirmDelete()">
+              <i class="bi bi-trash3"></i>
+              <span id="delTxt">Ya, Hapus</span>
+              <span id="delLoader" hidden class="km-btn-loader"></span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
   {{-- ═══════════ TOAST JS ═══════════ --}}
   <div class="nt-wrap" id="jsToastWrap" style="display:none;position:fixed;top:18px;right:18px;z-index:11000;">
@@ -456,10 +456,12 @@
       grid-template-columns: 1fr 1fr;
       gap: 30px;
     }
-#sec-unit .km-tbl-head,
-#sec-unit .km-tbl-row {
-    grid-template-columns: 12% 52% 36%;
-}
+
+    #sec-unit .km-tbl-head,
+    #sec-unit .km-tbl-row {
+      grid-template-columns: 12% 52% 36%;
+    }
+
     /* ===== CARD ===== */
     .km-section {
       background: #fff;
@@ -473,12 +475,12 @@
     }
 
     .km-col-status {
-    text-align: left;
-}
+      text-align: left;
+    }
 
-.km-badge {
-    justify-content: flex-start;
-}
+    .km-badge {
+      justify-content: flex-start;
+    }
 
     /* ===== HEADER CARD ===== */
     .km-sec-head {
@@ -530,225 +532,234 @@
     }
 
     /* ===== TOAST ===== */
-.nt-wrap {
-  position: fixed;
-  top: 18px;
-  right: 18px;
-  z-index: 11000;
-  pointer-events: none;
-}
+    .nt-wrap {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 11000;
+      pointer-events: none;
+    }
 
-.nt-toast {
-  width: min(380px, calc(100vw - 36px));
-  background: #fff;
-  border: 1px solid #e6eef2;
-  border-radius: 16px;
-  box-shadow: 0 16px 32px rgba(2, 8, 23, .12);
-  padding: 14px;
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  position: relative;
-  overflow: hidden;
-  pointer-events: auto;
-}
+    .nt-toast {
+      width: min(380px, calc(100vw - 36px));
+      background: #fff;
+      border: 1px solid #e6eef2;
+      border-radius: 16px;
+      box-shadow: 0 16px 32px rgba(2, 8, 23, .12);
+      padding: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      position: relative;
+      overflow: hidden;
+      pointer-events: auto;
+    }
 
-.nt-success {
-  border-left: 4px solid #22c55e;
-}
+    .nt-success {
+      border-left: 4px solid #22c55e;
+    }
 
-.nt-error {
-  border-left: 4px solid #ef4444;
-}
+    .nt-error {
+      border-left: 4px solid #ef4444;
+    }
 
-.nt-ic {
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  background: #ecfdf3;
-  border: 1px solid #d8f5e3;
-  color: #16a34a;
-  flex: 0 0 auto;
-}
+    .nt-ic {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: #ecfdf3;
+      border: 1px solid #d8f5e3;
+      color: #16a34a;
+      flex: 0 0 auto;
+    }
 
-.nt-error .nt-ic {
-  background: #fef2f2;
-  border-color: #fecaca;
-  color: #dc2626;
-}
+    .nt-error .nt-ic {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: #dc2626;
+    }
 
-.nt-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: #0f172a;
-}
+    .nt-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+    }
 
-.nt-desc {
-  font-size: 13px;
-  color: #475569;
-  margin-top: 2px;
-  line-height: 1.5;
-}
+    .nt-desc {
+      font-size: 13px;
+      color: #475569;
+      margin-top: 2px;
+      line-height: 1.5;
+    }
 
-.nt-close {
-  margin-left: auto;
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  border: 1px solid #eef2f7;
-  background: #fff;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  cursor: pointer;
-}
+    .nt-close {
+      margin-left: auto;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      border: 1px solid #eef2f7;
+      background: #fff;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      cursor: pointer;
+    }
 
-.nt-bar {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 3px;
-  width: 100%;
-  background: linear-gradient(90deg, #22c55e, #16a34a);
-  animation: ntbar 4s linear forwards;
-}
+    .nt-bar {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 3px;
+      width: 100%;
+      background: linear-gradient(90deg, #22c55e, #16a34a);
+      animation: ntbar 4s linear forwards;
+    }
 
-.nt-error .nt-bar {
-  background: linear-gradient(90deg, #ef4444, #dc2626);
-}
+    .nt-error .nt-bar {
+      background: linear-gradient(90deg, #ef4444, #dc2626);
+    }
 
-@keyframes ntbar {
-  from { width: 100%; }
-  to   { width: 0%;   }
-}
+    @keyframes ntbar {
+      from {
+        width: 100%;
+      }
 
-/* ===== CONFIRM MODAL ===== */
-.cf-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  display: none;
-}
+      to {
+        width: 0%;
+      }
+    }
 
-.cf-modal.is-open {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px;
-}
+    /* ===== CONFIRM MODAL ===== */
+    .cf-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: none;
+    }
 
-.cf-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, .40);
-  backdrop-filter: blur(8px);
-}
+    .cf-modal.is-open {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
 
-.cf-panel {
-  width: min(480px, 94vw);
-  position: relative;
-  z-index: 1;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 20px 50px rgba(2, 6, 23, .25);
-}
+    .cf-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, .40);
+      backdrop-filter: blur(8px);
+    }
 
-.cf-card {
-  background: #fff;
-  border: 1px solid rgba(148,163,184,.3);
-  border-radius: 20px;
-  overflow: hidden;
-}
+    .cf-panel {
+      width: min(480px, 94vw);
+      position: relative;
+      z-index: 1;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(2, 6, 23, .25);
+    }
 
-.cf-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 16px 16px 0;
-}
+    .cf-card {
+      background: #fff;
+      border: 1px solid rgba(148, 163, 184, .3);
+      border-radius: 20px;
+      overflow: hidden;
+    }
 
-.cf-badge {
-  width: 50px;
-  height: 50px;
-  border-radius: 16px;
-  display: grid;
-  place-items: center;
-  background: #fef3c7;
-  border: 1px solid #fde68a;
-  font-size: 22px;
-  color: #d97706;
-}
+    .cf-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 16px 0;
+    }
 
-.cf-close {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  border: 1px solid #e8eef3;
-  background: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  cursor: pointer;
-}
+    .cf-badge {
+      width: 50px;
+      height: 50px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: #fef3c7;
+      border: 1px solid #fde68a;
+      font-size: 22px;
+      color: #d97706;
+    }
 
-.cf-body {
-  padding: 10px 16px 16px;
-}
+    .cf-close {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      border: 1px solid #e8eef3;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      cursor: pointer;
+    }
 
-.cf-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #0f172a;
-  margin: 6px 0 4px;
-}
+    .cf-body {
+      padding: 10px 16px 16px;
+    }
 
-.cf-desc {
-  font-size: 13.5px;
-  color: #475569;
-  line-height: 1.55;
-}
+    .cf-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 6px 0 4px;
+    }
 
-.cf-actions {
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-  margin-top: 14px;
-}
+    .cf-desc {
+      font-size: 13.5px;
+      color: #475569;
+      line-height: 1.55;
+    }
 
-.cf-btn {
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 12px;
-  border: 1px solid transparent;
-  font-size: 14px;
-  font-weight: 700;
-  font-family: 'Nunito', sans-serif;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  transition: .15s;
-}
+    .cf-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 14px;
+    }
 
-.cf-btn-ghost {
-  background: #fff;
-  border-color: #e8eef3;
-  color: #0f172a;
-}
+    .cf-btn {
+      height: 40px;
+      padding: 0 16px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: .15s;
+    }
 
-.cf-btn-ghost:hover { background: #f1f5f9; }
+    .cf-btn-ghost {
+      background: #fff;
+      border-color: #e8eef3;
+      color: #0f172a;
+    }
 
-.cf-btn-danger {
-  background: #ef4444;
-  color: #fff;
-}
+    .cf-btn-ghost:hover {
+      background: #f1f5f9;
+    }
 
-.cf-btn-danger:hover { background: #dc2626; }
+    .cf-btn-danger {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    .cf-btn-danger:hover {
+      background: #dc2626;
+    }
 
 
     /* ROW */
@@ -816,36 +827,36 @@
 
     /* ICON */
     .km-icbtn {
-    width: 34px;
-    height: 34px;
-    border: 1px solid #e8eef3;
-    border-radius: 10px;
-    background: #f8fafc;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 15px;
-    color: #374151;
-    transition: .15s;
-    padding: 0;
-}
+      width: 34px;
+      height: 34px;
+      border: 1px solid #e8eef3;
+      border-radius: 10px;
+      background: #f8fafc;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 15px;
+      color: #374151;
+      transition: .15s;
+      padding: 0;
+    }
 
-.km-icbtn:hover {
-    transform: translateY(-1px);
-}
+    .km-icbtn:hover {
+      transform: translateY(-1px);
+    }
 
-.km-icbtn-edit:hover {
-    background: #fefce8;
-    border-color: #fde68a;
-    color: #a16207;
-}
+    .km-icbtn-edit:hover {
+      background: #fefce8;
+      border-color: #fde68a;
+      color: #a16207;
+    }
 
-.km-icbtn-del:hover {
-    background: #fef2f2;
-    border-color: #fecaca;
-    color: #dc2626;
-}
+    .km-icbtn-del:hover {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: #dc2626;
+    }
 
     /* ===== TOGGLE ===== */
     .km-toggle {
@@ -922,21 +933,22 @@
     }
 
     /* ===== SCROLLABLE TABLE ===== */
-.km-section {
-  display: flex;
-  flex-direction: column;
-}
+    .km-section {
+      display: flex;
+      flex-direction: column;
+    }
 
-.km-table {
-  overflow-y: auto;
-  max-height: 400px; /* sesuaikan tingginya */
-}
+    .km-table {
+      overflow-y: auto;
+      max-height: 400px;
+      /* sesuaikan tingginya */
+    }
 
-.km-tbl-head {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-}
+    .km-tbl-head {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
 
     /* =========================
    MODAL FINAL (CLEAN UI)
@@ -1136,170 +1148,179 @@
       }
     }
 
-   /* ===== MOBILE TOPBAR ===== */
-:where(.page-km) .mob-topbar {
-  display: none;
-}
+    /* ===== MOBILE TOPBAR ===== */
+    :where(.page-km) .mob-topbar {
+      display: none;
+    }
 
-:where(.page-km) .sidebar-drawer-backdrop {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(15, 23, 42, .45);
-  backdrop-filter: blur(4px);
-  z-index: 300;
-}
+    :where(.page-km) .sidebar-drawer-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, .45);
+      backdrop-filter: blur(4px);
+      z-index: 300;
+    }
 
-:where(.page-km) .sidebar-drawer-backdrop.is-open {
-  display: block;
-}
+    :where(.page-km) .sidebar-drawer-backdrop.is-open {
+      display: block;
+    }
 
-/* ===== DESKTOP: sidebar tetap sticky ===== */
-@media (min-width: 1025px) {
-  :where(.page-km) .mob-topbar { display: none !important; }
-  :where(.page-km) .sidebar-drawer-backdrop { display: none !important; }
+    /* ===== DESKTOP: sidebar tetap sticky ===== */
+    @media (min-width: 1025px) {
+      :where(.page-km) .mob-topbar {
+        display: none !important;
+      }
 
-  body.page-km .km-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
+      :where(.page-km) .sidebar-drawer-backdrop {
+        display: none !important;
+      }
 
-/* ===== TABLET/MOBILE ===== */
-@media (max-width: 1024px) {
+      body.page-km .km-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
 
-  :where(.page-km) .mob-topbar {
-    display: flex !important;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 16px;
-    background: #184f61;
-    position: sticky;
-    top: 0;
-    z-index: 200;
-  }
+    /* ===== TABLET/MOBILE ===== */
+    @media (max-width: 1024px) {
 
-  :where(.page-km) .mob-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+      :where(.page-km) .mob-topbar {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        background: #184f61;
+        position: sticky;
+        top: 0;
+        z-index: 200;
+      }
 
-  :where(.page-km) .mob-logo img { width: 32px; height: 32px; }
+      :where(.page-km) .mob-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
 
-  :where(.page-km) .mob-logo-txt {
-    color: #f4c542;
-    font-size: 17px;
-    font-weight: 700;
-  }
+      :where(.page-km) .mob-logo img {
+        width: 32px;
+        height: 32px;
+      }
 
-  :where(.page-km) .mob-ham {
-  width: 40px !important;
-  height: 40px !important;
-  border: 1px solid #e6eef2 !important;
-  border-radius: 10px !important;
-  background: #fff !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  cursor: pointer !important;
-  font-size: 18px !important;
-  color: #184f61 !important;
-}
+      :where(.page-km) .mob-logo-txt {
+        color: #f4c542;
+        font-size: 17px;
+        font-weight: 700;
+      }
 
-  :where(.page-km) .sidebar-drawer-backdrop.is-open {
-    display: block !important;
-  }
+      :where(.page-km) .mob-ham {
+        width: 40px !important;
+        height: 40px !important;
+        border: 1px solid #e6eef2 !important;
+        border-radius: 10px !important;
+        background: #fff !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        font-size: 18px !important;
+        color: #184f61 !important;
+      }
 
-  body.page-km .dash-sidebar {
-    position: fixed !important;
-    top: 0 !important;
-    left: -280px !important;
-    height: 100vh !important;
-    width: 260px !important;
-    z-index: 400 !important;
-    transition: left .25s ease !important;
-    overflow-y: auto !important;
-  }
+      :where(.page-km) .sidebar-drawer-backdrop.is-open {
+        display: block !important;
+      }
 
-  body.page-km .dash-sidebar.drawer-open {
-    left: 0 !important;
-    box-shadow: 4px 0 24px rgba(2, 8, 23, .18) !important;
-  }
+      body.page-km .dash-sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: -280px !important;
+        height: 100vh !important;
+        width: 260px !important;
+        z-index: 400 !important;
+        transition: left .25s ease !important;
+        overflow-y: auto !important;
+      }
 
-  body.page-km .dash-wrap {
-    display: block !important;
-    height: auto !important;
-    min-height: 100vh !important;
-    overflow: visible !important;
-  }
+      body.page-km .dash-sidebar.drawer-open {
+        left: 0 !important;
+        box-shadow: 4px 0 24px rgba(2, 8, 23, .18) !important;
+      }
 
-  html, body {
-    height: auto !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-  }
+      body.page-km .dash-wrap {
+        display: block !important;
+        height: auto !important;
+        min-height: 100vh !important;
+        overflow: visible !important;
+      }
 
-  body.page-km .dash-main {
-    height: auto !important;
-    overflow-y: visible !important;
-    padding: 20px !important;
-    margin-left: 0 !important;
-  }
+      html,
+      body {
+        height: auto !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+      }
 
-  body.page-km .km-grid {
-    grid-template-columns: 1fr !important;
-    gap: 20px !important;
-  }
-}
+      body.page-km .dash-main {
+        height: auto !important;
+        overflow-y: visible !important;
+        padding: 20px !important;
+        margin-left: 0 !important;
+      }
 
-/* ===== SMALL MOBILE ===== */
-@media (max-width: 600px) {
+      body.page-km .km-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+      }
+    }
 
-  body.page-km .dash-main {
-    padding: 12px !important;
-  }
+    /* ===== SMALL MOBILE ===== */
+    @media (max-width: 600px) {
 
-  body.page-km .km-header h1 {
-    font-size: 20px !important;
-  }
+      body.page-km .dash-main {
+        padding: 12px !important;
+      }
 
-  body.page-km .km-header p {
-    font-size: 13px !important;
-  }
+      body.page-km .km-header h1 {
+        font-size: 20px !important;
+      }
 
-  /* Tabel kolom lebih kompak */
-  body.page-km .km-tbl-head,
-  body.page-km .km-tbl-row {
-    grid-template-columns: 10% 38% 26% 26% !important;
-    padding: 10px 12px !important;
-    font-size: 12px !important;
-  }
+      body.page-km .km-header p {
+        font-size: 13px !important;
+      }
 
-  body.page-km .km-badge {
-    font-size: 11px !important;
-    padding: 4px 8px !important;
-    min-width: unset !important;
-  }
+      /* Tabel kolom lebih kompak */
+      body.page-km .km-tbl-head,
+      body.page-km .km-tbl-row {
+        grid-template-columns: 10% 38% 26% 26% !important;
+        padding: 10px 12px !important;
+        font-size: 12px !important;
+      }
 
-  body.page-km .km-icbtn {
-    width: 30px !important;
-    height: 30px !important;
-    font-size: 13px !important;
-  }
+      body.page-km .km-badge {
+        font-size: 11px !important;
+        padding: 4px 8px !important;
+        min-width: unset !important;
+      }
 
-  body.page-km .km-sec-head {
-    padding: 14px 12px !important;
-  }
+      body.page-km .km-icbtn {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 13px !important;
+      }
 
-  body.page-km .km-sec-title {
-    font-size: 15px !important;
-  }
+      body.page-km .km-sec-head {
+        padding: 14px 12px !important;
+      }
 
-  body.page-km .km-modal-card {
-    width: 92vw !important;
-    padding: 16px !important;
-  }
-}
+      body.page-km .km-sec-title {
+        font-size: 15px !important;
+      }
+
+      body.page-km .km-modal-card {
+        width: 92vw !important;
+        padding: 16px !important;
+      }
+    }
   </style>
 
   {{-- ═══════════ SCRIPTS ═══════════ --}}
@@ -1594,22 +1615,22 @@
     }
 
 
- function openDelete(type, id, nama) {
-  _delType = type;
-  _delId = id;
-  document.getElementById('delItemName').textContent = nama;
-  const m = document.getElementById('delModal');
-  m.classList.add('is-open');
-  m.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
-}
+    function openDelete(type, id, nama) {
+      _delType = type;
+      _delId = id;
+      document.getElementById('delItemName').textContent = nama;
+      const m = document.getElementById('delModal');
+      m.classList.add('is-open');
+      m.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
 
-function closeDelModal() {
-  const m = document.getElementById('delModal');
-  m.classList.remove('is-open');
-  m.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
-}
+    function closeDelModal() {
+      const m = document.getElementById('delModal');
+      m.classList.remove('is-open');
+      m.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
 
     async function confirmDelete() {
       const btn = document.getElementById('delConfirmBtn');
@@ -1698,47 +1719,47 @@ function closeDelModal() {
     });
 
     /* ─── Escape empty els on load ─── */
-document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
 
-  // Toast
-  const nt = document.getElementById('ntToast');
+      // Toast
+      const nt = document.getElementById('ntToast');
 
-  if (nt) {
-    document.getElementById('ntCloseBtn')?.addEventListener('click', () => {
-      nt.parentElement?.remove();
+      if (nt) {
+        document.getElementById('ntCloseBtn')?.addEventListener('click', () => {
+          nt.parentElement?.remove();
+        });
+
+        setTimeout(() => {
+          nt.parentElement?.remove();
+        }, 4000);
+      }
+
+      // Sidebar Drawer
+      const sidebar = document.querySelector('.dash-sidebar');
+      const hamBtn = document.getElementById('mobHamBtn');
+      const backdrop = document.getElementById('sidebarBackdrop');
+
+      function openDrawer() {
+        sidebar?.classList.add('drawer-open');
+        backdrop?.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeDrawer() {
+        sidebar?.classList.remove('drawer-open');
+        backdrop?.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
+
+      hamBtn?.addEventListener('click', openDrawer);
+      backdrop?.addEventListener('click', closeDrawer);
+
+      sidebar?.querySelectorAll('.dash-link, .dash-side-btn').forEach(el => {
+        el.addEventListener('click', closeDrawer);
+      });
+
     });
 
-    setTimeout(() => {
-      nt.parentElement?.remove();
-    }, 4000);
-  }
-
-  // Sidebar Drawer
-  const sidebar  = document.querySelector('.dash-sidebar');
-  const hamBtn   = document.getElementById('mobHamBtn');
-  const backdrop = document.getElementById('sidebarBackdrop');
-
-  function openDrawer() {
-    sidebar?.classList.add('drawer-open');
-    backdrop?.classList.add('is-open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeDrawer() {
-    sidebar?.classList.remove('drawer-open');
-    backdrop?.classList.remove('is-open');
-    document.body.style.overflow = '';
-  }
-
-  hamBtn?.addEventListener('click', openDrawer);
-  backdrop?.addEventListener('click', closeDrawer);
-
-  sidebar?.querySelectorAll('.dash-link, .dash-side-btn').forEach(el => {
-    el.addEventListener('click', closeDrawer);
-  });
-
-});
- 
     /* ─── XSS helpers ─── */
     function escHtml(s) {
       const d = document.createElement('div');

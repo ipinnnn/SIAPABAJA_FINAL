@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kelola Akun PPK - SIAPABAJA</title>
-  <link rel="stylesheet" href="{{ asset('css/Unit.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/Unit.css?v=2') }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600&display=swap" rel="stylesheet">
@@ -13,18 +13,18 @@
 </head>
 
 <body class="dash-body page-sa-akun-ppk">
-<div class="mob-topbar" id="mobTopbar">
-  <div class="mob-logo">
-    <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
-    <span class="mob-logo-txt">SIAPABAJA</span>
+  <div class="mob-topbar" id="mobTopbar">
+    <div class="mob-logo">
+      <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
+      <span class="mob-logo-txt">SIAPABAJA</span>
+    </div>
+
+    <button class="mob-ham" id="mobHamBtn" aria-label="Buka menu">
+      <i class="bi bi-list"></i>
+    </button>
   </div>
 
-  <button class="mob-ham" id="mobHamBtn" aria-label="Buka menu">
-    <i class="bi bi-list"></i>
-  </button>
-</div>
-
-<div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
+  <div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
   @php
   $superAdminName = $superAdminName ?? 'Super Admin';
   $kelolaAkunActive = request()->routeIs('superadmin.kelola.akun')
@@ -112,17 +112,17 @@
     <main class="dash-main">
       <div class="dash-header-row">
 
-  <div class="dash-header">
-    <h1>Manajemen Akun PPK</h1>
-    <p>Kelola akun admin PPK (Pejabat Pembuat Komitmen)</p>
-  </div>
+        <div class="dash-header">
+          <h1>Manajemen Akun PPK</h1>
+          <p>Kelola akun admin PPK (Pejabat Pembuat Komitmen)</p>
+        </div>
 
-  <button type="button" class="btn-add" id="btnOpenAddModal">
-    <i class="bi bi-plus-lg"></i>
-    Tambah Admin (PPK)
-  </button>
+        <button type="button" class="btn-add" id="btnOpenAddModal">
+          <i class="bi bi-plus-lg"></i>
+          Tambah Admin (PPK)
+        </button>
 
-</div>
+      </div>
 
       <div class="table-card">
         <table>
@@ -157,29 +157,29 @@
                 </span>
               </td>
               <td class="aksi">
-  <button
-    type="button"
-    class="aksi-btn aksi-edit btn-edit"
-    data-id="{{ $item['id'] ?? '' }}"
-    data-username="{{ $item['username'] ?? '' }}"
-    data-unit-nama="{{ $item['unit_nama'] ?? '' }}"
-    data-email="{{ $item['email'] ?? '' }}"
-    data-status="{{ $item['status'] ?? 'active' }}"
-    title="Edit">
-    <i class="bi bi-pencil-fill"></i>
-  </button>
+                <button
+                  type="button"
+                  class="aksi-btn aksi-edit btn-edit"
+                  data-id="{{ $item['id'] ?? '' }}"
+                  data-username="{{ $item['username'] ?? '' }}"
+                  data-unit-nama="{{ $item['unit_nama'] ?? '' }}"
+                  data-email="{{ $item['email'] ?? '' }}"
+                  data-status="{{ $item['status'] ?? 'active' }}"
+                  title="Edit">
+                  <i class="bi bi-pencil-fill"></i>
+                </button>
 
-  <form
-    action="{{ route('superadmin.kelola.akun.ppk.destroy', $item['id']) }}"
-    method="POST"
-    class="form-delete js-delete-form">
-    @csrf
-    @method('DELETE')
-    <button type="button" class="aksi-btn aksi-delete js-open-confirm" title="Hapus">
-      <i class="bi bi-trash3-fill"></i>
-    </button>
-  </form>
-</td>
+                <form
+                  action="{{ route('superadmin.kelola.akun.ppk.destroy', $item['id']) }}"
+                  method="POST"
+                  class="form-delete js-delete-form">
+                  @csrf
+                  @method('DELETE')
+                  <button type="button" class="aksi-btn aksi-delete js-open-confirm" title="Hapus">
+                    <i class="bi bi-trash3-fill"></i>
+                  </button>
+                </form>
+              </td>
             </tr>
             @empty
             <tr>
@@ -766,33 +766,38 @@
       padding: 24px;
     }
 
-.aksi-btn {
-  width: 34px;
-  height: 34px;
-  border: 1px solid #e8eef3;
-  border-radius: 10px;
-  background: #f8fafc;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 15px;
-  text-decoration: none;
-  color: #374151;
-  transition: .15s;
-  padding: 0;
-}
-.aksi-btn:hover { transform: translateY(-1px); }
-.aksi-edit:hover {
-  background: #fefce8;
-  border-color: #fde68a;
-  color: #a16207;
-}
-.aksi-delete:hover {
-  background: #fef2f2;
-  border-color: #fecaca;
-  color: #dc2626;
-}
+    .aksi-btn {
+      width: 34px;
+      height: 34px;
+      border: 1px solid #e8eef3;
+      border-radius: 10px;
+      background: #f8fafc;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 15px;
+      text-decoration: none;
+      color: #374151;
+      transition: .15s;
+      padding: 0;
+    }
+
+    .aksi-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .aksi-edit:hover {
+      background: #fefce8;
+      border-color: #fde68a;
+      color: #a16207;
+    }
+
+    .aksi-delete:hover {
+      background: #fef2f2;
+      border-color: #fecaca;
+      color: #dc2626;
+    }
 
     .modal-backdrop.show {
       display: flex;
@@ -1207,160 +1212,160 @@
    RESPONSIVE SUPERADMIN KELOLA AKUN PPK
 ========================================================= */
 
-:where(.page-sa-akun-ppk) .mob-topbar{
-  display:none;
-  align-items:center;
-  justify-content:space-between;
-  padding:14px 16px;
-  background:#184f61;
-  position:sticky;
-  top:0;
-  z-index:200;
-}
+    :where(.page-sa-akun-ppk) .mob-topbar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: #184f61;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+    }
 
-:where(.page-sa-akun-ppk) .mob-logo{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
+    :where(.page-sa-akun-ppk) .mob-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-:where(.page-sa-akun-ppk) .mob-logo img{
-  width:32px;
-  height:32px;
-}
+    :where(.page-sa-akun-ppk) .mob-logo img {
+      width: 32px;
+      height: 32px;
+    }
 
-:where(.page-sa-akun-ppk) .mob-logo-txt{
-  color:#f4c542;
-  font-size:17px;
-  font-weight:700;
-}
+    :where(.page-sa-akun-ppk) .mob-logo-txt {
+      color: #f4c542;
+      font-size: 17px;
+      font-weight: 700;
+    }
 
-:where(.page-sa-akun-ppk) .mob-ham{
-  width:40px;
-  height:40px;
-  border:1px solid #e6eef2;
-  border-radius:10px;
-  background:#fff;
-  color:#184f61;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  font-size:18px;
-}
+    :where(.page-sa-akun-ppk) .mob-ham {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #e6eef2;
+      border-radius: 10px;
+      background: #fff;
+      color: #184f61;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+    }
 
-:where(.page-sa-akun-ppk) .sidebar-drawer-backdrop{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.4);
-  z-index:300;
-}
+    :where(.page-sa-akun-ppk) .sidebar-drawer-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .4);
+      z-index: 300;
+    }
 
-:where(.page-sa-akun-ppk) .sidebar-drawer-backdrop.is-open{
-  display:block;
-}
+    :where(.page-sa-akun-ppk) .sidebar-drawer-backdrop.is-open {
+      display: block;
+    }
 
-@media (max-width:1024px){
+    @media (max-width:1024px) {
 
-  :where(.page-sa-akun-ppk) .mob-topbar{
-    display:flex;
-  }
+      :where(.page-sa-akun-ppk) .mob-topbar {
+        display: flex;
+      }
 
-  :where(.page-sa-akun-ppk) .dash-sidebar{
-    position:fixed !important;
-    top:0 !important;
-    left:-280px !important;
-    width:260px !important;
-    height:100vh !important;
-    z-index:400 !important;
-    transition:left .25s ease !important;
-    overflow-y:auto !important;
-  }
+      :where(.page-sa-akun-ppk) .dash-sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: -280px !important;
+        width: 260px !important;
+        height: 100vh !important;
+        z-index: 400 !important;
+        transition: left .25s ease !important;
+        overflow-y: auto !important;
+      }
 
-  :where(.page-sa-akun-ppk) .dash-sidebar.drawer-open{
-    left:0 !important;
-  }
+      :where(.page-sa-akun-ppk) .dash-sidebar.drawer-open {
+        left: 0 !important;
+      }
 
-  :where(.page-sa-akun-ppk) .dash-wrap{
-    display:block !important;
-    min-height:100vh !important;
-  }
+      :where(.page-sa-akun-ppk) .dash-wrap {
+        display: block !important;
+        min-height: 100vh !important;
+      }
 
-  :where(.page-sa-akun-ppk) .dash-main{
-    height:auto !important;
-    overflow:visible !important;
-    padding:20px !important;
-  }
+      :where(.page-sa-akun-ppk) .dash-main {
+        height: auto !important;
+        overflow: visible !important;
+        padding: 20px !important;
+      }
 
-  :where(.page-sa-akun-ppk) .dash-header-row{
-    flex-direction:column !important;
-    align-items:stretch !important;
-  }
+      :where(.page-sa-akun-ppk) .dash-header-row {
+        flex-direction: column !important;
+        align-items: stretch !important;
+      }
 
-  :where(.page-sa-akun-ppk) .btn-add{
-    width:100% !important;
-    justify-content:center !important;
-  }
+      :where(.page-sa-akun-ppk) .btn-add {
+        width: 100% !important;
+        justify-content: center !important;
+      }
 
-  :where(.page-sa-akun-ppk) .table-card{
-    overflow-x:auto !important;
-  }
+      :where(.page-sa-akun-ppk) .table-card {
+        overflow-x: auto !important;
+      }
 
-  :where(.page-sa-akun-ppk) table{
-    min-width:900px;
-  }
-}
+      :where(.page-sa-akun-ppk) table {
+        min-width: 900px;
+      }
+    }
 
-@media (max-width:768px){
+    @media (max-width:768px) {
 
-  :where(.page-sa-akun-ppk) .dash-main{
-    padding:12px !important;
-  }
+      :where(.page-sa-akun-ppk) .dash-main {
+        padding: 12px !important;
+      }
 
-  :where(.page-sa-akun-ppk) .modal-card{
-    padding:20px 16px !important;
-  }
+      :where(.page-sa-akun-ppk) .modal-card {
+        padding: 20px 16px !important;
+      }
 
-  :where(.page-sa-akun-ppk) .modal-actions{
-    flex-direction:column;
-  }
+      :where(.page-sa-akun-ppk) .modal-actions {
+        flex-direction: column;
+      }
 
-  :where(.page-sa-akun-ppk) .btn-save,
-  :where(.page-sa-akun-ppk) .btn-cancel{
-    width:100%;
-  }
-}
+      :where(.page-sa-akun-ppk) .btn-save,
+      :where(.page-sa-akun-ppk) .btn-cancel {
+        width: 100%;
+      }
+    }
   </style>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const sidebar  = document.querySelector('.dash-sidebar');
-const hamBtn   = document.getElementById('mobHamBtn');
-const backdrop = document.getElementById('sidebarBackdrop');
+      const sidebar = document.querySelector('.dash-sidebar');
+      const hamBtn = document.getElementById('mobHamBtn');
+      const backdrop = document.getElementById('sidebarBackdrop');
 
-function openDrawer(){
-  sidebar?.classList.add('drawer-open');
-  backdrop?.classList.add('is-open');
-  document.body.style.overflow = 'hidden';
-}
+      function openDrawer() {
+        sidebar?.classList.add('drawer-open');
+        backdrop?.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      }
 
-function closeDrawer(){
-  sidebar?.classList.remove('drawer-open');
-  backdrop?.classList.remove('is-open');
-  document.body.style.overflow = '';
-}
+      function closeDrawer() {
+        sidebar?.classList.remove('drawer-open');
+        backdrop?.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
 
-hamBtn?.addEventListener('click', openDrawer);
-backdrop?.addEventListener('click', closeDrawer);
+      hamBtn?.addEventListener('click', openDrawer);
+      backdrop?.addEventListener('click', closeDrawer);
 
-sidebar?.querySelectorAll('.dash-link, .dash-side-btn').forEach(el => {
-  el.addEventListener('click', closeDrawer);
-});
+      sidebar?.querySelectorAll('.dash-link, .dash-side-btn').forEach(el => {
+        el.addEventListener('click', closeDrawer);
+      });
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeDrawer();
-});
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeDrawer();
+      });
 
       const addModal = document.getElementById('addModal');
       const editModal = document.getElementById('editModal');

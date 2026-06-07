@@ -16,20 +16,20 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
   {{-- Pakai base dashboard yang sama --}}
-  <link rel="stylesheet" href="{{ asset('css/Unit.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/Unit.css?v=2') }}">
 </head>
 
 <body class="dash-body">
-<div class="mob-topbar" id="mobTopbar">
-  <div class="mob-logo">
-    <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
-    <span class="mob-logo-txt">SIAPABAJA</span>
+  <div class="mob-topbar" id="mobTopbar">
+    <div class="mob-logo">
+      <img src="{{ asset('image/Logo_Unsoed.png') }}" alt="Logo">
+      <span class="mob-logo-txt">SIAPABAJA</span>
+    </div>
+    <button class="mob-ham" id="mobHamBtn" aria-label="Buka menu">
+      <i class="bi bi-list"></i>
+    </button>
   </div>
-  <button class="mob-ham" id="mobHamBtn" aria-label="Buka menu">
-    <i class="bi bi-list"></i>
-  </button>
-</div>
-<div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
+  <div class="sidebar-drawer-backdrop" id="sidebarBackdrop"></div>
   @php
   // =========================
   // ✅ FIX UTAMA: SAMAKAN DENGAN CONTROLLER
@@ -1384,135 +1384,157 @@
     }
 
     .mob-topbar,
-.sidebar-drawer-backdrop { display: none; }
+    .sidebar-drawer-backdrop {
+      display: none;
+    }
 
-@media (max-width: 1024px) {
+    @media (max-width: 1024px) {
 
-  .mob-topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 16px;
-    background: #184f61;
-    position: sticky;
-    top: 0;
-    z-index: 200;
-  }
+      .mob-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        background: #184f61;
+        position: sticky;
+        top: 0;
+        z-index: 200;
+      }
 
-  .mob-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+      .mob-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
 
-  .mob-logo img { width: 32px; height: 32px; }
+      .mob-logo img {
+        width: 32px;
+        height: 32px;
+      }
 
-  .mob-logo-txt {
-    color: #f4c542;
-    font-size: 17px;
-    font-weight: 700;
-  }
+      .mob-logo-txt {
+        color: #f4c542;
+        font-size: 17px;
+        font-weight: 700;
+      }
 
-  .mob-ham {
-    width: 40px;
-    height: 40px;
-    border: none;
-    border-radius: 10px;
-    background: #fff;
-    color: #184f61;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
+      .mob-ham {
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 10px;
+        background: #fff;
+        color: #184f61;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
 
-  .sidebar-drawer-backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.4);
-    z-index: 300;
-  }
+      .sidebar-drawer-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, .4);
+        z-index: 300;
+      }
 
-  .sidebar-drawer-backdrop.is-open { display: block; }
+      .sidebar-drawer-backdrop.is-open {
+        display: block;
+      }
 
-  .dash-sidebar {
-    position: fixed !important;
-    top: 0 !important;
-    left: -280px !important;
-    width: 260px !important;
-    height: 100vh !important;
-    z-index: 400 !important;
-    transition: left .25s ease !important;
-    overflow-y: auto !important;
-  }
+      .dash-sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: -280px !important;
+        width: 260px !important;
+        height: 100vh !important;
+        z-index: 400 !important;
+        transition: left .25s ease !important;
+        overflow-y: auto !important;
+      }
 
-  .dash-sidebar.drawer-open { left: 0 !important; }
+      .dash-sidebar.drawer-open {
+        left: 0 !important;
+      }
 
-  html, body {
-    height: auto !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-  }
+      html,
+      body {
+        height: auto !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+      }
 
-  .dash-wrap {
-    display: block !important;
-    height: auto !important;
-    min-height: 100vh !important;
-    overflow: visible !important;
-  }
+      .dash-wrap {
+        display: block !important;
+        height: auto !important;
+        min-height: 100vh !important;
+        overflow: visible !important;
+      }
 
-  .dash-main {
-    height: auto !important;
-    overflow: visible !important;
-    padding: 20px !important;
-  }
-}
+      .dash-main {
+        height: auto !important;
+        overflow: visible !important;
+        padding: 20px !important;
+      }
+    }
 
-@media (max-width: 768px) {
+    @media (max-width: 768px) {
 
-  .dash-main { padding: 12px !important; }
+      .dash-main {
+        padding: 12px !important;
+      }
 
-  .tp-grid { grid-template-columns: 1fr !important; }
+      .tp-grid {
+        grid-template-columns: 1fr !important;
+      }
 
-  .tp-full { grid-column: unset !important; }
+      .tp-full {
+        grid-column: unset !important;
+      }
 
-  
 
-  .tp-nondoc-head {
-    flex-direction: column;
-    align-items: stretch;
-  }
 
-  .tp-nondoc-actions { width: 100%; }
+      .tp-nondoc-head {
+        flex-direction: column;
+        align-items: stretch;
+      }
 
-  .tp-nondoc-btn {
-    width: 100%;
-    justify-content: center;
-  }
+      .tp-nondoc-actions {
+        width: 100%;
+      }
 
-  .tp-acc-head { font-size: 14px; }
+      .tp-nondoc-btn {
+        width: 100%;
+        justify-content: center;
+      }
 
-  .tp-preview-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+      .tp-acc-head {
+        font-size: 14px;
+      }
 
-  .tp-preview-remove { align-self: flex-end; }
-}
+      .tp-preview-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
 
-.tp-actions.tp-actions-split {
-  display: flex !important;
-  flex-direction: row !important;
-  justify-content: space-between !important;
-  align-items: center !important;
-}
+      .tp-preview-remove {
+        align-self: flex-end;
+      }
+    }
 
-.tp-actions.tp-actions-split .tp-btn-same {
-  width: auto !important;
-  flex: 0 0 auto !important;
-  min-width: 210px !important;
-}
+    .tp-actions.tp-actions-split {
+      display: flex !important;
+      flex-direction: row !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+    }
+
+    .tp-actions.tp-actions-split .tp-btn-same {
+      width: auto !important;
+      flex: 0 0 auto !important;
+      min-width: 210px !important;
+    }
   </style>
 
   <script>
@@ -1537,30 +1559,30 @@
       if (resetBtn) resetBtn.addEventListener('click', () => window.location.reload());
 
       /* -------- Sidebar Drawer -------- */
-const sidebar  = document.querySelector('.dash-sidebar');
-const hamBtn   = document.getElementById('mobHamBtn');
-const backdrop = document.getElementById('sidebarBackdrop');
+      const sidebar = document.querySelector('.dash-sidebar');
+      const hamBtn = document.getElementById('mobHamBtn');
+      const backdrop = document.getElementById('sidebarBackdrop');
 
-function openDrawer() {
-  sidebar?.classList.add('drawer-open');
-  backdrop?.classList.add('is-open');
-  document.body.style.overflow = 'hidden';
-}
+      function openDrawer() {
+        sidebar?.classList.add('drawer-open');
+        backdrop?.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      }
 
-function closeDrawer() {
-  sidebar?.classList.remove('drawer-open');
-  backdrop?.classList.remove('is-open');
-  document.body.style.overflow = '';
-}
+      function closeDrawer() {
+        sidebar?.classList.remove('drawer-open');
+        backdrop?.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
 
-hamBtn?.addEventListener('click', openDrawer);
-backdrop?.addEventListener('click', closeDrawer);
-sidebar?.querySelectorAll('.dash-link, .dash-side-btn').forEach(el => {
-  el.addEventListener('click', closeDrawer);
-});
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeDrawer();
-});
+      hamBtn?.addEventListener('click', openDrawer);
+      backdrop?.addEventListener('click', closeDrawer);
+      sidebar?.querySelectorAll('.dash-link, .dash-side-btn').forEach(el => {
+        el.addEventListener('click', closeDrawer);
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeDrawer();
+      });
 
       // set active sesuai checked
       document.querySelectorAll('.tp-radio-wrap').forEach(wrap => {
