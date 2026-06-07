@@ -1182,16 +1182,6 @@ class UnitController extends Controller
             }
         }
 
-        dd([
-            'unitId' => $unitId,
-            'id' => $id,
-            'field' => $field,
-            'file' => $file,
-            'arr' => $arr,
-            'matchPath' => $matchPath,
-            'exists' => $matchPath ? Storage::disk('public')->exists($matchPath) : false,
-        ]);
-
         $ext    = strtolower(pathinfo($matchPath, PATHINFO_EXTENSION));
         $mime   = Storage::disk('public')->mimeType($matchPath) ?: 'application/octet-stream';
         $stream = Storage::disk('public')->readStream($matchPath);
