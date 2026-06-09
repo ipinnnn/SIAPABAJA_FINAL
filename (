@@ -1,0 +1,655 @@
+[90m= [39m"""
+  [32m<section id="Dashboard" class="hero">[39m\n
+  [32m  <div class="container">[39m\n
+  [32m    <div class="hero-grid">[39m\n
+  [32m      <div>[39m\n
+  [32m        <h1>[39m\n
+  [32m          Sistem Informasi Arsip<br />[39m\n
+  [32m          Pengadaan Barang dan Jasa[39m\n
+  [32m          <span class="u">Universitas Jenderal Soedirman</span>[39m\n
+  [32m        </h1>[39m\n
+  \n
+  [32m        <p>[39m\n
+  [32m          SIAPABAJA merupakan sistem informasi berbasis web yang digunakan untuk mengelola dan mengarsipkan dokumen[39m\n
+  [32m          pengadaan barang dan jasa di lingkungan Universitas Jenderal Soedirman.[39m\n
+  [32m        </p>[39m\n
+  \n
+  [32m        <a class="btn btn-primary" href="#arsip">Lihat Arsip Terbaru</a>[39m\n
+  [32m      </div>[39m\n
+  \n
+  [32m      <div class="hero-illustration">[39m\n
+  [32m        <img[39m\n
+  [32m          src="https://siapabaja.web.id/image/amico.png"[39m\n
+  [32m          alt="Ilustrasi Arsip"[39m\n
+  [32m          class="hero-img">[39m\n
+  [32m      </div>[39m\n
+  [32m    </div>[39m\n
+  [32m  </div>[39m\n
+  [32m</section>[39m\n
+  \n
+  \n
+  \n
+  [32m<section id="arsip">[39m\n
+  [32m  <div class="container">[39m\n
+  [32m    <div class="section-title">[39m\n
+  [32m      <h2>Arsip Pengadaan Barang dan Jasa</h2>[39m\n
+  [32m      <p>Daftar dokumen pengadaan barang dan jasa yang dapat diakses oleh masyarakat.</p>[39m\n
+  [32m    </div>[39m\n
+  \n
+  [32m    <div class="cards">[39m\n
+  [32m      [39m\n
+  [32m            [39m\n
+  [32m      <article class="card">[39m\n
+  [32m        <div class="card-top">[39m\n
+  [32m          <div>[39m\n
+  [32m            <div class="card-date">7 Juni 2026</div>[39m\n
+  [32m            <div class="card-title">padi</div>[39m\n
+  [32m          </div>[39m\n
+  \n
+  [32m          <button[39m\n
+  [32m            type="button"[39m\n
+  [32m            class="btn-detail js-open-detail"[39m\n
+  [32m            data-payload='{"title":"padi","unit":"Fakultas Pertanian","tahun":2024,"idrup":"2","status":"Perencanaan","rekanan":"a","jenis":"Pengadaan Barang","pagu":"Rp 1","metode":"Penunjukan Langsung","hps":"Rp 1","kontrak":"Rp 1","docnote":"Surat Pesanan Elektronik atau E-Purchasing","docs":{"dokumen_kak":[{"field":"dokumen_kak","name":"picture1_20260607_055250_Tr8hOP.jpg","url":"\/storage\/pengadaan\/64\/dokumen_kak\/picture1_20260607_055250_Tr8hOP.jpg"}]}}'>[39m\n
+  [32m            <i class="bi bi-info-circle">[39m[32m</i>[39m[32m Lihat Detail[39m\n
+  [32m          </button>[39m\n
+  [32m        </div>[39m\n
+  \n
+  [32m        <div class="card-meta">[39m\n
+  [32m          <div class="meta-line"><span class="meta-k">Unit Kerja</span> : <span class="meta-v">Fakultas Pertanian</span>[39m[32m</div>[39m\n
+  [32m          <div class="meta-line"><span class="meta-k">ID RUP</span> : <span class="meta-v">2</span>[39m[32m</div>[39m\n
+  [32m          <div class="meta-line"><span class="meta-k">Status Pekerjaan</span> : <span class="meta-v">Perencanaan</span>[39m[32m</div>[39m\n
+  [32m          <div class="meta-line"><span class="meta-k">Nilai Kontrak</span> : <span class="meta-v">Rp 1</span>[39m[32m</div>[39m\n
+  [32m          <div class="meta-line"><span class="meta-k">Rekanan</span> : <span class="meta-v">a</span>[39m[32m</div>[39m\n
+  [32m        </div>[39m\n
+  [32m      </article>[39m\n
+  [32m          </div>[39m\n
+  \n
+  [32m    <div class="more">[39m\n
+  [32m      <a href="https://siapabaja.web.id/landing/ArsipPBJ">[39m\n
+  [32m        Lihat Selengkapnya <span style="font-size:18px">›</span>[39m\n
+  [32m      </a>[39m\n
+  [32m    </div>[39m\n
+  \n
+  [32m  </div>[39m\n
+  [32m</section>[39m\n
+  \n
+  \n
+  [32m<div class="dt-modal" id="dtModal" aria-hidden="true">[39m\n
+  [32m  <div class="dt-backdrop" data-close="true">[39m[32m</div>[39m\n
+  [32m  <div class="dt-panel" role="dialog" aria-modal="true" aria-labelledby="dtTitle">[39m\n
+  [32m    <div class="dt-card">[39m\n
+  \n
+  [32m      <div class="dt-topbar">[39m\n
+  [32m        <button type="button" class="dt-back-btn" id="dtCloseBtn" aria-label="Kembali">[39m\n
+  [32m          <i class="bi bi-chevron-left">[39m[32m</i>[39m[32m Kembali[39m\n
+  [32m        </button>[39m\n
+  [32m        <span class="dt-status-badge" id="dtStatusBadge" hidden>[39m[32m</span>[39m\n
+  [32m      </div>[39m\n
+  \n
+  [32m      <div class="dt-body">[39m\n
+  [32m        <div class="dt-title" id="dtTitle">-</div>[39m\n
+  [32m        <div class="dt-title-divider">[39m[32m</div>[39m\n
+  \n
+  [32m        <div class="dt-info-grid">[39m\n
+  [32m          <div class="dt-info">[39m\n
+  [32m            <div class="dt-ic"><i class="bi bi-building">[39m[32m</i>[39m[32m</div>[39m\n
+  [32m            <div class="dt-info-txt">[39m\n
+  [32m              <div class="dt-label">Unit Kerja</div>[39m\n
+  [32m              <div class="dt-val" id="dtUnit">-</div>[39m\n
+  [32m            </div>[39m\n
+  [32m          </div>[39m\n
+  [32m          <div class="dt-info">[39m\n
+  [32m            <div class="dt-ic"><i class="bi bi-calendar-event">[39m[32m</i>[39m[32m</div>[39m\n
+  [32m            <div class="dt-info-txt">[39m\n
+  [32m              <div class="dt-label">Tahun Anggaran</div>[39m\n
+  [32m              <div class="dt-val" id="dtTahun">-</div>[39m\n
+  [32m            </div>[39m\n
+  [32m          </div>[39m\n
+  [32m          <div class="dt-info">[39m\n
+  [32m            <div class="dt-ic"><i class="bi bi-person-badge">[39m[32m</i>[39m[32m</div>[39m\n
+  [32m            <div class="dt-info-txt">[39m\n
+  [32m              <div class="dt-label">ID RUP</div>[39m\n
+  [32m              <div class="dt-val" id="dtIdRup">-</div>[39m\n
+  [32m            </div>[39m\n
+  [32m          </div>[39m\n
+  [32m          <div class="dt-info">[39m\n
+  [32m            <div class="dt-ic"><i class="bi bi-diagram-3">[39m[32m</i>[39m[32m</div>[39m\n
+  [32m            <div class="dt-info-txt">[39m\n
+  [32m              <div class="dt-label">Metode Pengadaan</div>[39m\n
+  [32m              <div class="dt-val" id="dtMetode">-</div>[39m\n
+  [32m            </div>[39m\n
+  [32m          </div>[39m\n
+  [32m          <div class="dt-info">[39m\n
+  [32m            <div class="dt-ic"><i class="bi bi-person">[39m[32m</i>[39m[32m</div>[39m\n
+  [32m            <div class="dt-info-txt">[39m\n
+  [32m              <div class="dt-label">Nama Rekanan</div>[39m\n
+  [32m              <div class="dt-val" id="dtRekanan">-</div>[39m\n
+  [32m            </div>[39m\n
+  [32m          </div>[39m\n
+  [32m          <div class="dt-info">[39m\n
+  [32m            <div class="dt-ic"><i class="bi bi-box">[39m[32m</i>[39m[32m</div>[39m\n
+  [32m            <div class="dt-info-txt">[39m\n
+  [32m              <div class="dt-label">Jenis Pengadaan</div>[39m\n
+  [32m              <div class="dt-val" id="dtJenis">-</div>[39m\n
+  [32m            </div>[39m\n
+  [32m          </div>[39m\n
+  [32m        </div>[39m\n
+  \n
+  [32m        <div class="dt-divider">[39m[32m</div>[39m\n
+  [32m        <div class="dt-section-title">Informasi Anggaran</div>[39m\n
+  [32m        <div class="dt-budget-grid">[39m\n
+  [32m          <div class="dt-budget">[39m\n
+  [32m            <div class="dt-label">Pagu Anggaran</div>[39m\n
+  [32m            <div class="dt-money" id="dtPagu">-</div>[39m\n
+  [32m          </div>[39m\n
+  [32m          <div class="dt-budget">[39m\n
+  [32m            <div class="dt-label">HPS</div>[39m\n
+  [32m            <div class="dt-money" id="dtHps">-</div>[39m\n
+  [32m          </div>[39m\n
+  [32m          <div class="dt-budget">[39m\n
+  [32m            <div class="dt-label">Nilai Kontrak</div>[39m\n
+  [32m            <div class="dt-money" id="dtKontrak">-</div>[39m\n
+  [32m          </div>[39m\n
+  [32m        </div>[39m\n
+  \n
+  [32m        <div class="dt-divider">[39m[32m</div>[39m\n
+  [32m        <div class="dt-section-title">Dokumen Pengadaan</div>[39m\n
+  [32m        <div class="dt-doc-grid" id="dtDocList">[39m[32m</div>[39m\n
+  [32m        <div class="dt-doc-empty" id="dtDocEmpty" hidden>Tidak ada dokumen yang diupload.</div>[39m\n
+  \n
+  [32m        <div class="dt-doc-note" id="dtDocNoteWrap" hidden>[39m\n
+  [32m          <div class="dt-doc-note-ic"><i class="bi bi-info-circle">[39m[32m</i>[39m[32m</div>[39m\n
+  [32m          <div class="dt-doc-note-txt">[39m\n
+  [32m            <div class="dt-doc-note-title">Dokumen tidak dipersyaratkan</div>[39m\n
+  [32m            <div class="dt-doc-note-desc" id="dtDocNote">-</div>[39m\n
+  [32m          </div>[39m\n
+  [32m        </div>[39m\n
+  [32m      </div>[39m\n
+  \n
+  [32m    </div>[39m\n
+  [32m  </div>[39m\n
+  [32m</div>[39m\n
+  \n
+  \n
+  [32m<section class="stats-wrap" id="statistika">[39m\n
+  [32m  <div class="container">[39m\n
+  [32m    <div class="section-title">[39m\n
+  [32m      <h2>Statistik</h2>[39m\n
+  [32m    </div>[39m\n
+  \n
+  [32m    <div class="stats-2col">[39m\n
+  [32m      <div class="stat-card">[39m\n
+  [32m  <div class="stat-head">[39m\n
+  [32m    <div class="stat-title">Status Pekerjaan</div>[39m\n
+  [32m  </div>[39m\n
+  \n
+  [32m  <div class="stat-filters">[39m\n
+  [32m    <select class="stat-sel" id="donutYear">[39m\n
+  [32m      <option selected disabled>Tahun</option>[39m\n
+  [32m      <option>2020</option><option>2021</option><option>2022</option>[39m\n
+  [32m      <option>2023</option><option>2024</option><option>2025</option><option>2026</option>[39m\n
+  [32m    </select>[39m\n
+  \n
+  [32m    <select class="stat-sel" id="donutUnit">[39m\n
+  [32m      <option selected>Semua Unit</option>[39m\n
+  [32m      <option>Fakultas Pertanian</option>[39m\n
+  [32m      <option>Fakultas Biologi</option>[39m\n
+  [32m      <option>Fakultas Ekonomi dan Bisnis</option>[39m\n
+  [32m      <option>Fakultas Peternakan</option>[39m\n
+  [32m      <option>Fakultas Hukum</option>[39m\n
+  [32m      <option>Fakultas Ilmu Sosial dan Ilmu Politik</option>[39m\n
+  [32m      <option>Fakultas Kedokteran</option>[39m\n
+  [32m      <option>Fakultas Teknik</option>[39m\n
+  [32m      <option>Fakultas Ilmu-Ilmu Kesehatan</option>[39m\n
+  [32m      <option>Fakultas Ilmu Budaya</option>[39m\n
+  [32m      <option>Fakultas Matematika dan Ilmu Pengetahuan Alam</option>[39m\n
+  [32m      <option>Fakultas Perikanan dan Ilmu Kelautan</option>[39m\n
+  [32m      <option>Pascasarjana</option>[39m\n
+  [32m      <option>LPPM</option>[39m\n
+  [32m      <option>LPMPP</option>[39m\n
+  [32m      <option>Biro Akademik dan Kemahasiswaan</option>[39m\n
+  [32m      <option>Biro Perencanaan, Kerjasama, dan Hubungan Masyarakat</option>[39m\n
+  [32m      <option>Biro Keuangan dan Umum</option>[39m\n
+  [32m      <option>Badan Pengelola Usaha</option>[39m\n
+  [32m      <option>RSGMP</option>[39m\n
+  [32m      <option>Satuan Pengawasan Internal</option>[39m\n
+  [32m      <option>UPA Perpustakaan</option>[39m\n
+  [32m      <option>UPA Bahasa</option>[39m\n
+  [32m      <option>UPA Layanan Laboratorium Terpadu</option>[39m\n
+  [32m      <option>UPA Layanan Uji Kompetensi</option>[39m\n
+  [32m      <option>UPA Pengembangan Karir dan Kewirausahaan</option>[39m\n
+  [32m      <option>UPA Teknologi Informasi dan Komunikasi</option>[39m\n
+  [32m    </select>[39m\n
+  [32m  </div>[39m\n
+  \n
+  [32m  <div class="stat-body stat-body--donut">[39m\n
+  [32m    <div class="stat-canvas stat-canvas--donut">[39m\n
+  [32m      <canvas id="landingDonut">[39m[32m</canvas>[39m\n
+  [32m    </div>[39m\n
+  [32m  </div>[39m\n
+  [32m</div>[39m\n
+  [32m      <div class="stat-card">[39m\n
+  [32m  <div class="stat-head">[39m\n
+  [32m    <div class="stat-title">Metode Pengadaan</div>[39m\n
+  [32m  </div>[39m\n
+  \n
+  [32m  <div class="stat-filters">[39m\n
+  [32m    <select class="stat-sel" id="barYear">[39m\n
+  [32m      <option selected disabled>Tahun</option>[39m\n
+  [32m      <option>2020</option><option>2021</option><option>2022</option>[39m\n
+  [32m      <option>2023</option><option>2024</option><option>2025</option><option>2026</option>[39m\n
+  [32m    </select>[39m\n
+  \n
+  [32m    <select class="stat-sel" id="barUnit">[39m\n
+  [32m      <option selected>Semua Unit</option>[39m\n
+  [32m      <option>Fakultas Pertanian</option>[39m\n
+  [32m      <option>Fakultas Biologi</option>[39m\n
+  [32m      <option>Fakultas Ekonomi dan Bisnis</option>[39m\n
+  [32m      <option>Fakultas Peternakan</option>[39m\n
+  [32m      <option>Fakultas Hukum</option>[39m\n
+  [32m      <option>Fakultas Ilmu Sosial dan Ilmu Politik</option>[39m\n
+  [32m      <option>Fakultas Kedokteran</option>[39m\n
+  [32m      <option>Fakultas Teknik</option>[39m\n
+  [32m      <option>Fakultas Ilmu-Ilmu Kesehatan</option>[39m\n
+  [32m      <option>Fakultas Ilmu Budaya</option>[39m\n
+  [32m      <option>Fakultas Matematika dan Ilmu Pengetahuan Alam</option>[39m\n
+  [32m      <option>Fakultas Perikanan dan Ilmu Kelautan</option>[39m\n
+  [32m      <option>Pascasarjana</option>[39m\n
+  [32m      <option>LPPM</option>[39m\n
+  [32m      <option>LPMPP</option>[39m\n
+  [32m      <option>Biro Akademik dan Kemahasiswaan</option>[39m\n
+  [32m      <option>Biro Perencanaan, Kerjasama, dan Humas</option>[39m\n
+  [32m      <option>Biro Keuangan dan Umum</option>[39m\n
+  [32m      <option>Badan Pengelola Usaha</option>[39m\n
+  [32m      <option>RSGMP</option>[39m\n
+  [32m      <option>Satuan Pengawasan Internal</option>[39m\n
+  [32m      <option>UPA Perpustakaan</option>[39m\n
+  [32m      <option>UPA Bahasa</option>[39m\n
+  [32m      <option>UPA Layanan Laboratorium Terpadu</option>[39m\n
+  [32m      <option>UPA Layanan Uji Kompetensi</option>[39m\n
+  [32m      <option>UPA Pengembangan Karir dan Kewirausahaan</option>[39m\n
+  [32m      <option>UPA TIK</option>[39m\n
+  [32m    </select>[39m\n
+  [32m  </div>[39m\n
+  \n
+  [32m  <div class="stat-body stat-body--bar">[39m\n
+  [32m    <div class="stat-canvas stat-canvas--bar">[39m\n
+  [32m      <canvas id="landingBar">[39m[32m</canvas>[39m\n
+  [32m    </div>[39m\n
+  [32m  </div>[39m\n
+  [32m</div>[39m\n
+  [32m    </div>[39m\n
+  [32m  </div>[39m\n
+  [32m</section>[39m\n
+  \n
+  \n
+  [32m<section class="reg-wrap" id="regulasi">[39m\n
+  [32m  [39m\n
+  [32m  <div class="container">[39m\n
+  [32m    <div class="section-title">[39m\n
+  [32m      <h2>Regulasi</h2>[39m\n
+  [32m    </div>[39m\n
+  [32m  </div>[39m\n
+  \n
+  [32m  <div class="reg-card">[39m\n
+  [32m        <a href="https://siapabaja.web.id/regulasi/01 Perpres-No-12-Tahun-2021 Perubahan Atas Peraturan Presiden Nomor 16 Tahun 2018 tentang PBJ Pemerintah.pdf" target="_blank" class="reg-item">[39m\n
+  [32m      <div class="reg-icon"><i class="bi bi-file-earmark-text">[39m[32m</i>[39m[32m</div>[39m\n
+  [32m      <div class="reg-text">01 Perpres-No-12-Tahun-2021 Perubahan Atas Peraturan Presiden Nomor 16 Tahun 2018 tentang PBJ Pemerintah</div>[39m\n
+  [32m    </a>[39m\n
+  [32m        <a href="https://siapabaja.web.id/regulasi/02 Peraturan LKPP No. 12 Tahun 2021 Tentang Pedoman Pelaksanaan PBJ Pemerintah Melalui Penyedia.pdf" target="_blank" class="reg-item">[39m\n
+  [32m      <div class="reg-icon"><i class="bi bi-file-earmark-text">[39m[32m</i>[39m[32m</div>[39m\n
+  [32m      <div class="reg-text">02 Peraturan LKPP No. 12 Tahun 2021 Tentang Pedoman Pelaksanaan PBJ Pemerintah Melalui Penyedia</div>[39m\n
+  [32m    </a>[39m\n
+  [32m        <a href="https://siapabaja.web.id/regulasi/03 Peraturan Rektor Unsoed No. 2 Tahun 2023 Tentang Pedoman Pengadaan BarangJasa Unsoed.pdf" target="_blank" class="reg-item">[39m\n
+  [32m      <div class="reg-icon"><i class="bi bi-file-earmark-text">[39m[32m</i>[39m[32m</div>[39m\n
+  [32m      <div class="reg-text">03 Peraturan Rektor Unsoed No. 2 Tahun 2023 Tentang Pedoman Pengadaan BarangJasa Unsoed</div>[39m\n
+  [32m    </a>[39m\n
+  [32m      </div>[39m\n
+  [32m</section>[39m\n
+  \n
+  [32m<style>[39m\n
+  [32m  :root {[39m\n
+  [32m    --navy: #184f61;[39m\n
+  [32m    --navy2: #184f61;[39m\n
+  [32m    --border: #e8eef3;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  /* ================================[39m\n
+  [32m   DETAIL MODAL — sama dengan pbj.blade.php[39m\n
+  [32m================================ */[39m\n
+  [32m  .dt-modal {[39m\n
+  [32m    position: fixed;[39m\n
+  [32m    inset: 0;[39m\n
+  [32m    z-index: 9999;[39m\n
+  [32m    display: none;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-modal.is-open {[39m\n
+  [32m    display: flex;[39m\n
+  [32m    align-items: center;[39m\n
+  [32m    justify-content: center;[39m\n
+  [32m    padding: 10px;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-backdrop {[39m\n
+  [32m    position: fixed;[39m\n
+  [32m    inset: 0;[39m\n
+  [32m    background: rgba(15, 23, 42, .35);[39m\n
+  [32m    backdrop-filter: blur(8px);[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-panel {[39m\n
+  [32m    width: min(1100px, 96vw);[39m\n
+  [32m    max-height: calc(100vh - 20px);[39m\n
+  [32m    display: flex;[39m\n
+  [32m    flex-direction: column;[39m\n
+  [32m    position: relative;[39m\n
+  [32m    z-index: 1;[39m\n
+  [32m    border-radius: 20px;[39m\n
+  [32m    overflow: hidden;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-card {[39m\n
+  [32m    width: 100%;[39m\n
+  [32m    display: flex;[39m\n
+  [32m    flex-direction: column;[39m\n
+  [32m    min-height: 0;[39m\n
+  [32m    border-radius: 20px;[39m\n
+  [32m    background: #fff;[39m\n
+  [32m    overflow: hidden;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-topbar {[39m\n
+  [32m    position: sticky;[39m\n
+  [32m    top: 0;[39m\n
+  [32m    z-index: 3;[39m\n
+  [32m    background: #fff;[39m\n
+  [32m    padding: 16px 18px 14px;[39m\n
+  [32m    border-bottom: 1px solid #eef3f6;[39m\n
+  [32m    display: flex;[39m\n
+  [32m    align-items: center;[39m\n
+  [32m    justify-content: space-between;[39m\n
+  [32m    gap: 12px;[39m\n
+  [32m    font-weight: 400;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-back-btn {[39m\n
+  [32m    display: inline-flex;[39m\n
+  [32m    align-items: center;[39m\n
+  [32m    gap: 6px;[39m\n
+  [32m    background: none;[39m\n
+  [32m    border: none;[39m\n
+  [32m    font-size: 14.5px;[39m\n
+  [32m    font-weight: 400;[39m\n
+  [32m    color: var(--navy);[39m\n
+  [32m    cursor: pointer;[39m\n
+  [32m    padding: 0;[39m\n
+  [32m    transition: opacity .15s;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-back-btn:hover {[39m\n
+  [32m    opacity: .65;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-status-badge {[39m\n
+  [32m    display: inline-flex;[39m\n
+  [32m    align-items: center;[39m\n
+  [32m    justify-content: center;[39m\n
+  [32m    padding: 5px 14px;[39m\n
+  [32m    border-radius: 8px;[39m\n
+  [32m    font-size: 13px;[39m\n
+  [32m    font-weight: 400;[39m\n
+  [32m    white-space: nowrap;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-status-badge.sp-plan {[39m\n
+  [32m    background: #fef9c3;[39m\n
+  [32m    color: #854d0e;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-status-badge.sp-select {[39m\n
+  [32m    background: #ede9fe;[39m\n
+  [32m    color: #5b21b6;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-status-badge.sp-do {[39m\n
+  [32m    background: #fee2e2;[39m\n
+  [32m    color: #b91c1c;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-status-badge.sp-done {[39m\n
+  [32m    background: #dcfce7;[39m\n
+  [32m    color: #15803d;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-body {[39m\n
+  [32m    flex: 1;[39m\n
+  [32m    overflow-y: auto;[39m\n
+  [32m    min-height: 0;[39m\n
+  [32m    padding: 20px 22px 24px;[39m\n
+  [32m    overscroll-behavior: contain;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-title {[39m\n
+  [32m    font-size: 22px;[39m\n
+  [32m    font-weight: 400;[39m\n
+  [32m    color: #0f172a;[39m\n
+  [32m    overflow-wrap: anywhere;[39m\n
+  [32m    margin-bottom: 4px;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-title-divider {[39m\n
+  [32m    height: 1px;[39m\n
+  [32m    background: #eef3f6;[39m\n
+  [32m    margin: 14px 0;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-info-grid {[39m\n
+  [32m    display: grid;[39m\n
+  [32m    grid-template-columns: repeat(3, 1fr);[39m\n
+  [32m    gap: 12px;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-info {[39m\n
+  [32m    display: flex;[39m\n
+  [32m    gap: 10px;[39m\n
+  [32m    align-items: flex-start;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-ic {[39m\n
+  [32m    width: 38px;[39m\n
+  [32m    height: 38px;[39m\n
+  [32m    border-radius: 12px;[39m\n
+  [32m    border: 1px solid #eef3f6;[39m\n
+  [32m    background: #f8fbfd;[39m\n
+  [32m    display: grid;[39m\n
+  [32m    place-items: center;[39m\n
+  [32m    flex: 0 0 auto;[39m\n
+  [32m    font-size: 16px;[39m\n
+  [32m    color: var(--navy);[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-info-txt {[39m\n
+  [32m    min-width: 0;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-label {[39m\n
+  [32m    font-size: 12px;[39m\n
+  [32m    color: #64748b;[39m\n
+  [32m    font-weight: 400;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-val {[39m\n
+  [32m    font-size: 14px;[39m\n
+  [32m    color: #0f172a;[39m\n
+  [32m    font-weight: 400;[39m\n
+  [32m    margin-top: 2px;[39m\n
+  [32m    overflow-wrap: anywhere;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-divider {[39m\n
+  [32m    height: 1px;[39m\n
+  [32m    background: #eef3f6;[39m\n
+  [32m    margin: 14px 0;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-section-title {[39m\n
+  [32m    font-size: 13px;[39m\n
+  [32m    font-weight: 400;[39m\n
+  [32m    color: #64748b;[39m\n
+  [32m    letter-spacing: .5px;[39m\n
+  [32m    text-transform: uppercase;[39m\n
+  [32m    margin-bottom: 10px;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-budget-grid {[39m\n
+  [32m    display: grid;[39m\n
+  [32m    grid-template-columns: repeat(3, 1fr);[39m\n
+  [32m    gap: 12px;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-budget {[39m\n
+  [32m    padding: 12px 14px;[39m\n
+  [32m    background: #f8fbfd;[39m\n
+  [32m    border: 1px solid #eef3f6;[39m\n
+  [32m    border-radius: 12px;[39m\n
+  [32m    font-weight: 400;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-money {[39m\n
+  [32m    font-size: 16px;[39m\n
+  [32m    font-weight: 400;[39m\n
+  [32m    color: var(--navy2);[39m\n
+  [32m    margin-top: 4px;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-doc-grid {[39m\n
+  [32m    display: grid;[39m\n
+  [32m    grid-template-columns: repeat(2, 1fr);[39m\n
+  [32m    gap: 10px;[39m\n
+  [32m    margin-top: 10px;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-doc-card {[39m\n
+  [32m    border: 1px solid #e8eef3;[39m\n
+  [32m    background: #fff;[39m\n
+  [32m    border-radius: 14px;[39m\n
+  [32m    padding: 12px 14px;[39m\n
+  [32m    display: flex;[39m\n
+  [32m    align-items: center;[39m\n
+  [32m    gap: 10px;[39m\n
+  [32m    font-weight: 400;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-doc-ic {[39m\n
+  [32m    width: 40px;[39m\n
+  [32m    height: 40px;[39m\n
+  [32m    border-radius: 12px;[39m\n
+  [32m    display: grid;[39m\n
+  [32m    place-items: center;[39m\n
+  [32m    background: #f8fbfd;[39m\n
+  [32m    border: 1px solid #eef3f6;[39m\n
+  [32m    flex: 0 0 auto;[39m\n
+  [32m    font-size: 18px;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-doc-info {[39m\n
+  [32m    min-width: 0;[39m\n
+  [32m    flex: 1;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-doc-title {[39m\n
+  [32m    font-size: 14px;[39m\n
+  [32m    font-weight: 600;[39m\n
+  [32m    line-height: 1.3;[39m\n
+  [32m    overflow-wrap: anywhere;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-doc-sub {[39m\n
+  [32m    font-size: 12px;[39m\n
+  [32m    color: #64748b;[39m\n
+  [32m    margin-top: 2px;[39m\n
+  [32m    overflow-wrap: anywhere;[39m\n
+  [32m    font-weight: 400;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-doc-act {[39m\n
+  [32m    width: 34px;[39m\n
+  [32m    height: 34px;[39m\n
+  [32m    border-radius: 12px;[39m\n
+  [32m    display: grid;[39m\n
+  [32m    place-items: center;[39m\n
+  [32m    background: #f8fbfd;[39m\n
+  [32m    border: 1px solid #eef3f6;[39m\n
+  [32m    text-decoration: none;[39m\n
+  [32m    color: inherit;[39m\n
+  [32m    flex: 0 0 auto;[39m\n
+  [32m    font-size: 15px;[39m\n
+  [32m    transition: .15s;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-doc-act:hover {[39m\n
+  [32m    background: #eef6f8;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-doc-empty {[39m\n
+  [32m    margin-top: 10px;[39m\n
+  [32m    opacity: .75;[39m\n
+  [32m    font-size: 14px;[39m\n
+  [32m    color: #64748b;[39m\n
+  [32m    font-weight: 400;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-doc-note {[39m\n
+  [32m    display: flex;[39m\n
+  [32m    gap: 10px;[39m\n
+  [32m    margin-top: 12px;[39m\n
+  [32m    padding: 12px 14px;[39m\n
+  [32m    background: #fffbeb;[39m\n
+  [32m    border: 1px solid #fde68a;[39m\n
+  [32m    border-radius: 12px;[39m\n
+  [32m    font-weight: 400;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-doc-note-ic {[39m\n
+  [32m    font-size: 18px;[39m\n
+  [32m    color: #d97706;[39m\n
+  [32m    flex: 0 0 auto;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-doc-note-title {[39m\n
+  [32m    font-size: 13px;[39m\n
+  [32m    font-weight: 400;[39m\n
+  [32m    color: #92400e;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  .dt-doc-note-desc {[39m\n
+  [32m    font-size: 13px;[39m\n
+  [32m    color: #78350f;[39m\n
+  [32m    margin-top: 2px;[39m\n
+  [32m    font-weight: 400;[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  @media (max-width:1100px) {[39m\n
+  \n
+  [32m    .dt-info-grid,[39m\n
+  [32m    .dt-budget-grid {[39m\n
+  [32m      grid-template-columns: repeat(2, 1fr);[39m\n
+  [32m    }[39m\n
+  \n
+  [32m    .dt-doc-grid {[39m\n
+  [32m      grid-template-columns: 1fr;[39m\n
+  [32m    }[39m\n
+  [32m  }[39m\n
+  \n
+  [32m  @media (max-width:600px) {[39m\n
+  \n
+  [32m    .dt-info-grid,[39m\n
+  [32m    .dt-budget-grid {[39m\n
+  [32m      grid-template-columns: 1fr;[39m\n
+  [32m    }[39m\n
+  [32m  }[39m\n
+  [32m</style>[39m\n
+  \n
+  """
+

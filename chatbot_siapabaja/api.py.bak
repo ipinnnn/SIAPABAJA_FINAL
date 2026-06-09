@@ -12,7 +12,6 @@ Jalankan dari folder chatbot_siapabaja:
 """
 
 from __future__ import annotations
-from groq import Groq
 
 import json
 import os
@@ -34,8 +33,6 @@ JSONL_PATH = STORAGE_DIR / "dataset_siapabaja.jsonl"
 EMBEDDING_PATH = STORAGE_DIR / "embeddings.npy"
 
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-GROQ_MODEL = "llama-3.1-8b-instant"
 EMBED_MODEL = os.getenv("EMBED_MODEL", "nomic-embed-text")
 CHAT_MODEL = os.getenv("CHAT_MODEL", "llama3.2:3b")
 
@@ -448,14 +445,24 @@ def ollama_embedding(text: str) -> List[float]:
 
 
 def ollama_generate(prompt: str) -> str:
-    client = Groq(api_key=GROQ_API_KEY)
-    chat_completion = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}],
-        model=GROQ_MODEL,
-        temperature=TEMPERATURE,
-        max_tokens=NUM_PREDICT,
+    response = requests.post(
+        f"{OLLAMA_BASE_URL}/api/generate",
+        json={
+            "model": CHAT_MODEL,
+            "prompt": prompt,
+            "stream": False,
+            "options": {
+                "temperature": TEMPERATURE,
+                "top_p": 0.9,
+                "num_predict": NUM_PREDICT,
+                "repeat_penalty": REPEAT_PENALTY,
+            },
+        },
+        timeout=300,
     )
-    return chat_completion.choices[0].message.content.strip()
+    if response.status_code != 200:
+        raise RuntimeError(f"Ollama error {response.status_code}: {response.text[:500]}")
+    return response.json().get("response", "").strip()
 
 
 def retrieve_context(query: str, selected_role: Optional[str] = None, top_k: int = TOP_K) -> Dict[str, Any]:

@@ -30,6 +30,7 @@ Route::get('/chatbot/health', [ChatbotController::class, 'health'])
 
 Route::view('/', 'Landing.Index')->name('landing');
 
+
 // Login (GET form)
 Route::get('/login', function () {
     return view('Auth.login');
@@ -110,6 +111,85 @@ Route::view('/home-preview', 'Home.index')->name('home.preview');
 // Arsip
 Route::view('/ArsipPBJ', 'Landing.pbj')->name('ArsipPBJ');
 Route::redirect('/landing/ArsipPBJ', '/ArsipPBJ')->name('landing.pbj');
+
+Route::get('/landing/chartstats', function (Request $request) {
+
+    $tahun  = $request->query('tahun');
+    $unitId = $request->query('unit_id');
+
+    // ✅ FIX: hanya loloskan jika benar-benar angka valid
+    $tahun  = (is_numeric($tahun)  && (int)$tahun  > 0) ? (int)$tahun  : null;
+    $unitId = (is_numeric($unitId) && (int)$unitId > 0) ? (int)$unitId : null;
+
+    $base = \App\Models\Pengadaan::query()
+        ->where('status_arsip', 'Publik');
+
+    if ($tahun)  $base->where('tahun',   $tahun);
+    if ($unitId) $base->where('unit_id', $unitId);
+
+    // STATUS
+    $statusLabels = [
+        'Perencanaan',
+        'Pemilihan',
+        'Pelaksanaan',
+        'Serah Terima',
+        'Selesai',
+    ];
+
+    $statusCounts = (clone $base)
+        ->selectRaw('status_pekerjaan as status, COUNT(*) as total')
+        ->groupBy('status_pekerjaan')
+        ->pluck('total', 'status')
+        ->toArray();
+
+    $statusValues = array_map(
+        fn($label) => (int) ($statusCounts[$label] ?? 0),
+        $statusLabels
+    );
+
+    // METODE
+    $methodLabels = [
+        'Tender Terbuka',
+        'E-Purchasing / E-Catalog',
+        'Pengadaan Langsung',
+        'Penunjukan Langsung',
+        'Tender Terbatas',
+        'Swakelola',
+    ];
+
+    $bucket = array_fill_keys($methodLabels, 0);
+
+    $methodCounts = (clone $base)
+        ->selectRaw('metode_pengadaan as metode, COUNT(*) as total')
+        ->groupBy('metode_pengadaan')
+        ->pluck('total', 'metode')
+        ->toArray();
+
+    foreach ($methodCounts as $metode => $total) {
+        $m = strtolower(trim((string) $metode));
+        if (str_contains($m, 'tender terbuka'))          $bucket['Tender Terbuka']           += (int) $total;
+        elseif (str_contains($m, 'e-purchasing') ||
+                str_contains($m, 'e catalog')   ||
+                str_contains($m, 'e-catalog'))            $bucket['E-Purchasing / E-Catalog'] += (int) $total;
+        elseif (str_contains($m, 'pengadaan langsung'))  $bucket['Pengadaan Langsung']        += (int) $total;
+        elseif (str_contains($m, 'penunjukan langsung')) $bucket['Penunjukan Langsung']       += (int) $total;
+        elseif (str_contains($m, 'tender terbatas'))     $bucket['Tender Terbatas']           += (int) $total;
+        elseif (str_contains($m, 'swakelola'))           $bucket['Swakelola']                 += (int) $total;
+    }
+
+    return response()->json([
+        'status' => [
+            'labels' => $statusLabels,
+            'values' => $statusValues,
+        ],
+        'metode' => [
+            'labels' => array_keys($bucket),
+            'values' => array_values($bucket),
+        ],
+        'donut' => $statusValues,
+        'bar'   => array_values($bucket),
+    ]);
+})->name('landing.chartstats');
 
 Route::view('/home/ArsipPBJ', 'Home.pbj')->name('home.pbj');
 

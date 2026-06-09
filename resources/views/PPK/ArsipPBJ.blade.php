@@ -235,11 +235,12 @@
         <div class="ap-sel-wrap">
           <select id="apYearFilter" class="ap-sel">
             <option value="Semua" {{ (string) $selectedYear === 'Semua' ? 'selected' : '' }}>Tahun</option>
-            @foreach ($years as $y)
-            <option value="{{ $y }}" {{ (string) $selectedYear === (string) $y ? 'selected' : '' }}>
-              {{ $y }}
-            </option>
-            @endforeach
+            
+            @foreach ($tahunOptions as $y)
+<option value="{{ $y }}" {{ (string)$selectedYear === (string)$y ? 'selected' : '' }}>
+  {{ $y }}
+</option>
+@endforeach
           </select>
         </div>
 

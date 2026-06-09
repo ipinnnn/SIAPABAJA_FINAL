@@ -32,13 +32,13 @@
                         <!-- Tombol khusus PPK -->
                         <button type="button" data-question="Jelaskan menu aplikasi">Menu Aplikasi</button>
                         <button type="button" data-question="Jelaskan hak akses PPK">Hak Akses PPK</button>
-                        <button type="button" data-question="Bagaimana cara upload dokumen pengadaan?">Upload Dokumen</button>
+                        <button type="button" data-question="Langkah - langkah upload dokumen pengadaan">Upload Dokumen</button>
                         <button type="button" data-question="Saya lupa password">Lupa Password</button>
                     @elseif(Auth::user()->role === 'unit')
                         <!-- Tombol khusus Unit -->
                         <button type="button" data-question="Jelaskan menu aplikasi">Menu Aplikasi</button>
                         <button type="button" data-question="Jelaskan hak akses unit">Hak Akses Unit</button>
-                        <button type="button" data-question="Bagaimana cara upload dokumen pengadaan?">Upload Dokumen</button>
+                        <button type="button" data-question="Langkah - langkah upload dokumen pengadaan">Upload Dokumen</button>
                         <button type="button" data-question="Saya lupa password">Lupa Password</button>
                     @else
                         <!-- Fallback jika role lain yang tidak dikenal -->
@@ -443,6 +443,9 @@
         let startX = 0;
         let startY = 0;
         let animationFrame = null;
+        let clearHistoryTimer = null;
+        let idleTimer = null;
+        let chatSessionVersion = 0;
 
         let panelHorizontal = "left";
         let panelVertical = "above";
@@ -450,6 +453,7 @@
         const safeMargin = 32;
         const panelGap = 16;
         const dragThreshold = 8;
+        const idleTimeoutMs = 5 * 60 * 1000;
 
         const savedMessages = sessionStorage.getItem("chatbotMessages");
 
@@ -459,6 +463,45 @@
 
         function saveMessages() {
             sessionStorage.setItem("chatbotMessages", messages.innerHTML);
+        }
+        
+        function clearStoredChatbotHistory() {
+            sessionStorage.removeItem("chatbotMessages");
+        }
+
+        function clearChatbotHistory() {
+            if (clearHistoryTimer) {
+                clearTimeout(clearHistoryTimer);
+                clearHistoryTimer = null;
+            }
+
+            chatSessionVersion++;
+            clearStoredChatbotHistory();
+            messages.innerHTML = defaultMessagesHTML;
+            scrollToBottom();
+        }
+
+        function closeAndClearChatbot() {
+            panel.classList.remove("is-open");
+
+            if (clearHistoryTimer) {
+                clearTimeout(clearHistoryTimer);
+            }
+
+            clearHistoryTimer = setTimeout(function() {
+                clearChatbotHistory();
+                clearHistoryTimer = null;
+            }, 300);
+        }
+
+        function resetIdleTimer() {
+            if (idleTimer) {
+                clearTimeout(idleTimer);
+            }
+
+            idleTimer = setTimeout(function () {
+                closeAndClearChatbot();
+            }, idleTimeoutMs);
         }
 
         function scrollToBottom() {
@@ -478,6 +521,7 @@
         const csrfToken = "{{ csrf_token() }}";
 
         async function showTypingAndReply(userText) {
+            const requestVersion = chatSessionVersion;
             const typing = document.createElement("div");
             typing.className = "chatbot-typing";
             typing.textContent = "Asisten sedang mengetik";
@@ -498,6 +542,8 @@
                 const data = await response.json();
                 typing.remove();
 
+                if (requestVersion !== chatSessionVersion) return;
+
                 if (response.ok && data.success) {
                     addMessage(data.answer, "bot");
                 } else {
@@ -506,6 +552,7 @@
             } catch (error) {
                 console.error("Chatbot Error:", error);
                 typing.remove();
+                if (requestVersion !== chatSessionVersion) return;
                 addMessage("Maaf, koneksi ke server chatbot terputus.", "bot");
             }
         }
@@ -692,7 +739,12 @@
             clampWidgetPosition();
             updatePanelPosition();
 
-            panel.classList.toggle("is-open");
+            if (panel.classList.contains("is-open")) {
+                closeAndClearChatbot();
+                return;
+            }
+
+            panel.classList.add("is-open");
 
             setTimeout(function () {
                 updatePanelPosition();
@@ -701,11 +753,50 @@
         });
 
         closeBtn.addEventListener("click", function () {
-            panel.classList.remove("is-open");
-            setTimeout(function() {
-                sessionStorage.removeItem("chatbotMessages");
-                messages.innerHTML = defaultMessagesHTML;
-            }, 300);
+            closeAndClearChatbot();
+        });
+
+        document.addEventListener("click", function (e) {
+            if (!panel.classList.contains("is-open")) return;
+            if (widget.contains(e.target)) return;
+
+            closeAndClearChatbot();
+        });
+
+        document.addEventListener("keydown", function (e) {
+            if (e.key !== "Escape") return;
+            if (!panel.classList.contains("is-open")) return;
+
+            closeAndClearChatbot();
+        });
+
+        document.addEventListener("click", function (e) {
+            if (!e.target.closest) return;
+
+            const logoutTarget = e.target.closest('a[href*="/logout"], form[action*="/logout"] button, button[formaction*="/logout"]');
+            if (logoutTarget) {
+                clearChatbotHistory();
+            }
+        });
+
+        document.addEventListener("submit", function (e) {
+            const action = e.target.getAttribute("action") || "";
+
+            if (action.includes("/logout")) {
+                clearChatbotHistory();
+            }
+        });
+
+        ["click", "keydown", "mousemove", "scroll", "touchstart"].forEach(function (eventName) {
+            document.addEventListener(eventName, resetIdleTimer, { passive: true });
+        });
+
+        window.addEventListener("pagehide", clearStoredChatbotHistory);
+        window.addEventListener("beforeunload", clearStoredChatbotHistory);
+        window.addEventListener("pageshow", function (e) {
+            if (e.persisted && !sessionStorage.getItem("chatbotMessages")) {
+                clearChatbotHistory();
+            }
         });
 
         sendBtn.addEventListener("click", function () {
@@ -741,5 +832,6 @@
         setDefaultPosition();
         updatePanelPosition();
         scrollToBottom();
+        resetIdleTimer();
     });
 </script>

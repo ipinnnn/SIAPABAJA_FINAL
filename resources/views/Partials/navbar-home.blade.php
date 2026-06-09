@@ -6,41 +6,45 @@
       <span class="brand-name">SIAPABAJA</span>
     </a>
 
-    {{-- Hamburger --}}
+    {{-- Hamburger (mobile only) --}}
     <button class="mob-ham" id="homeNavToggle" aria-label="Buka menu">
-      <i class="bi bi-list"></i>
+      <i class="bi bi-list" id="hamIcon"></i>
     </button>
 
-    {{-- Nav links + user masuk dalam hamburger --}}
-    <nav class="nav-links" id="homeNavLinks">
-      <a href="{{ route('home.dashboard') }}"
-         class="nav-link {{ request()->routeIs(['home.dashboard','ppk.dashboard','unit.dashboard']) ? 'active' : '' }}">
-        Dasbor
-      </a>
+    <div class="nav-backdrop" id="navBackdrop"></div>
+
+    <nav class="nav-links" id="homeNavLinks" role="navigation">
+      <a href="{{ route('home.dashboard') }}" class="nav-link {{ request()->routeIs(['home.dashboard','ppk.dashboard','unit.dashboard']) ? 'active' : '' }}">Dasbor</a>
       <a href="{{ route('home') }}#regulasi" class="nav-link">Regulasi</a>
-      <a href="{{ route('home.pbj') }}"
-         class="nav-link {{ request()->routeIs('home.pbj') ? 'active' : '' }}">
-        Arsip PBJ
-      </a>
+      <a href="{{ route('home.pbj') }}" class="nav-link {{ request()->routeIs('home.pbj') ? 'active' : '' }}">Arsip PBJ</a>
       <a href="{{ route('home') }}#kontak" class="nav-link">Kontak</a>
 
-      @if (!Auth::check())
-        <a href="{{ route('login') }}" class="nav-link">Masuk</a>
-      @else
-  <div class="nav-user" id="homeUserMenu">
-    <button type="button" class="nav-user-btn" id="homeUserBtn" aria-label="User menu">
-      <i class="bi bi-person-circle"></i>
-    </button>
-    <div class="nav-user-menu" id="homeUserDropdown">
-      <form action="{{ url('/logout') }}" method="POST">
-        @csrf
-        <button type="submit" class="nav-logout">
-          <i class="bi bi-box-arrow-right"></i> Keluar
-        </button>
-      </form>
-    </div>
-  </div>
-@endif
+      @guest
+        <a href="{{ route('login') }}" class="btn btn-nav-masuk nav-link">Masuk</a>
+      @endguest
+
+      @auth
+        {{-- Desktop: icon user + dropdown --}}
+        <div class="nav-user" id="homeUserMenu">
+          <button type="button" class="nav-user-btn" id="homeUserBtn" aria-label="User menu">
+            <i class="bi bi-person-circle"></i>
+          </button>
+          <div class="nav-user-menu" id="homeUserDropdown">
+            <form action="{{ url('/logout') }}" method="POST">
+              @csrf
+              <button type="submit" class="nav-logout">
+                <i class="bi bi-box-arrow-right"></i> Keluar
+              </button>
+            </form>
+          </div>
+        </div>
+
+        {{-- Mobile: teks Keluar saja --}}
+        <form action="{{ url('/logout') }}" method="POST" id="logoutFormMobile">
+          @csrf
+          <button type="submit" class="nav-link-logout">Keluar</button>
+        </form>
+      @endauth
     </nav>
 
   </div>

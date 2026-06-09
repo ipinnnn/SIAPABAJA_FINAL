@@ -67,18 +67,28 @@ class PpkController extends Controller
                 : (Schema::hasColumn('units', 'name') ? 'name' : 'id'));
 
         // ✅ Dropdown Unit = dari tabel units (id + nama)
-        $units = Unit::orderBy($unitNameCol, 'asc')->get(['id', $unitNameCol]);
+        // ✅ Unit hanya yang punya user aktif role unit/ppk — sama persis dengan Kelola Menu
+$units = \App\Models\User::with('unit')
+    ->whereIn('role', ['unit', 'ppk'])
+    ->where('status', 'active')
+    ->whereNotNull('unit_id')
+    ->get()
+    ->pluck('unit')
+    ->filter()
+    ->unique('id')
+    ->sortBy($unitNameCol)
+    ->values();
 
-        $registeredUnits = $units->pluck($unitNameCol)->values()->all();
+$registeredUnits = $units->pluck($unitNameCol)->values()->all();
 
-        $unitOptions = $units->map(function ($u) use ($unitNameCol) {
-            return [
-                'id'   => (int)$u->id,
-                'name' => (string)$u->{$unitNameCol},
-            ];
-        })->values()->all();
+$unitOptions = $units->map(function ($u) use ($unitNameCol) {
+    return [
+        'id'   => (int)$u->id,
+        'name' => (string)$u->{$unitNameCol},
+    ];
+})->values()->all();
 
-        $totalUnitKerja = count($unitOptions);
+$totalUnitKerja = count($unitOptions);
 
         $totalArsip = Pengadaan::count();
         $publik     = Pengadaan::where('status_arsip', 'Publik')->count();
@@ -405,38 +415,65 @@ class PpkController extends Controller
 
         // ✅ Tahun dari MasterMenu
         $years = MasterMenu::where('category', 'tahun')
-            ->where('is_active', true)
-            ->orderByDesc('nama')
-            ->pluck('nama')
-            ->map(fn($t) => (string)$t)
-            ->values()
-            ->all();
+    ->where('is_active', true)
+    ->orderByDesc('nama')
+    ->pluck('nama')
+    ->map(fn($t) => (int)$t)
+    ->filter()
+    ->sortDesc()
+    ->values()
+    ->all();
 
-        if (count($years) === 0) {
-            $years = Pengadaan::whereNotNull('tahun')
-                ->select('tahun')->distinct()
-                ->orderBy('tahun', 'desc')
-                ->pluck('tahun')
-                ->map(fn($t) => (string)$t)
-                ->values()
-                ->all();
-        }
+if (count($years) === 0) {
+    $years = Pengadaan::whereNotNull('tahun')
+        ->select('tahun')->distinct()
+        ->orderBy('tahun', 'desc')
+        ->pluck('tahun')
+        ->map(fn($t) => (int)$t)
+        ->values()
+        ->all();
+}
 
-        if (count($years) === 0) {
-            $y     = (int)date('Y');
-            $years = [(string)$y, (string)($y - 1), (string)($y - 2), (string)($y - 3), (string)($y - 4)];
-        }
+if (count($years) === 0) {
+    $y = (int)date('Y');
+    $years = [$y, $y - 1, $y - 2, $y - 3, $y - 4];
+}
 
         $unitNameCol = Schema::hasColumn('units', 'nama') ? 'nama'
             : (Schema::hasColumn('units', 'nama_unit') ? 'nama_unit'
                 : (Schema::hasColumn('units', 'name') ? 'name' : 'id'));
 
         $unitOptions = Unit::orderBy($unitNameCol, 'asc')
-            ->pluck($unitNameCol)
-            ->values()
-            ->all();
+    ->pluck($unitNameCol)
+    ->values()
+    ->all();
 
-        return view('PPK.ArsipPBJ', compact('ppkName', 'arsips', 'unitOptions', 'years'));
+$tahunOptions = MasterMenu::where('category', 'tahun')
+    ->where('is_active', true)
+    ->orderByDesc('nama')
+    ->pluck('nama')
+    ->map(fn($t) => (int)$t)
+    ->filter()
+    ->sortDesc()
+    ->values()
+    ->all();
+
+if (count($tahunOptions) === 0) {
+    $tahunOptions = Pengadaan::whereNotNull('tahun')
+        ->select('tahun')->distinct()
+        ->orderBy('tahun', 'desc')
+        ->pluck('tahun')
+        ->map(fn($t) => (int)$t)
+        ->values()
+        ->all();
+}
+
+if (count($tahunOptions) === 0) {
+    $y = (int)date('Y');
+    $tahunOptions = [$y, $y - 1, $y - 2, $y - 3, $y - 4];
+}
+
+return view('PPK.ArsipPBJ', compact('ppkName', 'arsips', 'unitOptions', 'tahunOptions'));
     }
 
     public function pengadaanCreate()
@@ -505,10 +542,16 @@ class PpkController extends Controller
             : (Schema::hasColumn('units', 'nama_unit') ? 'nama_unit'
                 : (Schema::hasColumn('units', 'name') ? 'name' : 'id'));
 
-        $units = Unit::query()
-            ->select(['id', $unitNameCol])
-            ->orderBy($unitNameCol, 'asc')
-            ->get();
+       $units = \App\Models\User::with('unit')
+    ->whereIn('role', ['unit', 'ppk'])
+    ->where('status', 'active')
+    ->whereNotNull('unit_id')
+    ->get()
+    ->pluck('unit')
+    ->filter()
+    ->unique('id')
+    ->sortBy($unitNameCol)
+    ->values();
 
         $unitOptions = $units->pluck($unitNameCol)->values()->all();
 
@@ -702,7 +745,16 @@ class PpkController extends Controller
             : (Schema::hasColumn('units', 'nama_unit') ? 'nama_unit'
                 : (Schema::hasColumn('units', 'name') ? 'name' : 'id'));
 
-        $units       = Unit::query()->select(['id', $unitNameCol])->orderBy($unitNameCol, 'asc')->get();
+        $units = \App\Models\User::with('unit')
+    ->whereIn('role', ['unit', 'ppk'])
+    ->where('status', 'active')
+    ->whereNotNull('unit_id')
+    ->get()
+    ->pluck('unit')
+    ->filter()
+    ->unique('id')
+    ->sortBy($unitNameCol)
+    ->values();
         $unitOptions = $units->pluck($unitNameCol)->values()->all();
 
         $pengadaan->dokumen_tidak_dipersyaratkan = $this->normalizeArray($pengadaan->dokumen_tidak_dipersyaratkan);
