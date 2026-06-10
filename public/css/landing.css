@@ -1773,7 +1773,8 @@ html{
     padding: 8px 0 16px !important;
   }
 
-  .nav-links a {
+ .nav-links a,
+.nav-links .nav-link-logout {
   width: 100% !important;
   padding: 12px 24px !important;
   border-radius: 0 !important;
@@ -2089,4 +2090,26 @@ html{
 .nav .brand-name {
   font-size: 30px !important;
   font-weight: 800 !important;
+}
+
+.d-mobile { display: none; }
+.d-desktop { display: inline-flex; }
+
+@media (max-width: 768px) {
+  .d-mobile { display: block !important; }
+  .d-desktop { display: none !important; }
+
+  .nav-link-logout {
+    width: 100% !important;
+    text-align: left !important;
+    padding: 12px 24px !important;
+    border: none !important;
+    background: transparent !important;
+    color: #fff !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    border-bottom: 1px solid rgba(255,255,255,.07) !important;
+    font-family: inherit !important;
+  }
 }

@@ -107,7 +107,6 @@ table, th, td{ font-size: var(--fs-sm); }
 ========================= */
 .dash-wrap{
   display:flex;
-  align-items:flex-start;
   min-height:100vh;
 }
 
@@ -118,16 +117,14 @@ table, th, td{ font-size: var(--fs-sm); }
   color:#fff;
   padding: 18px 16px;
 
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-
   height: 100vh;
   overflow: hidden;
 
   display:flex;
   flex-direction:column;
-  z-index: 1000;
+  align-self: flex-start;
 }
 
 .dash-brand{
@@ -270,8 +267,7 @@ table, th, td{ font-size: var(--fs-sm); }
 
 /* ================= MAIN ================= */
 .dash-main{
-    flex:1;
-    margin-left:260px;
+  flex:1;
   padding: 26px 28px;
 }
 
@@ -1425,6 +1421,142 @@ body .dt-doc-note-title{
   color: #1F5C63 !important;
 }
 
+/* =========================
+   ✅ FIX FINAL: Unit/Dashboard bisa scroll NORMAL,
+   sidebar tetap STICKY mengikuti scroll halaman
+   (ganti patch overflow sebelumnya)
+========================= */
+
+/* kembalikan scroll ke body */
+html, body{
+  height: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* jangan kunci wrapper, biar sticky bekerja */
+.dash-wrap{
+  min-height: 100vh;
+  overflow: visible;
+}
+
+/* sidebar tetap nempel */
+.dash-sidebar{
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* main ikut scroll halaman (bukan scroll container sendiri) */
+.dash-main{
+  height: auto;
+  overflow: visible;
+}
+/* =========================================================
+   ✅ FINAL GLOBAL FIX (UNTUK SEMUA HALAMAN UNIT)
+   - Sidebar (navbar) SELALU sticky
+   - Yang scroll hanya konten kanan (.dash-main)
+   - Mengalahkan inline/page override dengan !important
+========================================================= */
+
+/* 1) Jangan kunci scroll di html/body */
+html, body{
+  height: 100% !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+/* 2) Wrapper harus ngunci viewport (biar scroll pindah ke main) */
+.dash-wrap{
+  display: flex !important;
+  min-height: 100vh !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+}
+
+/* 3) Sidebar selalu sticky */
+.dash-sidebar{
+  position: sticky !important;
+  top: 0 !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+  align-self: flex-start !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* 4) MAIN jadi area scroll */
+.dash-main{
+  flex: 1 !important;
+  min-width: 0 !important; /* 🔥 WAJIB */
+  height: auto !important; /* 🔥 UBAH INI */
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-bottom: 40px; /* biar tombol gak mepet bawah */
+}
+
+.a-card-body {
+  overflow: visible;
+}
+
+.a-pass input {
+  min-width: 0;
+}
+
+.a-field {
+  min-width: 0;
+}
+/* 5) Kalau ada modal yang pakai blur, pastikan tidak mematikan sticky */
+body.modal-open .dash-wrap{
+  overflow: hidden !important;
+}
+/* =========================================================
+   ✅ FINAL GLOBAL FIX (UNTUK SEMUA HALAMAN UNIT)
+   - Sidebar selalu sticky/nempel
+   - Yang scroll hanya konten kanan (.dash-main)
+   - Mengalahkan inline style Unit/Dashboard dengan !important
+========================================================= */
+
+/* kunci scroll window */
+html, body{
+  height: 100% !important;
+  overflow: hidden !important;
+  overflow-x: hidden !important;
+}
+
+/* wrapper penuh viewport */
+.dash-wrap{
+  display: flex !important;
+  height: 100vh !important;
+  min-height: 100vh !important;
+  overflow: hidden !important;
+}
+
+/* sidebar nempel */
+.dash-sidebar{
+  position: sticky !important;
+  top: 0 !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+  align-self: flex-start !important;
+  flex: 0 0 260px !important;
+}
+
+/* konten kanan yang scroll */
+.dash-main{
+  flex: 1 !important;
+  height: 100vh !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* modal */
+body.modal-open .dash-wrap{
+  overflow: hidden !important;
+}
+
 /* ================= HEADER GLOBAL FINAL ================= */
 .app-header {
     display: flex;
@@ -1585,11 +1717,11 @@ body .dt-doc-note-title{
 }
 
 .dash-sub {
-    display: none !important;
-    flex-direction: column !important;
-    gap: 8px !important;
-    padding-left: 0 !important;
-    margin: 8px 0 0 0 !important;
+  display: none !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  padding-left: 14px !important;
+  margin: 8px 0 0 0 !important;
 }
 
 .dash-sub.is-open {
@@ -1597,26 +1729,14 @@ body .dt-doc-note-title{
 }
 
 .dash-sub-link {
-   width: 100% !important;
-
-  height: 44px !important;
+  width: 100% !important;
   min-height: 44px !important;
-  max-height: 44px !important;
-
   padding: 10px 12px !important;
   margin: 0 !important;
   border: 0 !important;
-
-  display: flex !important;
-  align-items: center !important;
-
   flex-shrink: 0 !important;
   box-sizing: border-box !important;
   transform: none !important;
-
-  font-size: 15px !important;
-font-weight: 400 !important;
-line-height: 1 !important;
 }
 
 .dash-side-actions {

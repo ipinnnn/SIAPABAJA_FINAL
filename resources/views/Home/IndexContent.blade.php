@@ -779,25 +779,6 @@ document.addEventListener('click', () => {
   document.getElementById('homeUserDropdown')?.classList.remove('show');
 });
 
-
-document.querySelectorAll('#homeNavLinks a').forEach(a => {
-  a.addEventListener('click', () => {
-    document.getElementById('homeNavLinks')?.classList.remove('is-open');
-    const icon = document.getElementById('homeNavToggle')?.querySelector('i');
-    if (icon) icon.className = 'bi bi-list';
-  });
-});
-
-// Tampilkan/sembunyikan logout mobile sesuai ukuran layar
-function syncLogoutMobile() {
-  const logoutMobile = document.getElementById('logoutFormMobile');
-  if (!logoutMobile) return;
-  logoutMobile.style.display = window.innerWidth <= 768 ? 'block' : 'none';
-}
-
-syncLogoutMobile();
-window.addEventListener('resize', syncLogoutMobile);
-
   function openDetailModal(payload) {
     document.getElementById('dtTitle').textContent = payload?.title || '-';
     document.getElementById('dtUnit').textContent = payload?.unit || '-';
@@ -1183,3 +1164,4 @@ window.addEventListener('resize', syncLogoutMobile);
     barUnitEl?.addEventListener('change', updateBar);
   });
 </script>
+@endpush

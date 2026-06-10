@@ -1,4 +1,4 @@
-    <header class="nav">
+<header class="nav">
         <div class="container nav-inner">
 
             <a href="{{ route('landing') }}" class="brand">

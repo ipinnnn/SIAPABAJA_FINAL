@@ -42,7 +42,7 @@
   // fallback dummy kalau belum login/backend belum beres
   $ppkName = $user->name ?? 'Admin PPK';
   $ppkEmail = $user->email ?? 'ppk@contoh.ac.id';
-  $roleText = 'ADMIN (PPK)';
+  $roleText = 'Admin (PPK)';
 
   $initials = strtoupper(mb_substr(trim($ppkName), 0, 1));
   @endphp
