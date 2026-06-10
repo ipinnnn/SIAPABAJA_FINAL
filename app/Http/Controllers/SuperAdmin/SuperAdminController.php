@@ -1622,27 +1622,18 @@ class SuperAdminController extends Controller
         }
     }
 
-    private function buildDokumenList(Pengadaan $p): array
-    {
-        $labels = $this->dokumenFieldLabels();
-        $attrs = $p->getAttributes();
-        $out = [];
+   private function buildDokumenList(Pengadaan $p): array
+{
+    $labels = $this->dokumenFieldLabels();
+    $out = [];
 
-        foreach ($attrs as $field => $rawValue) {
-            $lk = strtolower((string) $field);
+    foreach ($labels as $field => $label) {
+        try {
+            $raw = $p->getAttributes()[$field] ?? null;
+            if ($raw === null) continue;
 
-            if (!(str_contains($lk, 'dokumen') || str_contains($lk, 'file') || str_contains($lk, 'lampiran'))) {
-                continue;
-            }
-
-            if (in_array($field, ['dokumen_tidak_dipersyaratkan', 'dokumen_tidak_dipersyaratkan_json'], true)) {
-                continue;
-            }
-
-            $files = $this->normalizeArray($rawValue);
+            $files = $this->normalizeArray($raw);
             if (count($files) === 0) continue;
-
-            $label = $labels[$field] ?? Str::title(str_replace('_', ' ', $field));
 
             foreach ($files as $one) {
                 $path = $this->normalizePublicDiskPath($one);
@@ -1654,7 +1645,7 @@ class SuperAdminController extends Controller
                     'label' => $label,
                     'name'  => $file,
                     'path'  => $path,
-                    'url' => route(
+                    'url'   => route(
                         'superadmin.arsip.dokumen.show',
                         [
                             'id'    => $p->id,
@@ -1664,10 +1655,13 @@ class SuperAdminController extends Controller
                     ),
                 ];
             }
+        } catch (\Throwable $e) {
+            continue;
         }
-
-        return $out;
     }
+
+    return $out;
+}
 
     private function normalizePublicDiskPath($raw): ?string
     {

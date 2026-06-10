@@ -79,36 +79,73 @@
     return 'Rp ' . number_format($n, 0, ',', '.');
     };
 
-    function buildDokumenListForLanding($pengadaan){
+   function buildDokumenListForLanding($pengadaan){
     if(!$pengadaan) return [];
     $attrs = method_exists($pengadaan, 'getAttributes') ? $pengadaan->getAttributes() : (array)$pengadaan;
     $out = [];
+
+    $skipFields = [
+        'id','created_at','updated_at','deleted_at',
+        'unit_id','user_id','tahun','status_arsip','status_pekerjaan',
+        'nama_pekerjaan','metode_pbj','metode_pengadaan','metode',
+        'nilai_kontrak','pagu_anggaran','hps','nama_rekanan',
+        'jenis_pengadaan','id_rup','keterangan','catatan',
+        'dokumen_tidak_dipersyaratkan','dokumen_tidak_dipersyaratkan_json',
+    ];
+
+    $validExts = ['pdf','doc','docx','xls','xlsx','png','jpg','jpeg','webp','gif','zip','rar'];
+
     foreach($attrs as $field => $rawValue){
-    $lk = strtolower((string)$field);
-    if(!(str_contains($lk,'dokumen') || str_contains($lk,'file') || str_contains($lk,'lampiran'))) continue;
-    if(in_array($field, ['dokumen_tidak_dipersyaratkan','dokumen_tidak_dipersyaratkan_json'], true)) continue;
-    $files = [];
-    if(is_array($rawValue)) $files = $rawValue;
-    elseif(is_string($rawValue) && trim($rawValue) !== ''){
-    $decoded = json_decode(trim($rawValue), true);
-    $files = is_array($decoded) ? $decoded : [trim($rawValue)];
-    }
-    $files = array_values(array_filter(array_map(function($x){
-    if($x === null) return null;
-    $s = trim((string)$x); if($s === '') return null;
-    $s = str_replace('\\','/',$s); $s = explode('?',$s)[0];
-    if(Str::startsWith($s,['http://','https://'])){ $u=parse_url($s); if(!empty($u['path'])) $s=$u['path']; }
-    $s = ltrim($s,'/');
-    if(Str::startsWith($s,'public/')) $s=Str::after($s,'public/');
-    if(Str::startsWith($s,'storage/')) $s=Str::after($s,'storage/');
-    $s = preg_replace('#^storage/#','',$s);
-    return $s !== '' ? $s : null;
-    }, $files)));
-    if(count($files) === 0) continue;
-    foreach($files as $path){ $out[$field][] = ['field'=>$field,'name'=>basename($path),'url'=>'/storage/'.ltrim($path,'/')]; }
+        if(in_array($field, $skipFields, true)) continue;
+        if($rawValue === null || $rawValue === '' || $rawValue === '[]' || $rawValue === 'null') continue;
+
+        $files = [];
+        if(is_array($rawValue)){
+            $files = $rawValue;
+        } elseif(is_string($rawValue) && trim($rawValue) !== ''){
+            $decoded = json_decode(trim($rawValue), true);
+            if(is_array($decoded)){
+                $files = $decoded;
+            } else {
+                $trimmed = trim($rawValue);
+                $ext = strtolower(pathinfo($trimmed, PATHINFO_EXTENSION));
+                if(in_array($ext, $validExts, true) || str_contains($trimmed, '/storage/') || str_contains($trimmed, 'pengadaan/')){
+                    $files = [$trimmed];
+                }
+            }
+        }
+
+        $files = array_values(array_filter(array_map(function($x) use ($validExts){
+            if($x === null) return null;
+            $s = trim((string)$x);
+            if($s === '' || $s === 'null') return null;
+            $s = str_replace('\\','/',$s);
+            $s = explode('?',$s)[0];
+            if(\Illuminate\Support\Str::startsWith($s,['http://','https://'])){
+                $u = parse_url($s);
+                if(!empty($u['path'])) $s = $u['path'];
+            }
+            $s = ltrim($s,'/');
+            if(\Illuminate\Support\Str::startsWith($s,'public/')) $s = \Illuminate\Support\Str::after($s,'public/');
+            if(\Illuminate\Support\Str::startsWith($s,'storage/')) $s = \Illuminate\Support\Str::after($s,'storage/');
+            $s = preg_replace('#^storage/#','',$s);
+            $ext = strtolower(pathinfo($s, PATHINFO_EXTENSION));
+            if(!in_array($ext, $validExts, true)) return null;
+            return $s !== '' ? $s : null;
+        }, $files)));
+
+        if(count($files) === 0) continue;
+
+        foreach($files as $path){
+            $out[$field][] = [
+                'field' => $field,
+                'name'  => basename($path),
+                'url'   => '/storage/'.ltrim($path,'/'),
+            ];
+        }
     }
     return $out;
-    }
+}
 
     function buildDocNoteForLanding($pengadaan){
     if(!$pengadaan) return '';
@@ -1348,34 +1385,67 @@
       dtDocList.innerHTML = '';
       const docs = data.docs || {};
       let total = 0;
+      
 
-      const FILE_VIEWER_URL = @json(route('file.viewer'));
-      const toViewerUrl = (storageUrl) => {
-        const u = new URL(FILE_VIEWER_URL, window.location.origin);
-        u.searchParams.set('file', storageUrl);
-        u.searchParams.set('mode', 'public');
-        return u.toString();
-      };
+    const FILE_VIEWER_URL = @json(route('file.viewer'));
+const toViewerUrl = (storageUrl) => {
+  if (!storageUrl || storageUrl === '#') return '#';
+  try {
+    const u = new URL(FILE_VIEWER_URL, window.location.origin);
+    u.searchParams.set('file', storageUrl);
+    u.searchParams.set('mode', 'public');
+    return u.toString();
+  } catch(e) { return storageUrl; }
+};
 
-      Object.keys(docs).forEach(grp => {
-        const arr = Array.isArray(docs[grp]) ? docs[grp] : [];
-        arr.forEach(doc => {
-          if (!doc?.url) return;
-          total++;
-          const card = document.createElement('div');
-          card.className = 'dt-doc-card';
-          card.innerHTML = `
-          <div class="dt-doc-ic"><i class="bi bi-file-earmark-text"></i></div>
-          <div class="dt-doc-info">
-            <div class="dt-doc-title">${grp||'Dokumen'}</div>
-            <div class="dt-doc-sub">${doc.name||'Dokumen'}</div>
-          </div>
-          <a class="dt-doc-act" href="${toViewerUrl(doc.url)}" target="_blank" rel="noopener"><i class="bi bi-eye"></i></a>
-        `;
-          dtDocList.appendChild(card);
-        });
-      });
-      dtDocEmpty.hidden = total > 0;
+Object.keys(docs).forEach(grp => {
+  const arr = Array.isArray(docs[grp]) ? docs[grp] : [];
+  arr.forEach(doc => {
+    if (!doc) return;
+
+    let rawUrl = '';
+    let fileName = '-';
+    let label = grp || 'Dokumen';
+
+    if (typeof doc === 'string') {
+      rawUrl = normalizeStorageUrl(doc);
+      fileName = doc.split('/').filter(Boolean).pop() || 'Dokumen';
+    } else {
+      rawUrl = doc.url ? normalizeStorageUrl(doc.url) : normalizeStorageUrl(doc.path || '');
+      fileName = doc.name || (rawUrl.split('/').filter(Boolean).pop() || 'Dokumen');
+      label = doc.label || doc.field || grp || 'Dokumen';
+    }
+
+    if (!rawUrl || rawUrl === '#') return;
+
+    const labelDisplay = label.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+
+    const ext = (fileName.split('.').pop() || '').toLowerCase();
+    let fileIc = 'bi-file-earmark-text';
+    if (ext === 'pdf') fileIc = 'bi-file-earmark-pdf';
+    else if (['png','jpg','jpeg','webp','gif'].includes(ext)) fileIc = 'bi-file-earmark-image';
+    else if (['doc','docx'].includes(ext)) fileIc = 'bi-file-earmark-word';
+    else if (['xls','xlsx'].includes(ext)) fileIc = 'bi-file-earmark-excel';
+    else if (['zip','rar','7z'].includes(ext)) fileIc = 'bi-file-earmark-zip';
+
+    total++;
+    const card = document.createElement('div');
+    card.className = 'dt-doc-card';
+    card.innerHTML = `
+      <div class="dt-doc-ic"><i class="bi ${fileIc}"></i></div>
+      <div class="dt-doc-info">
+        <div class="dt-doc-title">${labelDisplay}</div>
+        <div class="dt-doc-sub">${fileName}</div>
+      </div>
+      <a class="dt-doc-act" href="${toViewerUrl(rawUrl)}" target="_blank" rel="noopener" title="Lihat Dokumen">
+        <i class="bi bi-eye"></i>
+      </a>
+    `;
+    dtDocList.appendChild(card);
+  });
+});
+
+dtDocEmpty.hidden = total > 0;
 
       const note = (data.docnote || '').trim();
       const noteWrap = document.getElementById('dtDocNoteWrap');

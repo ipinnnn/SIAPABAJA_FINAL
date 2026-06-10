@@ -1172,28 +1172,19 @@ return view('PPK.ArsipPBJ', compact('ppkName', 'arsips', 'unitOptions', 'tahunOp
         }
     }
 
-    private function buildDokumenList(Pengadaan $p): array
-    {
-        $labels = $this->dokumenFieldLabels();
-        $attrs  = $p->getAttributes();
+    
+private function buildDokumenList(Pengadaan $p): array
+{
+    $labels = $this->dokumenFieldLabels();
+    $out = [];
 
-        $out = [];
+    foreach ($labels as $field => $label) {
+        try {
+            $raw = $p->getAttributes()[$field] ?? null;
+            if ($raw === null) continue;
 
-        foreach ($attrs as $field => $rawValue) {
-            $lk = strtolower((string)$field);
-
-            if (!(str_contains($lk, 'dokumen') || str_contains($lk, 'file') || str_contains($lk, 'lampiran'))) {
-                continue;
-            }
-
-            if (in_array($field, ['dokumen_tidak_dipersyaratkan', 'dokumen_tidak_dipersyaratkan_json'], true)) {
-                continue;
-            }
-
-            $files = $this->normalizeArray($rawValue);
+            $files = $this->normalizeArray($raw);
             if (count($files) === 0) continue;
-
-            $label = $labels[$field] ?? Str::title(str_replace('_', ' ', $field));
 
             foreach ($files as $one) {
                 $path = $this->normalizePublicDiskPath($one);
@@ -1205,7 +1196,7 @@ return view('PPK.ArsipPBJ', compact('ppkName', 'arsips', 'unitOptions', 'tahunOp
                     'label' => $label,
                     'name'  => $file,
                     'path'  => $path,
-                    'url' => route(
+                    'url'   => route(
                         'ppk.arsip.dokumen.show',
                         [
                             'id'    => $p->id,
@@ -1215,10 +1206,13 @@ return view('PPK.ArsipPBJ', compact('ppkName', 'arsips', 'unitOptions', 'tahunOp
                     ),
                 ];
             }
+        } catch (\Throwable $e) {
+            continue;
         }
-
-        return $out;
     }
+
+    return $out;
+}
 
     private function normalizePublicDiskPath($raw): ?string
     {

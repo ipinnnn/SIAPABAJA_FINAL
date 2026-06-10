@@ -1901,6 +1901,44 @@
           syncUI();
         });
 
+        // ✅ DRAG & DROP
+        zone.addEventListener('dragover', (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          zone.classList.add('tp-dropzone--dragging');
+        });
+
+        zone.addEventListener('dragleave', (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          if (!zone.contains(ev.relatedTarget)) {
+            zone.classList.remove('tp-dropzone--dragging');
+          }
+        });
+
+        zone.addEventListener('drop', (ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          zone.classList.remove('tp-dropzone--dragging');
+
+          const dropped = ev.dataTransfer?.files
+            ? Array.from(ev.dataTransfer.files)
+            : [];
+
+          if (dropped.length) {
+            const existing = new Set(storedFiles.map(fileKey));
+            dropped.forEach(f => {
+              const k = fileKey(f);
+              if (!existing.has(k)) {
+                storedFiles.push(f);
+                existing.add(k);
+              }
+            });
+            rebuildInputFiles();
+            syncUI();
+          }
+        });
+
         storedFiles = [];
         rebuildInputFiles();
         syncUI();

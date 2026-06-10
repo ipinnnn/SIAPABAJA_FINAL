@@ -2595,17 +2595,20 @@
         pendingIds = [];
       }
 
-      async function deleteOne(id) {
-        const res = await fetch(`/ppk/arsip/${encodeURIComponent(id)}/delete`, {
-          method: 'DELETE',
-          headers: {
+      
+async function deleteOne(id) {
+    const res = await fetch(`/ppk/arsip/${encodeURIComponent(id)}/delete`, {
+        method: 'POST',
+        headers: {
             'X-CSRF-TOKEN': csrf,
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
             'Accept': 'application/json',
             'X-Requested-With': 'XMLHttpRequest'
-          },
-        });
-        if (!res.ok) throw new Error('Gagal menghapus arsip ID ' + id);
-      }
+        },
+        body: '_method=DELETE',
+    });
+    if (!res.ok) throw new Error('Gagal menghapus arsip ID ' + id);
+}
 
       async function runDelete(ids) {
         try {
