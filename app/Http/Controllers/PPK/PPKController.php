@@ -34,7 +34,7 @@ class PpkController extends Controller
     {
         $ppkName = auth()->user()->name ?? 'PPK Utama';
 
-        //  Tahun dari MasterMenu (tersinkron dengan Kelola Menu Super Admin)
+        //  Tahun dari MasterMenu 
         $tahunOptions = MasterMenu::where('category', 'tahun')
             ->where('is_active', true)
             ->orderByDesc('nama')
@@ -67,7 +67,7 @@ class PpkController extends Controller
                 : (Schema::hasColumn('units', 'name') ? 'name' : 'id'));
 
         //  Dropdown Unit = dari tabel units (id + nama)
-        //  Unit hanya yang punya user aktif role unit/ppk — sama persis dengan Kelola Menu
+        //  
 $units = \App\Models\User::with('unit')
     ->whereIn('role', ['unit', 'ppk'])
     ->where('status', 'active')

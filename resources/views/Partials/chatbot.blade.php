@@ -32,13 +32,13 @@
                         <!-- Tombol khusus PPK -->
                         <button type="button" data-question="Jelaskan menu aplikasi">Menu Aplikasi</button>
                         <button type="button" data-question="Jelaskan hak akses PPK">Hak Akses PPK</button>
-                        <button type="button" data-question="Langkah - langkah upload dokumen pengadaan">Upload Dokumen</button>
+                        <button type="button" data-question="Berikan langkah upload dokumen pengadaan">Upload Dokumen</button>
                         <button type="button" data-question="Saya lupa password">Lupa Password</button>
                     @elseif(Auth::user()->role === 'unit')
                         <!-- Tombol khusus Unit -->
                         <button type="button" data-question="Jelaskan menu aplikasi">Menu Aplikasi</button>
                         <button type="button" data-question="Jelaskan hak akses unit">Hak Akses Unit</button>
-                        <button type="button" data-question="Langkah - langkah upload dokumen pengadaan">Upload Dokumen</button>
+                        <button type="button" data-question="Berikan langkah upload dokumen pengadaan">Upload Dokumen</button>
                         <button type="button" data-question="Saya lupa password">Lupa Password</button>
                     @else
                         <!-- Fallback jika role lain yang tidak dikenal -->

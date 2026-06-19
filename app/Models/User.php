@@ -35,7 +35,7 @@ class User extends Authenticatable
 
     /**
      * User (role unit) belongs to Unit.
-     * PPK biasanya unit_id = null.
+     .
      */
     public function unit()
     {
@@ -43,7 +43,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Pengadaan yang dibuat user (biasanya PPK).
+     * Pengadaan yang dibuat user 
      */
     public function pengadaansCreated()
     {

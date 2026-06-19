@@ -81,8 +81,8 @@ class Pengadaan extends Model
     ];
 
     /**
-     * ✅ CASTS
-     * - angka -> integer (aman untuk MySQL + PostgreSQL)
+     * 
+     * - angka -> integer 
      * - json/jsonb -> array
      */
     protected $casts = [
